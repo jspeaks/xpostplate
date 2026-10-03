@@ -7,8 +7,8 @@ import {
   bearerTokenFromEnv,
   defaultFixturePath,
   fetchPost,
+  fetchPublicPost,
   loadFixture,
-  missingTokenMessage,
   parseStatusId,
 } from "../lib/post.js";
 import { renderSvg } from "../lib/svg.js";
@@ -42,8 +42,7 @@ async function main() {
     }
     const statusId = parseStatusId(opts.positionals[0]);
     const token = bearerTokenFromEnv();
-    if (!token) throw new Error(missingTokenMessage());
-    post = await fetchPost(statusId, token);
+    post = token ? await fetchPost(statusId, token) : await fetchPublicPost(statusId);
   }
 
   if (opts.json) {

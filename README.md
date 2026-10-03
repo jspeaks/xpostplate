@@ -2,7 +2,7 @@
 
 Local CLI that turns an X post URL or status id into a broadcast-style PNG plate.
 
-It loads the post as JSON from the X API v2 (`GET https://api.x.com/2/tweets/:id`, the same resource as `api.twitter.com`), then draws an SVG card and converts it with ImageMagick. It does not open a browser and it does not scrape X.
+With `X_BEARER_TOKEN` set, it loads the post as JSON from the X API v2 (`GET https://api.x.com/2/tweets/:id`, the same resource as `api.twitter.com`). Without a token, a public post is loaded from X's syndication endpoint. It then draws an SVG card and converts it with ImageMagick. It does not open a browser.
 
 PNG bytes go to stdout and logs go to stderr, so an agent can pipe the image. `--json` prints the post and skips the image.
 
@@ -18,7 +18,7 @@ npm link
 
 `npm link` is optional. Without it, call `bin/xpostplate.js` directly or add `bin/` to `PATH`.
 
-Fetching a live post needs a bearer token in the environment. The CLI reads `X_BEARER_TOKEN` only. It does not look in the macOS keychain, and it will exit 1 if the variable is missing.
+A bearer token is optional. The CLI reads `X_BEARER_TOKEN` only and does not look in the macOS keychain. Without it, public posts are fetched from X's syndication endpoint, and reposts, quotes, bookmarks, and views are omitted. Protected or deleted posts fail. Set the token when you want the API v2 payload, including full `public_metrics`.
 
 ```bash
 export X_BEARER_TOKEN="your-token"
@@ -66,4 +66,4 @@ xpostplate --fixture --json
 
 `text` mode draws the author name, `@handle`, post text, and timestamp, and no metrics. `full` adds replies, reposts, quotes, likes, bookmarks, and views. `--metrics` overrides that preset, including a subset while `--mode text`. `--no-time` removes the timestamp line and the gap under the body. `--max-height` keeps the header and whatever footer is enabled, drops body lines from the end, and puts `…` on the last visible body line when any were dropped. If the header and footer alone are taller than the cap, the command exits 1 instead of clipping them or the border.
 
-The live request asks for `tweet.fields=text,created_at,public_metrics`, `expansions=author_id`, and `user.fields=name,username,profile_image_url`. The plate itself is typographic: the avatar is initials from the display name, so the profile image URL is kept on the JSON and is not downloaded.
+When a token is set, the live request asks for `tweet.fields=text,created_at,public_metrics`, `expansions=author_id`, and `user.fields=name,username,profile_image_url`. Without a token, likes and replies come from the syndication feed. Reposts, quotes, bookmarks, and views are left unset and are not drawn, including with `--mode full` or `--metrics`. A count of zero still renders. The plate itself is typographic: the avatar is initials from the display name, so the profile image URL is kept on the JSON and is not downloaded.
