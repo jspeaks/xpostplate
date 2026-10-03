@@ -15,7 +15,23 @@ Photos stay off unless you pass `--media`. `--max-height` drops photos before it
 
 `--fabricate` invents a post from `--text` with no URL and no network. `--name`, `--handle`, `--text`, `--verified`, `--posted`, and the count flags override that post or a real one. A count you set is real, even when it is zero. A count you leave unset stays hidden when the source never had it.
 
-Node 20 or newer, and ImageMagick `magick` on `PATH`. Run `bin/xpostplate.js` from this repo, or `npm link` if you want `xpostplate` on `PATH`.
+## Install
+
+ImageMagick `magick` is required and is not bundled. It must be on `PATH`.
+
+Node 18 or newer. From a clone of this repo:
+
+```bash
+node bin/xpostplate.js --help
+```
+
+The npm package is not published yet. When it is, this is the install:
+
+```bash
+npm install -g xpostplate
+```
+
+`brew install` is blocked. `xpostplate` is not in homebrew-core and there is no tap. `packaging/homebrew/xpostplate.rb` is a head-only formula that depends on `node` and `imagemagick` and installs the CLI from this git repo. A stable archive URL and sha256 land on the first GitHub release.
 
 ```bash
 # Broadcast plate. No token. PNG on stdout. Photos stay off.

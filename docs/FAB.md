@@ -6,6 +6,8 @@ xpostplate turns an X post into a PNG. `--view` selects `plate` (the default bor
 
 The public landing page is docs/index.html.
 
+Install targets are npm and Homebrew.
+
 ## Architecture
 
 `bin/xpostplate.js` parses flags in `lib/args.js`. A URL is fetched from the X API when `X_BEARER_TOKEN` is set, and from X's syndication feed when it is not. `--fixture` reads a local JSON file instead. `--fabricate` builds the post from `--text` and the override flags. Fetched and fixture posts then pass through the same overrides. `lib/svg.js` draws the chosen view. ImageMagick turns that SVG into a PNG, and composites photo files when `--media` reserved boxes for them.

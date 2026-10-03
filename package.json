@@ -1,14 +1,27 @@
 {
   "name": "xpostplate",
-  "version": "0.8.0",
-  "private": true,
+  "version": "0.9.0",
   "description": "Render or fabricate an X post as a PNG: a broadcast plate, a timeline row, an opened post, or a quote.",
   "type": "module",
   "bin": {
     "xpostplate": "bin/xpostplate.js"
   },
+  "files": [
+    "bin",
+    "lib",
+    "assets/x-logo.svg",
+    "fixtures/sample-post.json"
+  ],
   "engines": {
-    "node": ">=20"
+    "node": ">=18"
   },
+  "scripts": {
+    "prepublishOnly": "node --check bin/xpostplate.js && node --input-type=module -e \"import {accessSync} from 'node:fs'; for (const f of ['bin/xpostplate.js','lib/args.js','lib/png.js','lib/post.js','lib/svg.js','assets/x-logo.svg','fixtures/sample-post.json']) accessSync(f)\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jspeaks/xpostplate.git"
+  },
+  "homepage": "https://github.com/jspeaks/xpostplate",
   "license": "UNLICENSED"
 }
