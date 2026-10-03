@@ -1,6 +1,6 @@
 {
   "name": "xpostplate",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
   "description": "Render an X post URL or status id as a broadcast-style PNG plate.",
   "type": "module",

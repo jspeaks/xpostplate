@@ -58,6 +58,8 @@ xpostplate --fixture --json
 | `--time` / `--no-time` | show time | `--no-time` hides the timestamp and its gap. Last of the two flags wins |
 | `--metrics <list>` | mode default | `all`, `none`, or a comma-separated subset: replies, reposts, quotes, likes, bookmarks, views. Overrides the mode default |
 | `--max-height <px>` | none | Cap height from 120 to 8192. Truncate the body from the end with an ellipsis. Header, footer, and border stay intact |
+| `--mark` / `--no-mark` | show mark | Official X glyph in a corner. `--no-mark` removes it and leaves no gap. Last of the two flags wins |
+| `--mark-corner tl\|tr\|bl\|br` | `tr` | Corner for the X mark |
 | `-o`, `--output <path>` | stdout | File path, or `-` for stdout |
 | `--json` | off | Print normalized post JSON to stdout and skip the image |
 | `--fixture [path]` | off | Local JSON instead of the API |

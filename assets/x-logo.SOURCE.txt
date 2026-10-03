@@ -1,0 +1,9 @@
+https://x.com/
+2026-10-02
+
+Single-path X glyph, viewBox 0 0 24 24. Copied from the logged-out loading
+mark in the x.com HTML (the first path only, not the animation scribble and
+not the old Twitter bird). The same mark is the header icon on
+https://about.x.com/en/who-we-are/brand-toolkit with viewBox 0 0 1200 1227.
+That page's download zips are still the 2021 bird, so this file keeps the
+current 24x24 path from x.com. Render inlines this file. It does not hotlink.
