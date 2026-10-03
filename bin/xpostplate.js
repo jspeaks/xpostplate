@@ -9,6 +9,8 @@ import {
   fetchPhotoBuffers,
   fetchPost,
   fetchPublicPost,
+  applyOverrides,
+  fabricatePost,
   loadFixture,
   parseStatusId,
 } from "../lib/post.js";
@@ -29,12 +31,16 @@ async function main() {
   }
 
   let post;
-  if (opts.fixture) {
+  if (opts.fabricate) {
+    if (opts.fixture) throw new Error("--fabricate does not use a fixture");
+    if (opts.positionals.length) throw new Error("--fabricate does not take a post URL");
+    post = fabricatePost(opts);
+  } else if (opts.fixture) {
     if (opts.positionals.length) {
       process.stderr.write("fixture mode ignores the status argument\n");
     }
     const file = opts.fixture === true ? defaultFixturePath : opts.fixture;
-    post = await loadFixture(file);
+    post = applyOverrides(await loadFixture(file), opts);
   } else {
     if (opts.positionals.length !== 1) {
       process.stderr.write(helpText());
@@ -43,7 +49,8 @@ async function main() {
     }
     const statusId = parseStatusId(opts.positionals[0]);
     const token = bearerTokenFromEnv();
-    post = token ? await fetchPost(statusId, token) : await fetchPublicPost(statusId);
+    const fetched = token ? await fetchPost(statusId, token) : await fetchPublicPost(statusId);
+    post = applyOverrides(fetched, opts);
   }
 
   if (opts.json) {

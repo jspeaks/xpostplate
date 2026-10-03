@@ -1,6 +1,6 @@
 # xpostplate
 
-A public X post, drawn as a PNG for the timeline, the opened post, a quote, or a broadcast plate.
+A public X post, or one you fabricate and override, drawn as a PNG for the timeline, the opened post, a quote, or a broadcast plate.
 
 `xpostplate` takes a post URL or status id and writes a picture. Leave `X_BEARER_TOKEN` unset and a public post still loads, from X's syndication feed, with no key and no keychain. Counts that feed does not carry stay off the image instead of turning into fake zeros. PNG bytes go to stdout and logs go to stderr, so you can pipe the file or pass `-o`.
 
@@ -12,6 +12,8 @@ A public X post, drawn as a PNG for the timeline, the opened post, a quote, or a
 - `quote` is the nested post: inset, a hairline border, smaller type, no action bar.
 
 Photos stay off unless you pass `--media`. `--max-height` drops photos before it drops body lines, and it does not clip the header or the footer. The avatar is initials in every view.
+
+`--fabricate` invents a post from `--text` with no URL and no network. `--name`, `--handle`, `--text`, `--verified`, `--posted`, and the count flags override that post or a real one. A count you set is real, even when it is zero. A count you leave unset stays hidden when the source never had it.
 
 Node 20 or newer, and ImageMagick `magick` on `PATH`. Run `bin/xpostplate.js` from this repo, or `npm link` if you want `xpostplate` on `PATH`.
 
@@ -28,8 +30,11 @@ xpostplate https://x.com/SpaceX/status/21…47 --view detail --theme dark -o det
 # The same post as a quote.
 xpostplate https://x.com/SpaceX/status/21…47 --view quote -o quote.png
 
-# Shorter card. Extra lines drop from the end.
-xpostplate https://x.com/SpaceX/status/21…47 --max-height 420
+# Invent a post. No URL and no network.
+xpostplate --fabricate --name "SpaceX" --handle SpaceX --text "Starship is stacked." --view timeline
+
+# Start from a public post and replace the words.
+xpostplate https://x.com/SpaceX/status/21…47 --text "A line written for the plate."
 ```
 
 `xpostplate --help` lists every flag.

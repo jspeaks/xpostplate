@@ -1,8 +1,8 @@
 {
   "name": "xpostplate",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "private": true,
-  "description": "Render an X post as a PNG: a broadcast plate, a timeline row, an opened post, or a quote.",
+  "description": "Render or fabricate an X post as a PNG: a broadcast plate, a timeline row, an opened post, or a quote.",
   "type": "module",
   "bin": {
     "xpostplate": "bin/xpostplate.js"
