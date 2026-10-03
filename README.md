@@ -54,11 +54,14 @@ xpostplate --fixture --json
 | `--radius <px>` | `24` | Corner radius |
 | `--border <px>` | `4` | Accent border thickness |
 | `--accent <hex>` | `#1D9BF0` | Border and avatar color |
-| `--mode text\|full` | `text` | `text` draws author, text, and time. `full` also draws public metrics |
+| `--mode text\|full` | `text` | `text` draws author, body, and time. `full` also draws metrics, unless `--metrics` is set |
+| `--time` / `--no-time` | show time | `--no-time` hides the timestamp and its gap. Last of the two flags wins |
+| `--metrics <list>` | mode default | `all`, `none`, or a comma-separated subset: replies, reposts, quotes, likes, bookmarks, views. Overrides the mode default |
+| `--max-height <px>` | none | Cap height from 120 to 8192. Truncate the body from the end with an ellipsis. Header, footer, and border stay intact |
 | `-o`, `--output <path>` | stdout | File path, or `-` for stdout |
 | `--json` | off | Print normalized post JSON to stdout and skip the image |
 | `--fixture [path]` | off | Local JSON instead of the API |
 
-`text` mode draws the author name, `@handle`, post text, and timestamp. `full` adds replies, reposts, quotes, likes, bookmarks, and views.
+`text` mode draws the author name, `@handle`, post text, and timestamp, and no metrics. `full` adds replies, reposts, quotes, likes, bookmarks, and views. `--metrics` overrides that preset, including a subset while `--mode text`. `--no-time` removes the timestamp line and the gap under the body. `--max-height` keeps the header and whatever footer is enabled, drops body lines from the end, and puts `…` on the last visible body line when any were dropped. If the header and footer alone are taller than the cap, the command exits 1 instead of clipping them or the border.
 
 The live request asks for `tweet.fields=text,created_at,public_metrics`, `expansions=author_id`, and `user.fields=name,username,profile_image_url`. The plate itself is typographic: the avatar is initials from the display name, so the profile image URL is kept on the JSON and is not downloaded.
