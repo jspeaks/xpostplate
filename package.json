@@ -1,6 +1,6 @@
 {
   "name": "xpostplate",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "description": "Render or fabricate an X post as a PNG: a broadcast plate, a timeline row, an opened post, or a quote.",
   "type": "module",
   "bin": {
@@ -23,5 +23,5 @@
     "url": "git+https://github.com/jspeaks/xpostplate.git"
   },
   "homepage": "https://github.com/jspeaks/xpostplate",
-  "license": "UNLICENSED"
+  "license": "MIT"
 }
