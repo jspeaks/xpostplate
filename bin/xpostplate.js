@@ -2,10 +2,11 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { helpText, parseCli } from "../lib/args.js";
-import { svgToPng } from "../lib/png.js";
+import { compositePhotos, svgToPng } from "../lib/png.js";
 import {
   bearerTokenFromEnv,
   defaultFixturePath,
+  fetchPhotoBuffers,
   fetchPost,
   fetchPublicPost,
   loadFixture,
@@ -54,7 +55,11 @@ async function main() {
   }
 
   const plate = renderSvg(post, opts);
-  const png = await svgToPng(plate.svg);
+  let png = await svgToPng(plate.svg);
+  if (!opts.fixture && plate.photos.length) {
+    const buffers = await fetchPhotoBuffers(plate.photos.map((slot) => slot.url));
+    png = await compositePhotos(png, plate.photos, buffers);
+  }
   const destination = opts.output;
 
   if (!destination || destination === "-") {
