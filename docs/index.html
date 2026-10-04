@@ -30,8 +30,20 @@
       flex-direction: column;
       padding: 28px 32px 24px;
     }
-    .brand { height: 32px; margin: 0; }
+    .brand { height: 32px; margin: 0; display: flex; align-items: center; gap: 10px; }
     .wordmark { display: block; height: 32px; width: auto; }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      height: 18px;
+      padding: 0 7px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
     .hero {
       flex: 1;
       display: grid;
@@ -160,6 +172,7 @@
         <text x="34" y="22.5" fill="#F7F9F9" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="18" font-weight="600">xpostplate</text>
       </svg>
     </div>
+      <span class="chip">CLI</span>
     <div class="hero">
       <div class="pitch">
         <h1>Turn a public X post into a PNG.</h1>
