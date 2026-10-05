@@ -156,6 +156,20 @@
       color: var(--text);
       font-weight: 600;
     }
+    .plate-blurb {
+      margin: 0 0 16px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.4;
+      max-width: 40em;
+    }
+    .named .xmark {
+      display: inline-block;
+      width: 0.85em;
+      height: 0.85em;
+      margin: 0 0.12em -0.05em 0;
+      vertical-align: baseline;
+    }
     .more p { margin: 16px 0 0; color: var(--muted); }
     .more code, .note code {
       font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
@@ -208,11 +222,12 @@
     <line x1="0" y1="4" x2="1120" y2="4" stroke="#38444D" stroke-width="1"/>
   </svg>
   <section class="more">
+    <p class="plate-blurb">A plate is the bordered broadcast card.</p>
     <ul class="named">
       <li><code>--view plate</code> broadcast card</li>
-      <li><code>--view timeline</code> home row</li>
-      <li><code>--view detail</code> opened post</li>
-      <li><code>--view quote</code> nested post</li>
+      <li><code>--view timeline</code> <svg class="xmark" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> timeline row format</li>
+      <li><code>--view detail</code> <svg class="xmark" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> detail post format</li>
+      <li><code>--view quote</code> <svg class="xmark" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> quote only format</li>
       <li><code>--fabricate</code> invents a post</li>
       <li><code>--media</code> draws the photos</li>
     </ul>
