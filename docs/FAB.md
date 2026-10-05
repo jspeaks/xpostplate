@@ -1,18 +1,17 @@
 # FAB
 
-Features, advantages, and benefits of xpostplate. One row per feature.
+Features, advantages, and benefits of xpostplate.
 
 | Feature | Advantage | Benefit |
 | --- | --- | --- |
-| Turns an X post URL or status id into a PNG. | Drawn from the post’s data, not cropped from a screenshot. | Every image has the same clean layout and type, with no pixel editing. |
-| Four views with `--view`: `plate`, `timeline`, `detail`, `quote`. | One tool covers every shape a post takes on X. | Pick the shape that fits a broadcast, a slide, a video, or an article. |
+| Turns an X post into a PNG for documents, messages, agentic workflows, and more. | Reuse a post as a portable image wherever a screenshot would go. | A clean card ready for docs, chat, decks, and pipelines. |
+| Four views: `plate`, `timeline`, `detail`, and `quote` (`--view`). | One tool adapts to the different formats a post can take. | Pick the layout that fits how you want the post to read: broadcast, slide, article, and more. |
 | `--theme light\|dark` and `--media` for photos. | Matches the surface the image lands on. | Drops into light or dark decks and lower thirds without touch-ups. |
-| Loads a public post with no bearer token, from X’s syndication feed. | No API key. Leave `X_BEARER_TOKEN` unset and it still works. | No account setup and no API approval before the first image. |
-| Counts come only from the source or from you. | A count the source lacks stays off the image; a count you pass, even zero, is shown. | Trust what the image shows. Nothing appears that the post did not have, unless you set it. |
-| `--fabricate` plus `--name`, `--handle`, `--text`, `--verified`, `--posted`, and count flags. | Invent a post, or override any field of a real one. | Mock up a post before it exists, or rewrite one for a draft. |
-| PNG on stdout when piped, TTY auto-file `{handle}-{YYYYMMDD-HHMMSS}.png`, `-o` for a path, `--json` for data. | Built for pipes and a clean terminal default. | Scripts and agents make post images in batch with no manual cleanup. |
-| `--fabricate` and `--fixture` run offline. | No network needed. | Runs in CI, in tests, and on a plane. |
+| Loads public posts from X’s feed. | Works from a public URL without setup. | First plate from a link, not an API account. |
+| Counts can be modified for adaptation. | Tune likes, replies, and views to fit the story. | Adapt a post for a mock, a draft, or a cleaner card. |
+| `--fabricate` and `--fixture` invent posts from flags (`--name`, `--handle`, `--text`, …) or JSON. | Invent a post from imagination, or reshape one you already have. | Sketch a post that does not exist yet, without waiting on a live URL. |
+| PNG defaults to a file; stdout when piped; logs also supported. | Terminal-friendly by default, and pipeable when you need it. | Save a plate, or stream it into the next tool. |
 | `--max-height` caps the image height. | Drops photos before body lines and never clips the header or footer. | Fits a fixed slot without a broken card. |
-| Ships an Agent Skills `SKILL.md` with the CLI. | Agent harnesses find it after `npm i -g xpostplate`. | An agent can make post images without being taught the flags. |
+| Ships an Agent Skills `SKILL.md` with the CLI. | The skill is included with the CLI. | An agent can plate a post without a separate teach-in. |
 
 Architecture lives in [architecture.md](architecture.md).
