@@ -120,19 +120,6 @@
     }
     .cmd .nw { white-space: nowrap; }
     .cmd + .cmd { margin-top: 8px; }
-    .plate-blurb a { color: var(--muted); }
-    .plate-blurb a:hover, .plate-blurb a:focus-visible { color: var(--text); }
-    .plate-blurb code {
-      font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-      font-size: 12px;
-    }
-    .plate-blurb {
-      margin: 8px 0 0;
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.4;
-      max-width: 40em;
-    }
     .shot {
       position: relative;
       margin: 0 auto;
@@ -297,9 +284,7 @@
       <div class="pitch">
         <h1>Turn an <svg class="xmark" viewBox="0 0 24 24" aria-label="X" role="img"><path fill="currentColor" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> post into a PNG.</h1>
         <p class="why">A CLI tool for turning an X post into a PNG.</p>
-        <code class="cmd"><span class="nw">npm i -g xpostplate</span></code>
         <code class="cmd"><span class="nw">xpostplate https://x.com/SpaceX/status/[slug]</span> <span class="nw">&gt; post.png</span></code>
-        <p class="plate-blurb">No flags: the opened post as x.com shows it, photos included. <code>--view plate --no-media</code> is the bordered broadcast card. <a href="docs.html">Install docs</a> · Homebrew HEAD: <code>brew tap jspeaks/xpostplate &amp;&amp; brew install --HEAD xpostplate</code></p>
       </div>
       <figure class="shot">
         <svg class="corners" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
@@ -308,14 +293,14 @@
           <path d="M1 86 V99 H14" fill="none" stroke="#1D9BF0" stroke-width="1.5" vector-effect="non-scaling-stroke"/>
           <path d="M86 99 H99 V86" fill="none" stroke="#1D9BF0" stroke-width="1.5" vector-effect="non-scaling-stroke"/>
         </svg>
-        <img src="media/timeline.png" width="800" height="610" alt="Dark timeline plate of a SpaceX Starship post, four photos">
+        <img src="media/timeline.png" width="800" height="561" alt="Dark timeline row of a SpaceX Starship post, four photos">
       </figure>
       <section class="feats" aria-label="Views and flags">
       <ul class="named">
+        <li><code>--view plate</code><span class="desc">broadcast card</span></li>
         <li><code>--view timeline</code><span class="desc"><svg class="xmark" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> timeline row format</span></li>
         <li><code>--view detail</code><span class="desc"><svg class="xmark" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> detail post format (default)</span></li>
         <li><code>--view quote</code><span class="desc"><svg class="xmark" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> quote only format</span></li>
-        <li><code>--view plate</code><span class="desc">broadcast card</span></li>
         <li><code>--fabricate</code><span class="desc">invents a post</span></li>
         <li><code>--no-media</code><span class="desc">text only</span></li>
       </ul>
