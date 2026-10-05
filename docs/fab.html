@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FAB · xpostplate</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23F7F9F9' d='M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z'/%3E%3C/svg%3E">
+  <meta name="description" content="Features, architecture, and behavior of xpostplate.">
+  <style>
+
+    :root {
+      --bg: #0b1118;
+      --plate: #15202b;
+      --text: #f7f9f9;
+      --muted: #8b98a5;
+      --line: #38444d;
+      --accent: #1d9bf0;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.45;
+    }
+
+    .wrap {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 28px 32px 8px;
+    }
+    .brand {
+      height: 32px;
+      margin: 0 0 28px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .wordmark { display: block; height: 28px; width: auto; }
+    .brand a { display: flex; text-decoration: none; }
+    h1 {
+      margin: 0 0 8px;
+      font-size: 28px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+    h2 {
+      margin: 28px 0 10px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    p {
+      margin: 0 0 12px;
+      color: var(--text);
+      font-size: 16px;
+      line-height: 1.5;
+      max-width: 40em;
+    }
+    code {
+      font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      font-size: 0.92em;
+      color: var(--text);
+    }
+
+    .site-foot {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 24px 32px 40px;
+      color: var(--muted);
+      font-size: 13px;
+      letter-spacing: 0.02em;
+    }
+    .site-foot a {
+      color: var(--muted);
+      text-decoration: none;
+    }
+    .site-foot a:hover { color: var(--text); }
+    .site-foot .dot {
+      margin: 0 0.55em;
+      color: var(--line);
+    }
+
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="brand">
+      <a href="index.html">      <svg class="wordmark" viewBox="0 0 128 32" role="img" aria-label="xpostplate">
+        <g transform="translate(1 4)" fill="#F7F9F9">
+          <path transform="scale(1)" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+        </g>
+        <text x="34" y="22.5" fill="#F7F9F9" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="18" font-weight="600">xpostplate</text>
+      </svg></a>
+    </div>
+    <h1>FAB</h1>
+
+    <h2>Features</h2>
+    <p>xpostplate turns an X post into a PNG. <code>--view</code> selects <code>plate</code> (the default bordered card), <code>timeline</code> (a home-feed row), <code>detail</code> (the opened post), or <code>quote</code> (a nested post). A public URL loads with no bearer token. <code>--fabricate</code> invents a post from <code>--text</code> with no URL and no network. <code>--name</code>, <code>--handle</code>, <code>--text</code>, <code>--verified</code>, <code>--no-verified</code>, <code>--posted</code>, and the count flags <code>--replies</code>, <code>--reposts</code>, <code>--quotes</code>, <code>--likes</code>, <code>--bookmarks</code>, and <code>--views</code> override a fabricated post or a real one. Photos are drawn only with <code>--media</code>. PNG bytes go to stdout unless <code>-o</code> names a file. <code>--json</code> prints the post and skips the image.</p>
+    <p>The public landing page is <code>docs/index.html</code>.</p>
+    <p>Install targets are npm and Homebrew.</p>
+
+    <h2>Architecture</h2>
+    <p><code>bin/xpostplate.js</code> parses flags in <code>lib/args.js</code>. A URL is fetched from the X API when <code>X_BEARER_TOKEN</code> is set, and from X's syndication feed when it is not. <code>--fixture</code> reads a local JSON file instead. <code>--fabricate</code> builds the post from <code>--text</code> and the override flags. Fetched and fixture posts then pass through the same overrides. <code>lib/svg.js</code> draws the chosen view. ImageMagick turns that SVG into a PNG, and composites photo files when <code>--media</code> reserved boxes for them.</p>
+
+    <h2>Behavior</h2>
+    <p>Counts the source does not have stay off the image. A count you pass, including zero, is shown. On <code>detail</code>, views are omitted when the count is null. <code>--max-height</code> drops photos before body lines and does not clip the header or the footer. The avatar is initials in every view. <code>--fabricate</code> requires <code>--text</code>, and it refuses a URL or a fixture. <code>--version</code> prints the version in <code>package.json</code>.</p>
+  </div>
+  <footer class="site-foot">
+    <a href="index.html">xpostplate</a>
+    <span class="dot" aria-hidden="true">·</span>
+    <a href="fab.html">fab</a>
+    <span class="dot" aria-hidden="true">·</span>
+    <a href="docs.html">docs</a>
+    <span class="dot" aria-hidden="true">·</span>
+    <a href="timeline.html">timeline</a>
+  </footer>
+</body>
+</html>
