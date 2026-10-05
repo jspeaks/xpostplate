@@ -29,8 +29,8 @@ This skill ships at `skills/xpostplate/` in the repo and in the npm package (`fi
 
 ## Defaults
 
-- PNG on stdout, logs on stderr
-- Prefer `-o path.png` when a file is needed
+- PNG on stdout when piped/redirected; on a TTY with no `-o`, writes `{handle}-{YYYYMMDD-HHMMSS}.png` in cwd (`x-…` if fabricate/missing handle)
+- Prefer `-o path.png` when you need a specific path
 - Prefer `--json` when you only need post data
 - Public URLs work with no token via syndication
 - Do not invent missing counts as zeros; leave them unset so they stay off the image
@@ -45,7 +45,7 @@ This skill ships at `skills/xpostplate/` in the repo and in the npm package (`fi
 | `--theme light\|dark` | Default `light` |
 | `--name`, `--handle`, `--text` | Overrides; `--text` required with `--fabricate` |
 | `--replies`, `--reposts`, `--quotes`, `--likes`, `--bookmarks`, `--views` | Count overrides; a set zero is real |
-| `-o`, `--output <path>` | Write PNG to a file (`-` = stdout) |
+| `-o`, `--output <path>` | Write PNG to a file (`-` = stdout; skips TTY auto-file) |
 | `--json` | Post JSON on stdout; skip the image |
 | `--fixture [path]` | Local JSON instead of the network |
 

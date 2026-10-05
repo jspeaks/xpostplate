@@ -14,5 +14,5 @@ flowchart TD
   overrides --> view
   view --> svg[Render SVG]
   svg --> magick[ImageMagick to PNG]
-  magick --> out[Stdout or -o file]
+  magick --> out[Stdout, -o file, or TTY auto-file]
 ```

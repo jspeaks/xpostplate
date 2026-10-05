@@ -2,7 +2,7 @@
 
 A public X post, or one you fabricate and override, drawn as a PNG for the timeline, the opened post, a quote, or a broadcast plate.
 
-`xpostplate` takes a post URL or status id and writes a picture. Leave `X_BEARER_TOKEN` unset and a public post still loads, from X's syndication feed, with no key and no keychain. Counts that feed does not carry stay off the image instead of turning into fake zeros. PNG bytes go to stdout and logs go to stderr, so you can pipe the file or pass `-o`.
+`xpostplate` takes a post URL or status id and writes a picture. Leave `X_BEARER_TOKEN` unset and a public post still loads, from X's syndication feed, with no key and no keychain. Counts that feed does not carry stay off the image instead of turning into fake zeros. PNG bytes go to stdout when you pipe or redirect; on a TTY with no `-o`, the file is `{handle}-{YYYYMMDD-HHMMSS}.png` in the cwd (local time; `x-…` if fabricate or the handle is missing). Logs go to stderr. Pass `-o` for an explicit path.
 
 `--view` picks the shape:
 
@@ -32,7 +32,7 @@ From source: `git clone https://github.com/jspeaks/xpostplate && cd xpostplate &
 ## Examples
 
 ```bash
-# Broadcast plate. No token. PNG on stdout. Photos stay off.
+# Broadcast plate. No token. Photos stay off. Redirect, or omit -o on a TTY.
 xpostplate https://x.com/SpaceX/status/[slug] > plate.png
 
 # Home-feed row, dark, with the photos.
@@ -49,6 +49,34 @@ xpostplate --fabricate --name "SpaceX" --handle SpaceX --text "Starship is stack
 
 # Start from a public post and replace the words.
 xpostplate https://x.com/SpaceX/status/[slug] --text "A line written for the plate."
+```
+
+## Post JSON (`--json`, `--fixture`, fabricate shape)
+
+`--json` prints this shaped post. `--fixture` accepts the same flat shape, or the X API envelope (`data` + `includes.users`) like `fixtures/sample-post.json`. Counts may be numbers or `null` (hidden).
+
+```json
+{
+  "id": "1000000000000000001",
+  "text": "Body text.",
+  "created_at": "2026-10-02T18:30:00.000Z",
+  "public_metrics": {
+    "reply_count": 3,
+    "retweet_count": 12,
+    "quote_count": 1,
+    "like_count": 48,
+    "bookmark_count": 5,
+    "impression_count": 1200
+  },
+  "author": {
+    "id": "9001",
+    "name": "Sample Author",
+    "username": "sample_author",
+    "profile_image_url": "https://example.invalid/avatar.png",
+    "verified": false
+  },
+  "photos": ["https://example.invalid/photo.jpg"]
+}
 ```
 
 ## Requirements

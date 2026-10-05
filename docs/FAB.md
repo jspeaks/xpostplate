@@ -10,7 +10,7 @@ Features, advantages, and benefits of xpostplate. One row per feature.
 | Loads a public post with no bearer token, from X’s syndication feed. | No API key. Leave `X_BEARER_TOKEN` unset and it still works. | No account setup and no API approval before the first image. |
 | Counts come only from the source or from you. | A count the source lacks stays off the image; a count you pass, even zero, is shown. | Trust what the image shows. Nothing appears that the post did not have, unless you set it. |
 | `--fabricate` plus `--name`, `--handle`, `--text`, `--verified`, `--posted`, and count flags. | Invent a post, or override any field of a real one. | Mock up a post before it exists, or rewrite one for a draft. |
-| PNG on stdout, logs on stderr, `-o` for a file, `--json` for data. | Built for pipes: one command per image. | Scripts and agents make post images in batch with no manual cleanup. |
+| PNG on stdout when piped, TTY auto-file `{handle}-{YYYYMMDD-HHMMSS}.png`, `-o` for a path, `--json` for data. | Built for pipes and a clean terminal default. | Scripts and agents make post images in batch with no manual cleanup. |
 | `--fabricate` and `--fixture` run offline. | No network needed. | Runs in CI, in tests, and on a plane. |
 | `--max-height` caps the image height. | Drops photos before body lines and never clips the header or footer. | Fits a fixed slot without a broken card. |
 | Ships an Agent Skills `SKILL.md` with the CLI. | Agent harnesses find it after `npm i -g xpostplate`. | An agent can make post images without being taught the flags. |

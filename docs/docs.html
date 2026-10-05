@@ -221,7 +221,7 @@
       <li><span class="flag"><code>--media</code></span><span class="desc">draw photos under the text</span></li>
       <li><span class="flag"><code>--theme light|dark</code></span><span class="desc">plate theme (default light)</span></li>
       <li><span class="flag"><code>--max-height</code></span><span class="desc">drop photos before body lines</span></li>
-      <li><span class="flag"><code>-o</code></span><span class="desc">write PNG to a file (default stdout)</span></li>
+      <li><span class="flag"><code>-o</code></span><span class="desc">write PNG to a file; omit on a TTY for <code>{handle}-{YYYYMMDD-HHMMSS}.png</code> (<code>x-…</code> if fabricate/missing handle); <code>-</code> = stdout</span></li>
       <li><span class="flag"><code>--json</code></span><span class="desc">print the post JSON, skip the image</span></li>
       <li><span class="flag"><code>--fixture</code></span><span class="desc">render local JSON instead of fetching</span></li>
     </ul>
@@ -242,6 +242,31 @@
       <dt>Start from a public post and replace the words.</dt>
       <dd><code class="cmd"><span class="nw">xpostplate https://x.com/SpaceX/status/[slug]</span> <span class="nw">--text "A line written for the plate."</span></code></dd>
     </dl>
+
+
+    <h2>Post JSON</h2>
+    <p><code>--json</code> prints this shaped post. <code>--fixture</code> accepts the same flat shape, or the X API envelope (<code>data</code> + <code>includes.users</code>) like <code>fixtures/sample-post.json</code>. Counts may be numbers or <code>null</code> (hidden). <code>--fabricate</code> builds the same fields from flags.</p>
+    <pre><code>{
+  "id": "1000000000000000001",
+  "text": "Body text.",
+  "created_at": "2026-10-02T18:30:00.000Z",
+  "public_metrics": {
+    "reply_count": 3,
+    "retweet_count": 12,
+    "quote_count": 1,
+    "like_count": 48,
+    "bookmark_count": 5,
+    "impression_count": 1200
+  },
+  "author": {
+    "id": "9001",
+    "name": "Sample Author",
+    "username": "sample_author",
+    "profile_image_url": "https://example.invalid/avatar.png",
+    "verified": false
+  },
+  "photos": ["https://example.invalid/photo.jpg"]
+}</code></pre>
 
     <h2>Requirements</h2>
     <p class="req">Homebrew (HEAD tap) pulls in Node and ImageMagick for you. With npm, pnpm, or Bun you need Node 18 or newer, and ImageMagick (<code>magick</code>) on <code>PATH</code>: <code>brew install imagemagick</code> or <code>apt install imagemagick</code>.</p>

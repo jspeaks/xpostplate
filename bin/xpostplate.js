@@ -69,6 +69,14 @@ async function main() {
   }
   const destination = opts.output;
 
+  // No -o: on a TTY, write {handle}-{YYYYMMDD-HHMMSS}.png in cwd instead of binary to the terminal.
+  if (destination == null && process.stdout.isTTY) {
+    const file = path.resolve(autoPngFilename(post, opts));
+    await writeFile(file, png);
+    process.stderr.write(`${file}\n`);
+    return;
+  }
+
   if (!destination || destination === "-") {
     process.stderr.write(`PNG ${png.length} bytes (${plate.width}x${plate.height})\n`);
     await writeStdout(png);
@@ -79,6 +87,20 @@ async function main() {
   await mkdir(path.dirname(file), { recursive: true });
   await writeFile(file, png);
   process.stderr.write(`wrote ${file} (${plate.width}x${plate.height})\n`);
+}
+
+function autoPngFilename(post, opts) {
+  const raw = opts.fabricate && !opts.handleOverride
+    ? ""
+    : String(post?.author?.username || "").replace(/^@/, "").trim();
+  const handle = raw || "x";
+  const safe = handle.replace(/[^A-Za-z0-9._-]+/g, "_") || "x";
+  return `${safe}-${localStamp()}.png`;
+}
+
+function localStamp(now = new Date()) {
+  const p = (n) => String(n).padStart(2, "0");
+  return `${now.getFullYear()}${p(now.getMonth() + 1)}${p(now.getDate())}-${p(now.getHours())}${p(now.getMinutes())}${p(now.getSeconds())}`;
 }
 
 function writeStdout(buffer) {
