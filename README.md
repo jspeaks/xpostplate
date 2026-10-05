@@ -1,17 +1,28 @@
 # xpostplate
 
-A public X post, or one you fabricate and override, drawn as a PNG for the timeline, the opened post, a quote, or a broadcast plate.
+A public X post, or one you fabricate and override, drawn as a PNG that looks like x.com: the opened post by default, or a timeline row, a quote, or a bordered broadcast plate.
 
 `xpostplate` takes a post URL or status id and writes a picture. Leave `X_BEARER_TOKEN` unset and a public post still loads, from X's syndication feed, with no key and no keychain. Counts that feed does not carry stay off the image instead of turning into fake zeros. PNG bytes go to stdout when you pipe or redirect; on a TTY with no `-o`, the file is `{handle}-{YYYYMMDD-HHMMSS}.png` in the cwd (local time; `x-…` if fabricate or the handle is missing). Logs go to stderr. Pass `-o` for an explicit path.
 
+Bare `xpostplate <url>` aims to match the opened post on x.com: light theme, no border, no X mark, the real avatar (initials only when there is no avatar URL or it fails to load), the verified check when the post data says verified (blue, gold for organizations, gray for government), blue @mentions, #hashtags, $cashtags, and links (t.co links show their display URL), the photos under the text, a `time · date · views` line, and an action bar with the counts the source has. The media `t.co` link leaves the body when its photo is drawn.
+
 `--view` picks the shape:
 
-- `plate`, the default, is the bordered broadcast card: initials, name over handle, the X glyph, and a written timestamp.
-- `timeline` is the home-feed row: name, a check when the account is verified, handle, a relative time like `13h`, and icon counts instead of words.
-- `detail` is the opened post: full name and handle, the word X.com, and a clock time like `4:36 PM · 10/2/26`, plus views when that count is known.
-- `quote` is the nested post: inset, a hairline border, smaller type, no action bar.
+- `detail`, the default, is the opened post: avatar, name and check over handle, body, photos, `10:52 AM · Aug 27, 2026 · 1.2K Views` (views only when that count is known), and the action bar. `--metrics none` hides the bar.
+- `timeline` is the home-feed row: name, check, handle, a relative time like `13h`, and icon counts.
+- `quote` is the nested post: inset, a gray hairline border, smaller type, no action bar.
+- `plate` is the bordered broadcast card: initials, name over handle, the X glyph, and a written timestamp. Its border and initials are near-black by default; `--accent '#1D9BF0'` brings back Twitter blue.
 
-Photos stay off unless you pass `--media`. `--max-height` drops photos before it drops body lines, and it does not clip the header or the footer. The avatar is initials in every view.
+Photos are on by default. `--no-media` turns them off and keeps the media link in the text. `--max-height` shrinks or drops photos before it drops body lines, and it does not clip the header or the footer. The X mark is on for `plate` and off for the other views unless you pass `--mark`. `--border`, `--accent`, `--radius`, `--mark-corner`, and `--mode` style the plate.
+
+The old default, the primitive broadcast plate, is one flag pair away:
+
+```bash
+xpostplate https://x.com/SpaceX/status/[slug] --view plate --no-media                     # near-black border
+xpostplate https://x.com/SpaceX/status/[slug] --view plate --no-media --accent '#1D9BF0'  # the old blue border
+```
+
+`--theme dark` is today's x.com dark mode (true black, gray hairlines).
 
 `--fabricate` invents a post from `--text` with no URL and no network. `--name`, `--handle`, `--text`, `--verified`, `--posted`, and the count flags override that post or a real one. A count you set is real, even when it is zero. A count you leave unset stays hidden when the source never had it.
 
@@ -32,14 +43,17 @@ From source: `git clone https://github.com/jspeaks/xpostplate && cd xpostplate &
 ## Examples
 
 ```bash
-# Broadcast plate. No token. Photos stay off. Redirect, or omit -o on a TTY.
-xpostplate https://x.com/SpaceX/status/[slug] > plate.png
+# The opened post, as x.com shows it, photos included. No token. Redirect, or omit -o on a TTY.
+xpostplate https://x.com/SpaceX/status/[slug] > post.png
 
-# Home-feed row, dark, with the photos.
-xpostplate https://x.com/SpaceX/status/[slug] --view timeline --theme dark --media -o timeline.png
+# Same, text only, dark.
+xpostplate https://x.com/SpaceX/status/[slug] --no-media --theme dark -o post-dark.png
 
-# The opened post.
-xpostplate https://x.com/SpaceX/status/[slug] --view detail --theme dark -o detail.png
+# Home-feed row.
+xpostplate https://x.com/SpaceX/status/[slug] --view timeline -o timeline.png
+
+# The bordered broadcast plate, without photos.
+xpostplate https://x.com/SpaceX/status/[slug] --view plate --no-media -o plate.png
 
 # The same post as a quote.
 xpostplate https://x.com/SpaceX/status/[slug] --view quote -o quote.png
@@ -48,12 +62,12 @@ xpostplate https://x.com/SpaceX/status/[slug] --view quote -o quote.png
 xpostplate --fabricate --name "SpaceX" --handle SpaceX --text "Starship is stacked." --view timeline
 
 # Start from a public post and replace the words.
-xpostplate https://x.com/SpaceX/status/[slug] --text "A line written for the plate."
+xpostplate https://x.com/SpaceX/status/[slug] --text "A line written for the image."
 ```
 
 ## Post JSON (`--json`, `--fixture`, fabricate shape)
 
-`--json` prints this shaped post. `--fixture` accepts the same flat shape, or the X API envelope (`data` + `includes.users`) like `fixtures/sample-post.json`. Counts may be numbers or `null` (hidden).
+`--json` prints this shaped post. `--fixture` accepts the same flat shape, or the X API envelope (`data` + `includes.users`) like `fixtures/sample-post.json`. Counts may be numbers or `null` (hidden). `entities` and `display_text_range` are optional; they let the faithful views show link display URLs, drop the media link, and trim leading reply mentions. Fixtures never fetch photos or avatars.
 
 ```json
 {
@@ -73,9 +87,16 @@ xpostplate https://x.com/SpaceX/status/[slug] --text "A line written for the pla
     "name": "Sample Author",
     "username": "sample_author",
     "profile_image_url": "https://example.invalid/avatar.png",
-    "verified": false
+    "verified": false,
+    "verified_type": null,
+    "profile_image_shape": "circle"
   },
-  "photos": ["https://example.invalid/photo.jpg"]
+  "photos": ["https://example.invalid/photo.jpg"],
+  "entities": {
+    "urls": [{ "url": "https://t.co/abc", "display_url": "example.com/page", "expanded_url": "https://example.com/page" }],
+    "media": [{ "url": "https://t.co/def", "display_url": "pic.x.com/def", "expanded_url": "https://x.com/sample_author/status/1000000000000000001/photo/1" }]
+  },
+  "display_text_range": [0, 10]
 }
 ```
 

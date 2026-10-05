@@ -205,11 +205,12 @@
 
     <h2>Views</h2>
     <ul class="views">
-      <li><span class="flag"><code>--view plate</code></span><span class="desc">bordered broadcast card (default)</span></li>
+      <li><span class="flag"><code>--view detail</code></span><span class="desc">opened post as x.com shows it (default): avatar, check, photos, time · date · views</span></li>
       <li><span class="flag"><code>--view timeline</code></span><span class="desc">home-feed row with relative time</span></li>
-      <li><span class="flag"><code>--view detail</code></span><span class="desc">opened post with clock time and views</span></li>
       <li><span class="flag"><code>--view quote</code></span><span class="desc">nested post, inset, no action bar</span></li>
+      <li><span class="flag"><code>--view plate</code></span><span class="desc">bordered broadcast card (near-black border, X mark, initials)</span></li>
     </ul>
+    <p style="margin-top:12px">No flags means the faithful opened post: light theme, no border, no X mark, real avatar (initials as fallback), verified check from the post data, blue @mentions and links, photos drawn, and counts only when the source has them. The old primitive plate is <code class="nw">--view plate --no-media</code>; add <code class="nw">--accent '#1D9BF0'</code> for its old blue border.</p>
 
     <h2>Flags</h2>
     <ul class="flags">
@@ -218,8 +219,10 @@
       <li><span class="flag"><code>--verified</code><code>--no-verified</code></span><span class="desc">show or hide the check</span></li>
       <li><span class="flag"><code>--posted</code></span><span class="desc">override the timestamp (ISO)</span></li>
       <li><span class="flag"><code>--replies</code><code>--reposts</code><code>--quotes</code><code>--likes</code><code>--bookmarks</code><code>--views</code></span><span class="desc">count overrides (zero counts as real)</span></li>
-      <li><span class="flag"><code>--media</code></span><span class="desc">draw photos under the text</span></li>
-      <li><span class="flag"><code>--theme light|dark</code></span><span class="desc">plate theme (default light)</span></li>
+      <li><span class="flag"><code>--media</code><code>--no-media</code></span><span class="desc">photos under the text (default on); <code>--no-media</code> is text only and keeps the media link</span></li>
+      <li><span class="flag"><code>--theme light|dark</code></span><span class="desc">default light; dark is x.com Lights out (true black)</span></li>
+      <li><span class="flag"><code>--mark</code><code>--no-mark</code></span><span class="desc">X mark; on for plate, off for the other views</span></li>
+      <li><span class="flag"><code>--border</code><code>--accent</code><code>--radius</code></span><span class="desc">plate frame; accent defaults to near-black</span></li>
       <li><span class="flag"><code>--max-height</code></span><span class="desc">drop photos before body lines</span></li>
       <li><span class="flag"><code>-o</code></span><span class="desc">write PNG to a file; omit on a TTY for <code>{handle}-{YYYYMMDD-HHMMSS}.png</code> (<code>x-…</code> if fabricate/missing handle); <code>-</code> = stdout</span></li>
       <li><span class="flag"><code>--json</code></span><span class="desc">print the post JSON, skip the image</span></li>
@@ -229,18 +232,18 @@
 
     <h2>Examples</h2>
     <dl class="examples">
-      <dt>Broadcast plate. No token. Photos stay off.</dt>
-      <dd><code class="cmd"><span class="nw">xpostplate https://x.com/SpaceX/status/[slug]</span> <span class="nw">&gt; plate.png</span></code></dd>
-      <dt>Home-feed row, dark, with photos.</dt>
-      <dd><code class="cmd"><span class="nw">xpostplate https://x.com/SpaceX/status/[slug]</span> <span class="nw">--view timeline</span> <span class="nw">--theme dark</span> <span class="nw">--media</span> <span class="nw">-o timeline.png</span></code></dd>
-      <dt>Opened post.</dt>
-      <dd><code class="cmd"><span class="nw">xpostplate https://x.com/SpaceX/status/[slug]</span> <span class="nw">--view detail</span> <span class="nw">--theme dark</span> <span class="nw">-o detail.png</span></code></dd>
+      <dt>The opened post as x.com shows it, photos included. No token.</dt>
+      <dd><code class="cmd"><span class="nw">xpostplate https://x.com/SpaceX/status/[slug]</span> <span class="nw">&gt; post.png</span></code></dd>
+      <dt>Home-feed row, dark.</dt>
+      <dd><code class="cmd"><span class="nw">xpostplate https://x.com/SpaceX/status/[slug]</span> <span class="nw">--view timeline</span> <span class="nw">--theme dark</span> <span class="nw">-o timeline.png</span></code></dd>
+      <dt>The old broadcast plate: border, X mark, text only.</dt>
+      <dd><code class="cmd"><span class="nw">xpostplate https://x.com/SpaceX/status/[slug]</span> <span class="nw">--view plate</span> <span class="nw">--no-media</span> <span class="nw">-o plate.png</span></code></dd>
       <dt>Quote only.</dt>
       <dd><code class="cmd"><span class="nw">xpostplate https://x.com/SpaceX/status/[slug]</span> <span class="nw">--view quote</span> <span class="nw">-o quote.png</span></code></dd>
       <dt>Invent a post. No URL and no network.</dt>
       <dd><code class="cmd"><span class="nw">xpostplate --fabricate</span> <span class="nw">--name "SpaceX"</span> <span class="nw">--handle SpaceX</span> <span class="nw">--text "Starship is stacked."</span> <span class="nw">--view timeline</span></code></dd>
       <dt>Start from a public post and replace the words.</dt>
-      <dd><code class="cmd"><span class="nw">xpostplate https://x.com/SpaceX/status/[slug]</span> <span class="nw">--text "A line written for the plate."</span></code></dd>
+      <dd><code class="cmd"><span class="nw">xpostplate https://x.com/SpaceX/status/[slug]</span> <span class="nw">--text "A line written for the image."</span></code></dd>
     </dl>
 
 

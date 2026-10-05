@@ -4,9 +4,10 @@ import path from "node:path";
 import { helpText, parseCli } from "../lib/args.js";
 import { compositePhotos, svgToPng } from "../lib/png.js";
 import {
+  avatarUrl,
   bearerTokenFromEnv,
   defaultFixturePath,
-  fetchPhotoBuffers,
+  fetchPhotoBuffer,
   fetchPost,
   fetchPublicPost,
   applyOverrides,
@@ -61,12 +62,39 @@ async function main() {
     return;
   }
 
-  const plate = renderSvg(post, opts);
-  let png = await svgToPng(plate.svg);
-  if (!opts.fixture && plate.photos.length) {
-    const buffers = await fetchPhotoBuffers(plate.photos.map((slot) => slot.url));
-    png = await compositePhotos(png, plate.photos, buffers);
+  // Fetch images before layout so a photo or avatar that fails to load drops out
+  // cleanly (with a note on stderr) instead of leaving a hole or failing the render.
+  const network = !opts.fixture && !opts.fabricate;
+  const photoBuffers = new Map();
+  let drawPost = post;
+  if (network && opts.showMedia && Array.isArray(post.photos) && post.photos.length) {
+    const wanted = post.photos.slice(0, 4);
+    const settled = await Promise.allSettled(wanted.map((url) => fetchPhotoBuffer(url)));
+    settled.forEach((result, i) => {
+      if (result.status === "fulfilled") photoBuffers.set(wanted[i], result.value);
+      else process.stderr.write(`skipping a photo: ${result.reason?.message || result.reason}\n`);
+    });
+    drawPost = { ...post, photos: wanted.filter((url) => photoBuffers.has(url)) };
   }
+  let avatarBuffer = null;
+  const avatarSource = network && opts.view !== "plate" ? avatarUrl(post) : null;
+  if (avatarSource) {
+    try {
+      avatarBuffer = await fetchPhotoBuffer(avatarSource);
+    } catch (err) {
+      process.stderr.write(`avatar unavailable, using initials: ${err.message}\n`);
+    }
+  }
+
+  const plate = renderSvg(drawPost, opts, { avatar: Boolean(avatarBuffer) });
+  let png = await svgToPng(plate.svg);
+  const slots = plate.photos.filter((slot) => photoBuffers.has(slot.url));
+  const buffers = slots.map((slot) => photoBuffers.get(slot.url));
+  if (plate.avatar && avatarBuffer) {
+    slots.push(plate.avatar);
+    buffers.push(avatarBuffer);
+  }
+  if (slots.length) png = await compositePhotos(png, slots, buffers);
   const destination = opts.output;
 
   // No -o: on a TTY, write {handle}-{YYYYMMDD-HHMMSS}.png in cwd instead of binary to the terminal.

@@ -1,7 +1,7 @@
 {
   "name": "xpostplate",
-  "version": "0.9.24",
-  "description": "Render or fabricate an X post as a PNG: a broadcast plate, a timeline row, an opened post, or a quote.",
+  "version": "0.9.25",
+  "description": "Render or fabricate an X post as a PNG that looks like x.com: the opened post by default, or a timeline row, a quote, or a bordered broadcast plate.",
   "type": "module",
   "bin": {
     "xpostplate": "bin/xpostplate.js"
@@ -17,7 +17,8 @@
     "node": ">=18"
   },
   "scripts": {
-    "prepublishOnly": "node --check bin/xpostplate.js && node --input-type=module -e \"import {accessSync} from 'node:fs'; for (const f of ['bin/xpostplate.js','lib/args.js','lib/png.js','lib/post.js','lib/svg.js','assets/x-logo.svg','fixtures/sample-post.json','skills/xpostplate/SKILL.md']) accessSync(f)\""
+    "prepublishOnly": "node --check bin/xpostplate.js && node --input-type=module -e \"import {accessSync} from 'node:fs'; for (const f of ['bin/xpostplate.js','lib/args.js','lib/fonts.js','lib/png.js','lib/post.js','lib/svg.js','assets/x-logo.svg','fixtures/sample-post.json','skills/xpostplate/SKILL.md']) accessSync(f)\"",
+    "test": "node --test test/"
   },
   "repository": {
     "type": "git",

@@ -1,6 +1,6 @@
 ---
 name: xpostplate
-description: Render or fabricate an X/Twitter post as a PNG (broadcast plate, timeline row, opened post, or quote). Trigger when the user wants a post image, PNG of a tweet/X post, fabricate a fake post image, or pipe a post card in a shell/agent workflow.
+description: Render or fabricate an X/Twitter post as a PNG that looks like x.com (opened post by default; also timeline row, quote, or bordered broadcast plate). Trigger when the user wants a post image, PNG of a tweet/X post, fabricate a fake post image, or pipe a post card in a shell/agent workflow.
 ---
 
 # xpostplate
@@ -29,6 +29,9 @@ This skill ships at `skills/xpostplate/` in the repo and in the npm package (`fi
 
 ## Defaults
 
+- Bare `xpostplate <url>` = the opened post as x.com shows it (`--view detail`, photos on, light theme, no border, no X mark): real avatar (initials fallback), verified check from post data, blue @mentions/links, `time · date · views`, action bar with known counts
+- The media `t.co` link is dropped from the body when its photo is drawn
+- Old primitive plate: `--view plate --no-media` (near-black border + X mark + initials); add `--accent '#1D9BF0'` for the old blue border
 - PNG on stdout when piped/redirected; on a TTY with no `-o`, writes `{handle}-{YYYYMMDD-HHMMSS}.png` in cwd (`x-…` if fabricate/missing handle)
 - Prefer `-o path.png` when you need a specific path
 - Prefer `--json` when you only need post data
@@ -39,9 +42,11 @@ This skill ships at `skills/xpostplate/` in the repo and in the npm package (`fi
 
 | Flag | Notes |
 |------|--------|
-| `--view plate\|timeline\|detail\|quote` | Shape. Default `plate` |
+| `--view detail\|timeline\|quote\|plate` | Shape. Default `detail` (opened post) |
 | `--fabricate` | Offline invent; requires `--text` |
-| `--media` | Draw photos under the text (off by default) |
+| `--media` / `--no-media` | Photos under the text, on by default; `--no-media` = text only, media link kept |
+| `--mark` / `--no-mark` | X mark; on for plate, off for other views |
+| `--border`, `--accent`, `--radius`, `--mark-corner` | Plate frame; accent defaults to near-black |
 | `--theme light\|dark` | Default `light` |
 | `--name`, `--handle`, `--text` | Overrides; `--text` required with `--fabricate` |
 | `--replies`, `--reposts`, `--quotes`, `--likes`, `--bookmarks`, `--views` | Count overrides; a set zero is real |
@@ -54,8 +59,11 @@ Full list: `xpostplate --help`.
 ## Patterns
 
 ```bash
-# Pipe PNG
-xpostplate https://x.com/SpaceX/status/[slug] > plate.png
+# Pipe PNG (faithful opened post, photos included)
+xpostplate https://x.com/SpaceX/status/[slug] > post.png
+
+# Old broadcast plate, text only
+xpostplate https://x.com/SpaceX/status/[slug] --view plate --no-media -o plate.png
 
 # Write a file
 xpostplate https://x.com/SpaceX/status/[slug] --view timeline --theme dark -o timeline.png

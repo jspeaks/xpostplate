@@ -10,9 +10,10 @@ flowchart TD
   source -->|--fabricate| made[Build post from --text]
   fetch --> overrides[Apply name, text, time, and counts]
   fixture --> overrides
-  made --> view[Choose plate, timeline, detail, or quote]
+  made --> view[Choose detail default, timeline, quote, or plate]
   overrides --> view
-  view --> svg[Render SVG]
-  svg --> magick[ImageMagick to PNG]
+  view --> images[Fetch photos and avatar, skip any that fail]
+  images --> svg[Render SVG]
+  svg --> magick[ImageMagick to PNG, composite photos and avatar]
   magick --> out[Stdout, -o file, or TTY auto-file]
 ```
