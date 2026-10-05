@@ -1,6 +1,6 @@
 {
   "name": "xpostplate",
-  "version": "0.9.9",
+  "version": "0.9.10",
   "description": "Render or fabricate an X post as a PNG: a broadcast plate, a timeline row, an opened post, or a quote.",
   "type": "module",
   "bin": {
