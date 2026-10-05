@@ -28,7 +28,7 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      padding: 28px 32px 24px;
+      padding: 28px 32px 8px;
     }
     .brand { height: 32px; margin: 0; display: flex; align-items: center; justify-content: flex-start; flex-wrap: nowrap; gap: 6px; }
     .wordmark { display: block; height: 32px; width: auto; }
@@ -56,7 +56,7 @@
       text-transform: uppercase;
     }
     .hero {
-      flex: 1;
+      flex: 0 1 auto;
       display: grid;
       grid-template-columns: minmax(460px, 0.86fr) minmax(420px, 1.14fr);
       gap: 32px;
@@ -121,7 +121,7 @@
       display: block;
       width: 100%;
       height: auto;
-      max-height: calc(100vh - 150px);
+      max-height: calc(100vh - 120px);
       object-fit: contain;
       border-radius: 16px;
       border: 1px solid var(--line);
@@ -136,7 +136,7 @@
     .more {
       max-width: 720px;
       margin: 0 auto;
-      padding: 28px 32px 56px;
+      padding: 16px 32px 48px;
     }
     .rule { display: block; width: min(1120px, calc(100% - 64px)); height: 8px; margin: 0 auto; }
     .more h2 {
@@ -210,7 +210,7 @@
       <span class="chip">CLI</span>
       <span class="chip">agentic</span>
       <span class="chip">chainable</span>
-      <span class="ver">v0.9.19</span>
+      <span class="ver">v0.9.20</span>
     </div>
     <div class="hero">
       <div class="pitch">
