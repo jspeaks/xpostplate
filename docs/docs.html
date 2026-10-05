@@ -29,7 +29,7 @@
     }
 
     .wrap {
-      max-width: calc(720px + 2 * var(--gutter));
+      max-width: calc(960px + 2 * var(--gutter));
       margin: 0 auto;
       padding: 24px var(--gutter) 8px;
     }
@@ -71,46 +71,83 @@
       line-height: 1.5;
       max-width: 40em;
     }
+    /* Flag | description in two aligned columns. Both lists share one flag-column width. */
     ul.flags, ul.views {
       margin: 0;
       padding: 0;
       list-style: none;
+      border-bottom: 1px solid var(--line);
     }
     ul.flags li, ul.views li {
+      display: grid;
+      grid-template-columns: 16em minmax(0, 1fr);
+      column-gap: 1.5em;
+      align-items: baseline;
       margin: 0;
-      padding: 10px 0;
+      padding: 9px 0;
       border-top: 1px solid var(--line);
       font-size: 15px;
       line-height: 1.4;
     }
-    ul.flags li:last-child, ul.views li:last-child {
-      border-bottom: 1px solid var(--line);
-    }
-    .sep {
-      margin: 0 0.55em;
-      color: var(--line);
-    }
-    pre {
-      margin: 12px 0 0;
-      padding: 12px 14px;
+    .flag { display: flex; flex-wrap: wrap; gap: 2px 0.6em; min-width: 0; }
+    .desc { color: var(--muted); min-width: 0; }
+    .desc code { color: var(--text); }
+    /* Install: one panel, manager | command. */
+    .install {
+      margin: 0;
+      padding: 6px 14px;
+      list-style: none;
       background: var(--plate);
       border: 1px solid var(--line);
       border-radius: 10px;
-      overflow-x: auto;
+    }
+    .install li {
+      display: grid;
+      grid-template-columns: 6.5em minmax(0, 1fr);
+      column-gap: 1.25em;
+      align-items: baseline;
+      padding: 6px 0;
+    }
+    .install li + li { border-top: 1px solid rgba(56, 68, 77, 0.6); }
+    .install .pm { color: var(--muted); font-size: 13px; letter-spacing: 0.02em; }
+    .install code { font-size: 13px; white-space: normal; overflow-wrap: anywhere; }
+    .install code .nw { white-space: nowrap; }
+    /* Command blocks wrap instead of scrolling sideways. */
+    pre, .cmd {
+      margin: 0;
+      padding: 9px 12px;
+      background: var(--plate);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      overflow: visible;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
       font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
       font-size: 13px;
       line-height: 1.45;
       color: var(--text);
     }
+    .cmd { display: block; width: fit-content; max-width: 100%; white-space: normal; }
+    .cmd .nw { white-space: nowrap; }
+    .examples { margin: 0; }
+    .examples dt {
+      margin: 16px 0 6px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .examples dt:first-child { margin-top: 0; }
+    .examples dd { margin: 0; }
+    .req { margin-top: 0; }
     code {
       font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
       font-size: 0.92em;
       color: var(--text);
     }
     p code, li code { white-space: nowrap; }
+    .cmd code, pre code { white-space: inherit; font-size: inherit; }
 
     .site-foot {
-      max-width: calc(720px + 2 * var(--gutter));
+      max-width: calc(960px + 2 * var(--gutter));
       margin: 0 auto;
       padding: 24px var(--gutter) 40px;
       color: var(--muted);
@@ -128,9 +165,17 @@
       margin: 0 0.55em;
       color: var(--line);
     }
+    @media (max-width: 560px) {
+      /* Phone: stack the flag over its description so neither column gets crushed. */
+      ul.flags, ul.views { display: block; }
+      ul.flags li, ul.views li { display: block; }
+      ul.flags .desc, ul.views .desc { display: block; margin-top: 2px; }
+      .install li { grid-template-columns: 5em minmax(0, 1fr); column-gap: 0.75em; }
+      .install code, .install .pm { font-size: 12px; }
+    }
     @media (max-width: 480px) {
       p, ul.flags li, ul.views li { font-size: 15px; }
-      pre { font-size: 12px; padding: 10px 12px; }
+      pre, .cmd { font-size: 12px; padding: 9px 11px; }
     }
   </style>
 </head>
@@ -148,57 +193,63 @@
     <p class="lede">A public X post, or one you fabricate and override, drawn as a PNG.</p>
 
     <h2>Install</h2>
-    <p>ImageMagick <code>magick</code> is required and must be on <code>PATH</code>. Node 18 or newer.</p>
-    <pre>node bin/xpostplate.js --help</pre>
-    <p>When published: <code>npm install -g xpostplate</code>. Homebrew is head-only via <code>packaging/homebrew/xpostplate.rb</code>.</p>
+    <ul class="install">
+      <li><span class="pm">npm</span><code><span class="nw">npm i -g xpostplate</span></code></li>
+      <li><span class="pm">Homebrew</span><code><span class="nw">brew install jspeaks/tap/xpostplate</span></code></li>
+      <li><span class="pm">pnpm</span><code><span class="nw">pnpm add -g xpostplate</span></code></li>
+      <li><span class="pm">Bun</span><code><span class="nw">bun add -g xpostplate</span></code></li>
+      <li><span class="pm">npx</span><code><span class="nw">npx xpostplate --help</span></code></li>
+      <li><span class="pm">Source</span><code><span class="nw">git clone</span> https://github.com/jspeaks/xpostplate <span class="nw">&amp;&amp;</span> <span class="nw">cd xpostplate</span> <span class="nw">&amp;&amp;</span> <span class="nw">npm link</span></code></li>
+    </ul>
+    <p style="margin-top:12px">Then run <code>xpostplate --help</code>. <code>npx</code> runs it once without a global install.</p>
 
     <h2>Views</h2>
     <ul class="views">
-      <li><code>--view plate</code><span class="sep" aria-hidden="true">·</span> bordered broadcast card (default)</li>
-      <li><code>--view timeline</code><span class="sep" aria-hidden="true">·</span> home-feed row with relative time</li>
-      <li><code>--view detail</code><span class="sep" aria-hidden="true">·</span> opened post with clock time and views</li>
-      <li><code>--view quote</code><span class="sep" aria-hidden="true">·</span> nested post, inset, no action bar</li>
+      <li><span class="flag"><code>--view plate</code></span><span class="desc">bordered broadcast card (default)</span></li>
+      <li><span class="flag"><code>--view timeline</code></span><span class="desc">home-feed row with relative time</span></li>
+      <li><span class="flag"><code>--view detail</code></span><span class="desc">opened post with clock time and views</span></li>
+      <li><span class="flag"><code>--view quote</code></span><span class="desc">nested post, inset, no action bar</span></li>
     </ul>
 
     <h2>Flags</h2>
     <ul class="flags">
-      <li><code>--fabricate</code><span class="sep" aria-hidden="true">·</span> invent a post from <code>--text</code>; no URL, no network</li>
-      <li><code>--name</code> <code>--handle</code> <code>--text</code><span class="sep" aria-hidden="true">·</span> override identity and body</li>
-      <li><code>--verified</code> / <code>--no-verified</code><span class="sep" aria-hidden="true">·</span> show or hide the check</li>
-      <li><code>--posted</code><span class="sep" aria-hidden="true">·</span> override the timestamp (ISO)</li>
-      <li><code>--replies</code> <code>--reposts</code> <code>--quotes</code> <code>--likes</code> <code>--bookmarks</code> <code>--views</code><span class="sep" aria-hidden="true">·</span> count overrides (zero counts as real)</li>
-      <li><code>--media</code><span class="sep" aria-hidden="true">·</span> draw photos under the text</li>
-      <li><code>--theme light|dark</code><span class="sep" aria-hidden="true">·</span> plate theme (default light)</li>
-      <li><code>--max-height</code><span class="sep" aria-hidden="true">·</span> drop photos before body lines</li>
-      <li><code>-o</code><span class="sep" aria-hidden="true">·</span> write PNG to a file (default stdout)</li>
-      <li><code>--json</code><span class="sep" aria-hidden="true">·</span> print the post JSON, skip the image</li>
-      <li><code>--fixture</code><span class="sep" aria-hidden="true">·</span> render local JSON instead of fetching</li>
+      <li><span class="flag"><code>--fabricate</code></span><span class="desc">invent a post from <code>--text</code>; no URL, no network</span></li>
+      <li><span class="flag"><code>--name</code><code>--handle</code><code>--text</code></span><span class="desc">override identity and body</span></li>
+      <li><span class="flag"><code>--verified</code><code>--no-verified</code></span><span class="desc">show or hide the check</span></li>
+      <li><span class="flag"><code>--posted</code></span><span class="desc">override the timestamp (ISO)</span></li>
+      <li><span class="flag"><code>--replies</code><code>--reposts</code><code>--quotes</code><code>--likes</code><code>--bookmarks</code><code>--views</code></span><span class="desc">count overrides (zero counts as real)</span></li>
+      <li><span class="flag"><code>--media</code></span><span class="desc">draw photos under the text</span></li>
+      <li><span class="flag"><code>--theme light|dark</code></span><span class="desc">plate theme (default light)</span></li>
+      <li><span class="flag"><code>--max-height</code></span><span class="desc">drop photos before body lines</span></li>
+      <li><span class="flag"><code>-o</code></span><span class="desc">write PNG to a file (default stdout)</span></li>
+      <li><span class="flag"><code>--json</code></span><span class="desc">print the post JSON, skip the image</span></li>
+      <li><span class="flag"><code>--fixture</code></span><span class="desc">render local JSON instead of fetching</span></li>
     </ul>
-    <p>Leave <code>X_BEARER_TOKEN</code> unset and a public post still loads from X's syndication feed. Counts that feed does not carry stay off the image. <code>xpostplate --help</code> lists every flag.</p>
+    <p style="margin-top:12px">Leave <code>X_BEARER_TOKEN</code> unset and a public post still loads from X's syndication feed. Counts that feed does not carry stay off the image. <code>xpostplate --help</code> lists every flag.</p>
 
     <h2>Examples</h2>
-    <pre># Broadcast plate. No token. Photos stay off.
-xpostplate https://x.com/SpaceX/status/21…47 &gt; plate.png
+    <dl class="examples">
+      <dt>Broadcast plate. No token. Photos stay off.</dt>
+      <dd><code class="cmd"><span class="nw">xpostplate https://x.com/SpaceX/status/[slug]</span> <span class="nw">&gt; plate.png</span></code></dd>
+      <dt>Home-feed row, dark, with photos.</dt>
+      <dd><code class="cmd"><span class="nw">xpostplate https://x.com/SpaceX/status/[slug]</span> <span class="nw">--view timeline</span> <span class="nw">--theme dark</span> <span class="nw">--media</span> <span class="nw">-o timeline.png</span></code></dd>
+      <dt>Opened post.</dt>
+      <dd><code class="cmd"><span class="nw">xpostplate https://x.com/SpaceX/status/[slug]</span> <span class="nw">--view detail</span> <span class="nw">--theme dark</span> <span class="nw">-o detail.png</span></code></dd>
+      <dt>Quote only.</dt>
+      <dd><code class="cmd"><span class="nw">xpostplate https://x.com/SpaceX/status/[slug]</span> <span class="nw">--view quote</span> <span class="nw">-o quote.png</span></code></dd>
+      <dt>Invent a post. No URL and no network.</dt>
+      <dd><code class="cmd"><span class="nw">xpostplate --fabricate</span> <span class="nw">--name "SpaceX"</span> <span class="nw">--handle SpaceX</span> <span class="nw">--text "Starship is stacked."</span> <span class="nw">--view timeline</span></code></dd>
+      <dt>Start from a public post and replace the words.</dt>
+      <dd><code class="cmd"><span class="nw">xpostplate https://x.com/SpaceX/status/[slug]</span> <span class="nw">--text "A line written for the plate."</span></code></dd>
+    </dl>
 
-# Home-feed row, dark, with photos.
-xpostplate https://x.com/SpaceX/status/21…47 --view timeline --theme dark --media -o timeline.png
-
-# Opened post.
-xpostplate https://x.com/SpaceX/status/21…47 --view detail --theme dark -o detail.png
-
-# Quote only.
-xpostplate https://x.com/SpaceX/status/21…47 --view quote -o quote.png
-
-# Invent a post. No URL and no network.
-xpostplate --fabricate --name "SpaceX" --handle SpaceX --text "Starship is stacked." --view timeline
-
-# Start from a public post and replace the words.
-xpostplate https://x.com/SpaceX/status/21…47 --text "A line written for the plate."</pre>
+    <h2>Requirements</h2>
+    <p class="req">Homebrew pulls in Node and ImageMagick for you. With npm, pnpm, or Bun you need Node 18 or newer, and ImageMagick (<code>magick</code>) on <code>PATH</code>: <code>brew install imagemagick</code> or <code>apt install imagemagick</code>.</p>
   </div>
   <footer class="site-foot">
     <a href="index.html">xpostplate</a>
     <span class="dot" aria-hidden="true">·</span>
-    <a href="fab.html">fab</a>
+    <a href="fab.html">FAB</a>
     <span class="dot" aria-hidden="true">·</span>
     <a href="docs.html">docs</a>
     <span class="dot" aria-hidden="true">·</span>

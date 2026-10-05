@@ -91,6 +91,16 @@
       color: var(--text);
     }
     .day li:last-child { margin-bottom: 0; }
+    /* Subjects read as plain text; the commit link shows only on hover or focus. */
+    .day li a {
+      color: inherit;
+      text-decoration: none;
+    }
+    .day li a:hover, .day li a:focus-visible {
+      color: var(--accent);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
 
     .site-foot {
       max-width: calc(720px + 2 * var(--gutter));
@@ -114,7 +124,8 @@
     @media (max-width: 480px) {
       .day { padding-left: 16px; }
       .day li { font-size: 14.5px; }
-    </style>
+    }
+  </style>
 </head>
 <body>
   <div class="wrap">
@@ -128,69 +139,70 @@
     </div>
     <h1>Timeline</h1>
     <p class="lede">Release notes from git history, newest first.</p>
-    <div class="day" id="v0.9.22">
+    <div class="day" id="v0.9.23">
       <time datetime="2026-10-05">2026-10-05</time>
       <ul>
-        <li>docs: responsive layout for phone tablet desktop</li>
-        <li>docs: add fab, docs, and timeline pages with footer links</li>
-        <li>docs: cut excess space below the hero image</li>
-        <li>docs: show faint version on the top line</li>
-        <li>docs: rebalance feature-list vertical spacing</li>
-        <li>docs: separate flag and description</li>
-        <li>docs: clarify view lines and what a plate is</li>
-        <li>feat: ship Agent Skills SKILL.md with the CLI</li>
+        <li>docs: wide hero, FAB matrix, package-manager install, aligned flags</li>
+        <li><a href="https://github.com/jspeaks/xpostplate/commit/b30a451d73516a91c1a2d696254c8e24bc2c1029">docs: responsive layout for phone tablet desktop</a></li>
+        <li><a href="https://github.com/jspeaks/xpostplate/commit/77a2435d39f3186a3d6068dff4e35c83f239623a">docs: add fab, docs, and timeline pages with footer links</a></li>
+        <li><a href="https://github.com/jspeaks/xpostplate/commit/2fbeb82233617a2d7a168b8dcefbc8623d4872f0">docs: cut excess space below the hero image</a></li>
+        <li><a href="https://github.com/jspeaks/xpostplate/commit/d6652fa8d51765013c7b8bad00ada61ee40cb3d9">docs: show faint version on the top line</a></li>
+        <li><a href="https://github.com/jspeaks/xpostplate/commit/266790e27eb6bac32a8062bf4bc39949c39e7d3f">docs: rebalance feature-list vertical spacing</a></li>
+        <li><a href="https://github.com/jspeaks/xpostplate/commit/35cc18f7a7f2d6b4354c4615b66fd497f7dcf395">docs: separate flag and description</a></li>
+        <li><a href="https://github.com/jspeaks/xpostplate/commit/9b96ffc7b2803bd5a4a421598b3ba98047e4ba65">docs: clarify view lines and what a plate is</a></li>
+        <li><a href="https://github.com/jspeaks/xpostplate/commit/71b7686bce4573c2c0e5df0a2e608a0c4097b0f5">feat: ship Agent Skills SKILL.md with the CLI</a></li>
       </ul>
     </div>
     <div class="day">
       <time datetime="2026-10-04">2026-10-04</time>
       <ul>
-        <li>docs: call it a CLI tool</li>
-        <li>docs: keep the chips on one line</li>
-        <li>docs: make the chips separate rectangles</li>
-        <li>docs: say how you use it</li>
-        <li>docs: show the command in the pitch</li>
-        <li>docs: say what the page draws</li>
-        <li>docs: shorten the feature lines</li>
-        <li>docs: sit the chips against the wordmark</li>
-        <li>docs: tuck the chips against the name</li>
-        <li>docs: use the X logo in the headline</li>
-        <li>docs: drop public from the page headline</li>
-        <li>docs: mark the page as a CLI</li>
-        <li>docs: drop the no-browser line from the page</li>
-        <li>docs: draw the X logo in the page header</li>
+        <li><a href="https://github.com/jspeaks/xpostplate/commit/9f967305b44a541b36addddcece1dd20022a7021">docs: call it a CLI tool</a></li>
+        <li><a href="https://github.com/jspeaks/xpostplate/commit/8de9f3d0302a69586137d2010f52c261954f8719">docs: keep the chips on one line</a></li>
+        <li><a href="https://github.com/jspeaks/xpostplate/commit/1a0b39e87bca210ede90dcffae223708c5dc3903">docs: make the chips separate rectangles</a></li>
+        <li><a href="https://github.com/jspeaks/xpostplate/commit/34830228b340c516ba17561864d6aa0b9ecbf099">docs: say how you use it</a></li>
+        <li><a href="https://github.com/jspeaks/xpostplate/commit/29af3e9efd9b42c34db947090eb6bd6f4435a7ac">docs: show the command in the pitch</a></li>
+        <li><a href="https://github.com/jspeaks/xpostplate/commit/cd8c377e31796beeabbd12be6c1c268e1fe7041a">docs: say what the page draws</a></li>
+        <li><a href="https://github.com/jspeaks/xpostplate/commit/67d83860f31dda4b247b4bdf49a15b58f4f6ebe2">docs: shorten the feature lines</a></li>
+        <li><a href="https://github.com/jspeaks/xpostplate/commit/1170b6bd4721417b9c55390fad5dff19732aedd2">docs: sit the chips against the wordmark</a></li>
+        <li><a href="https://github.com/jspeaks/xpostplate/commit/06b836547ee896042b97031c633236eb0e8c5187">docs: tuck the chips against the name</a></li>
+        <li><a href="https://github.com/jspeaks/xpostplate/commit/da9e2627d97eb22c00a6a56cd1dc5d6e310c5eeb">docs: use the X logo in the headline</a></li>
+        <li><a href="https://github.com/jspeaks/xpostplate/commit/c6c7e4378d5e39f94893c1ec27b4ce0ab318b86c">docs: drop public from the page headline</a></li>
+        <li><a href="https://github.com/jspeaks/xpostplate/commit/5ac99df969c70628b2173ce543532f76a977c6c9">docs: mark the page as a CLI</a></li>
+        <li><a href="https://github.com/jspeaks/xpostplate/commit/ec42a056529cb31dd85b37a9052302fd13a6cb1d">docs: drop the no-browser line from the page</a></li>
+        <li><a href="https://github.com/jspeaks/xpostplate/commit/8f5a1834e55e4358d14301cceb40f140d3d7d259">docs: draw the X logo in the page header</a></li>
       </ul>
     </div>
     <div class="day">
       <time datetime="2026-10-03">2026-10-03</time>
       <ul>
-        <li>docs: add an MIT license</li>
-        <li>feat: prepare npm and Homebrew installs</li>
-        <li>feat: add a landing page with the plate above the fold</li>
-        <li>docs: orient the architecture diagram vertically</li>
-        <li>docs: add the FAB and an architecture diagram</li>
-        <li>feat: fabricate a post or override its fields</li>
-        <li>feat: add timeline, detail, and quote views</li>
+        <li><a href="https://github.com/jspeaks/xpostplate/commit/60d591b56b7ec36704e0fe383b0288f8bc57a5dd">docs: add an MIT license</a></li>
+        <li><a href="https://github.com/jspeaks/xpostplate/commit/a0f5710d777bc9758e87d3250fe669a101682d63">feat: prepare npm and Homebrew installs</a></li>
+        <li><a href="https://github.com/jspeaks/xpostplate/commit/44f68cdb2058e22ac6b0ed320d0f679a82a1c660">feat: add a landing page with the plate above the fold</a></li>
+        <li><a href="https://github.com/jspeaks/xpostplate/commit/ed8c16d35015120c61fb74e95d42420a1ef0810e">docs: orient the architecture diagram vertically</a></li>
+        <li><a href="https://github.com/jspeaks/xpostplate/commit/d11f8085452b5157dcc8f61371c77d7b75995efc">docs: add the FAB and an architecture diagram</a></li>
+        <li><a href="https://github.com/jspeaks/xpostplate/commit/690c8c408c84ef707f6c183694a6cd920e7a44e1">feat: fabricate a post or override its fields</a></li>
+        <li><a href="https://github.com/jspeaks/xpostplate/commit/e7fd7f8d11c178676f776e527a5e0cc3808f889e">feat: add timeline, detail, and quote views</a></li>
       </ul>
     </div>
     <div class="day">
       <time datetime="2026-10-02">2026-10-02</time>
       <ul>
-        <li>feat: draw post photos under the text</li>
-        <li>docs: shorten example status ids</li>
-        <li>docs: use a SpaceX post in the examples</li>
-        <li>docs: show usage concepts in the examples</li>
-        <li>feat: render a public post with no bearer token</li>
-        <li>fix: inset the X mark so it clears the corner</li>
-        <li>feat: draw the official X mark in the corner</li>
-        <li>feat: choose the footer and cap the plate height</li>
-        <li>feat: render an X post as a plate</li>
+        <li><a href="https://github.com/jspeaks/xpostplate/commit/47c92a5e36ea23b934de583096d8610aad9598f4">feat: draw post photos under the text</a></li>
+        <li><a href="https://github.com/jspeaks/xpostplate/commit/65e9ed0b6030f6e021ae24ae6e93a4ce8f3b4194">docs: shorten example status ids</a></li>
+        <li><a href="https://github.com/jspeaks/xpostplate/commit/f51a2ae16c8ba0c9b5df8a996535b91e4a96014b">docs: use a SpaceX post in the examples</a></li>
+        <li><a href="https://github.com/jspeaks/xpostplate/commit/0fa8f7b103752bea50d5cf6c414ec13a7c93e033">docs: show usage concepts in the examples</a></li>
+        <li><a href="https://github.com/jspeaks/xpostplate/commit/0d9dfe8caabb027b5d981d8a650c746e2a807d03">feat: render a public post with no bearer token</a></li>
+        <li><a href="https://github.com/jspeaks/xpostplate/commit/c7269f4e5adb15bc938d77d1a45903502f740aa9">fix: inset the X mark so it clears the corner</a></li>
+        <li><a href="https://github.com/jspeaks/xpostplate/commit/e488e291164c6d84df747d790e0bc26ed3ecbd1f">feat: draw the official X mark in the corner</a></li>
+        <li><a href="https://github.com/jspeaks/xpostplate/commit/0adf1215d2b784b2e3249fcc1ab2ee8863a1d1bd">feat: choose the footer and cap the plate height</a></li>
+        <li><a href="https://github.com/jspeaks/xpostplate/commit/bbb1372ea72568fbd32762573b5bb4447099ce32">feat: render an X post as a plate</a></li>
       </ul>
     </div>
   </div>
   <footer class="site-foot">
     <a href="index.html">xpostplate</a>
     <span class="dot" aria-hidden="true">·</span>
-    <a href="fab.html">fab</a>
+    <a href="fab.html">FAB</a>
     <span class="dot" aria-hidden="true">·</span>
     <a href="docs.html">docs</a>
     <span class="dot" aria-hidden="true">·</span>

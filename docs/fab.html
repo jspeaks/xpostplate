@@ -29,7 +29,7 @@
     }
 
     .wrap {
-      max-width: calc(720px + 2 * var(--gutter));
+      max-width: calc(1120px + 2 * var(--gutter));
       margin: 0 auto;
       padding: 24px var(--gutter) 8px;
     }
@@ -71,19 +71,41 @@
       line-height: 1.45;
       max-width: 40em;
     }
-    ul.points {
-      margin: 0;
-      padding: 0;
-      list-style: none;
-    }
-    ul.points li {
-      margin: 0;
-      padding: 10px 0;
-      border-top: 1px solid var(--line);
-      font-size: 15.5px;
+    /* FAB matrix: Feature | Advantage | Benefit, one row per feature. */
+    .matrix {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      margin-top: 22px;
+      font-size: 15px;
       line-height: 1.45;
     }
-    ul.points li:last-child { border-bottom: 1px solid var(--line); }
+    .matrix col.f { width: 34%; }
+    .matrix col.a { width: 33%; }
+    .matrix col.b { width: 33%; }
+    .matrix th {
+      text-align: left;
+      padding: 0 16px 10px 0;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border-bottom: 1px solid var(--line);
+    }
+    .matrix th .k { color: var(--text); }
+    .matrix td {
+      padding: 11px 16px 11px 0;
+      vertical-align: top;
+      border-bottom: 1px solid var(--line);
+      overflow-wrap: break-word;
+    }
+    .matrix td:first-child { color: var(--text); }
+    .matrix td + td { color: var(--muted); }
+    .matrix td code { white-space: normal; }
+    .matrix td code.nw { white-space: nowrap; }
+    .foot-note { margin-top: 16px; color: var(--muted); font-size: 14px; }
+    .foot-note a { color: var(--muted); }
     code {
       font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
       font-size: 0.92em;
@@ -92,7 +114,7 @@
     p code, li code { white-space: nowrap; }
 
     .site-foot {
-      max-width: calc(720px + 2 * var(--gutter));
+      max-width: calc(1120px + 2 * var(--gutter));
       margin: 0 auto;
       padding: 24px var(--gutter) 40px;
       color: var(--muted);
@@ -110,8 +132,26 @@
       margin: 0 0.55em;
       color: var(--line);
     }
+    /* Phone: each row becomes a small F / A / B card. */
+    @media (max-width: 640px) {
+      .matrix, .matrix tbody, .matrix tr, .matrix td { display: block; width: 100%; }
+      .matrix thead, .matrix colgroup { display: none; }
+      .matrix tr { padding: 10px 0; border-bottom: 1px solid var(--line); }
+      .matrix tr:first-child { border-top: 1px solid var(--line); }
+      .matrix td { border: 0; padding: 2px 0 2px 2.6em; position: relative; }
+      .matrix td::before {
+        content: attr(data-k);
+        position: absolute;
+        left: 0;
+        top: 4px;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        color: var(--muted);
+      }
+    }
     @media (max-width: 480px) {
-      p, ul.points li { font-size: 15px; }
+      p, .matrix { font-size: 15px; }
     }
   </style>
 </head>
@@ -126,42 +166,29 @@
       </svg></a>
     </div>
     <h1>FAB</h1>
-    <p class="lede">Features, advantages, and benefits of xpostplate.</p>
+    <p class="lede">Features, advantages, and benefits of xpostplate. One row per feature.</p>
 
-    <h2>Features</h2>
-    <ul class="points">
-      <li>Turns an X post URL or status id into a PNG.</li>
-      <li>Four views with <code>--view</code>: <code>plate</code> (the default bordered card), <code>timeline</code> (a home-feed row), <code>detail</code> (the opened post), and <code>quote</code> (a nested post).</li>
-      <li>Light or dark with <code>--theme</code>. Photos drawn under the text with <code>--media</code>.</li>
-      <li>A public post loads with no bearer token, from X's syndication feed.</li>
-      <li><code>--fabricate</code> invents a post from <code>--text</code> with no URL and no network.</li>
-      <li><code>--name</code>, <code>--handle</code>, <code>--text</code>, <code>--verified</code>, <code>--posted</code>, and the count flags override a fabricated post or a real one.</li>
-      <li>PNG bytes go to stdout unless <code>-o</code> names a file. <code>--json</code> prints the post and skips the image.</li>
-      <li>Ships an Agent Skills <code>SKILL.md</code> with the CLI.</li>
-    </ul>
-
-    <h2>Advantages</h2>
-    <ul class="points">
-      <li>Drawn from the post's data, not cropped from a screenshot, so every image has the same clean layout and type.</li>
-      <li>No API key for a public post. Leave <code>X_BEARER_TOKEN</code> unset and it still loads.</li>
-      <li>Honest counts. A count the source does not carry stays off the image instead of becoming a fake zero. A count you pass, including zero, is shown.</li>
-      <li>Built for pipes. PNG on stdout, logs on stderr, one command per image, so it chains in shell scripts and agent tool calls.</li>
-      <li><code>--fabricate</code> and <code>--fixture</code> run with no network.</li>
-      <li><code>--max-height</code> drops photos before body lines and never clips the header or the footer.</li>
-    </ul>
-
-    <h2>Benefits</h2>
-    <ul class="points">
-      <li>Put a post on screen for a broadcast, a video, slides, or an article in one command.</li>
-      <li>Mock up a post before it exists, or rewrite one for a draft, without editing pixels.</li>
-      <li>Let a script or an agent make post images in batch, with no account setup and no manual cleanup.</li>
-      <li>Trust what the image shows. Nothing appears that the post did not have, unless you set it.</li>
-    </ul>
+    <table class="matrix">
+      <colgroup><col class="f"><col class="a"><col class="b"></colgroup>
+      <thead><tr><th scope="col"><span class="k">F</span>eature</th><th scope="col"><span class="k">A</span>dvantage</th><th scope="col"><span class="k">B</span>enefit</th></tr></thead>
+      <tbody>
+        <tr><td data-k="F">Turns an X post URL or status id into a PNG.</td><td data-k="A">Drawn from the post&#8217;s data, not cropped from a screenshot.</td><td data-k="B">Every image has the same clean layout and type, with no pixel editing.</td></tr>
+        <tr><td data-k="F">Four views with <code class="nw">--view</code>: <code>plate</code>, <code>timeline</code>, <code>detail</code>, <code>quote</code>.</td><td data-k="A">One tool covers every shape a post takes on X.</td><td data-k="B">Pick the shape that fits a broadcast, a slide, a video, or an article.</td></tr>
+        <tr><td data-k="F"><code class="nw">--theme light|dark</code> and <code class="nw">--media</code> for photos.</td><td data-k="A">Matches the surface the image lands on.</td><td data-k="B">Drops into light or dark decks and lower thirds without touch-ups.</td></tr>
+        <tr><td data-k="F">Loads a public post with no bearer token, from X&#8217;s syndication feed.</td><td data-k="A">No API key. Leave <code class="nw">X_BEARER_TOKEN</code> unset and it still works.</td><td data-k="B">No account setup and no API approval before the first image.</td></tr>
+        <tr><td data-k="F">Counts come only from the source or from you.</td><td data-k="A">A count the source lacks stays off the image; a count you pass, even zero, is shown.</td><td data-k="B">Trust what the image shows. Nothing appears that the post did not have, unless you set it.</td></tr>
+        <tr><td data-k="F"><code class="nw">--fabricate</code> plus <code class="nw">--name</code>, <code class="nw">--handle</code>, <code class="nw">--text</code>, <code class="nw">--verified</code>, <code class="nw">--posted</code>, and count flags.</td><td data-k="A">Invent a post, or override any field of a real one.</td><td data-k="B">Mock up a post before it exists, or rewrite one for a draft.</td></tr>
+        <tr><td data-k="F">PNG on stdout, logs on stderr, <code class="nw">-o</code> for a file, <code class="nw">--json</code> for data.</td><td data-k="A">Built for pipes: one command per image.</td><td data-k="B">Scripts and agents make post images in batch with no manual cleanup.</td></tr>
+        <tr><td data-k="F"><code class="nw">--fabricate</code> and <code class="nw">--fixture</code> run offline.</td><td data-k="A">No network needed.</td><td data-k="B">Runs in CI, in tests, and on a plane.</td></tr>
+        <tr><td data-k="F"><code class="nw">--max-height</code> caps the image height.</td><td data-k="A">Drops photos before body lines and never clips the header or footer.</td><td data-k="B">Fits a fixed slot without a broken card.</td></tr>
+        <tr><td data-k="F">Ships an Agent Skills <code class="nw">SKILL.md</code> with the CLI.</td><td data-k="A">Agent harnesses find it after <code class="nw">npm i -g xpostplate</code>.</td><td data-k="B">An agent can make post images without being taught the flags.</td></tr>
+      </tbody>
+    </table>
   </div>
   <footer class="site-foot">
     <a href="index.html">xpostplate</a>
     <span class="dot" aria-hidden="true">·</span>
-    <a href="fab.html">fab</a>
+    <a href="fab.html">FAB</a>
     <span class="dot" aria-hidden="true">·</span>
     <a href="docs.html">docs</a>
     <span class="dot" aria-hidden="true">·</span>

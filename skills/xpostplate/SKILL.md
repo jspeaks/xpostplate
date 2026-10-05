@@ -57,13 +57,13 @@ Full list: `xpostplate --help`.
 
 ```bash
 # Pipe PNG
-xpostplate https://x.com/SpaceX/status/21…47 > plate.png
+xpostplate https://x.com/SpaceX/status/[slug] > plate.png
 
 # Write a file
-xpostplate https://x.com/SpaceX/status/21…47 --view timeline --theme dark -o timeline.png
+xpostplate https://x.com/SpaceX/status/[slug] --view timeline --theme dark -o timeline.png
 
 # Data only, then decide
-xpostplate https://x.com/SpaceX/status/21…47 --json
+xpostplate https://x.com/SpaceX/status/[slug] --json
 
 # Offline fabricate
 xpostplate --fabricate --name "SpaceX" --handle SpaceX --text "Starship is stacked." --view timeline -o fake.png
@@ -72,4 +72,4 @@ xpostplate --fabricate --name "SpaceX" --handle SpaceX --text "Starship is stack
 xpostplate --fixture
 ```
 
-Do not invent real status ids in examples. Use the project's ellipsis style (`21…47`), `--fabricate`, or `--fixture`.
+Do not invent real status ids in examples. Use the project's placeholder style (`https://x.com/SpaceX/status/[slug]`), `--fabricate`, or `--fixture`.

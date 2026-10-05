@@ -17,41 +17,41 @@ Photos stay off unless you pass `--media`. `--max-height` drops photos before it
 
 ## Install
 
-ImageMagick `magick` is required and is not bundled. It must be on `PATH`.
-
-Node 18 or newer. From a clone of this repo:
-
 ```bash
-node bin/xpostplate.js --help
+npm i -g xpostplate                     # npm
+brew install jspeaks/tap/xpostplate     # Homebrew
+pnpm add -g xpostplate                  # pnpm
+bun add -g xpostplate                   # Bun
+npx xpostplate --help                   # run once, no install
 ```
 
-The npm package is not published yet. When it is, this is the install:
+From source: `git clone https://github.com/jspeaks/xpostplate && cd xpostplate && npm link`.
 
-```bash
-npm install -g xpostplate
-```
-
-`brew install` is blocked. `xpostplate` is not in homebrew-core and there is no tap. `packaging/homebrew/xpostplate.rb` is a head-only formula that depends on `node` and `imagemagick` and installs the CLI from this git repo. A stable archive URL and sha256 land on the first GitHub release.
+## Examples
 
 ```bash
 # Broadcast plate. No token. PNG on stdout. Photos stay off.
-xpostplate https://x.com/SpaceX/status/21…47 > plate.png
+xpostplate https://x.com/SpaceX/status/[slug] > plate.png
 
 # Home-feed row, dark, with the photos.
-xpostplate https://x.com/SpaceX/status/21…47 --view timeline --theme dark --media -o timeline.png
+xpostplate https://x.com/SpaceX/status/[slug] --view timeline --theme dark --media -o timeline.png
 
 # The opened post.
-xpostplate https://x.com/SpaceX/status/21…47 --view detail --theme dark -o detail.png
+xpostplate https://x.com/SpaceX/status/[slug] --view detail --theme dark -o detail.png
 
 # The same post as a quote.
-xpostplate https://x.com/SpaceX/status/21…47 --view quote -o quote.png
+xpostplate https://x.com/SpaceX/status/[slug] --view quote -o quote.png
 
 # Invent a post. No URL and no network.
 xpostplate --fabricate --name "SpaceX" --handle SpaceX --text "Starship is stacked." --view timeline
 
 # Start from a public post and replace the words.
-xpostplate https://x.com/SpaceX/status/21…47 --text "A line written for the plate."
+xpostplate https://x.com/SpaceX/status/[slug] --text "A line written for the plate."
 ```
+
+## Requirements
+
+Homebrew pulls in Node and ImageMagick for you. With npm, pnpm, or Bun you need Node 18 or newer and ImageMagick (`magick`) on `PATH`: `brew install imagemagick` or `apt install imagemagick`. `packaging/homebrew/xpostplate.rb` is the formula the tap serves.
 
 ## Agent skill
 
