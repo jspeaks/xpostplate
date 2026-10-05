@@ -15,6 +15,7 @@
       --muted: #8b98a5;
       --line: #38444d;
       --accent: #1d9bf0;
+      --gutter: clamp(16px, 4vw, 32px);
     }
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; }
@@ -24,25 +25,27 @@
       font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
       font-size: 16px;
       line-height: 1.45;
+      overflow-wrap: break-word;
     }
 
     .wrap {
-      max-width: 720px;
+      max-width: calc(720px + 2 * var(--gutter));
       margin: 0 auto;
-      padding: 28px 32px 8px;
+      padding: 24px var(--gutter) 8px;
     }
     .brand {
-      height: 32px;
-      margin: 0 0 28px;
+      min-height: 28px;
+      margin: 0 0 24px;
       display: flex;
       align-items: center;
+      flex-wrap: wrap;
       gap: 6px;
     }
     .wordmark { display: block; height: 28px; width: auto; }
     .brand a { display: flex; text-decoration: none; }
     h1 {
       margin: 0 0 8px;
-      font-size: 28px;
+      font-size: clamp(24px, 1vw + 20px, 28px);
       font-weight: 600;
       letter-spacing: -0.02em;
     }
@@ -57,6 +60,7 @@
       border-left: 1px solid var(--line);
     }
     .day:last-child { padding-bottom: 0; }
+    .day:target time { color: var(--text); }
     .day::before {
       content: "";
       position: absolute;
@@ -87,34 +91,30 @@
       color: var(--text);
     }
     .day li:last-child { margin-bottom: 0; }
-    .hash {
-      display: inline-block;
-      min-width: 4.2em;
-      margin-right: 0.4em;
-      color: var(--muted);
-      font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-      font-size: 12px;
-    }
 
     .site-foot {
-      max-width: 720px;
+      max-width: calc(720px + 2 * var(--gutter));
       margin: 0 auto;
-      padding: 24px 32px 40px;
+      padding: 24px var(--gutter) 40px;
       color: var(--muted);
-      font-size: 13px;
+      font-size: 14px;
       letter-spacing: 0.02em;
+      line-height: 2;
     }
     .site-foot a {
       color: var(--muted);
       text-decoration: none;
+      padding: 4px 0;
     }
-    .site-foot a:hover { color: var(--text); }
+    .site-foot a:hover, .site-foot a:focus-visible { color: var(--text); }
     .site-foot .dot {
       margin: 0 0.55em;
       color: var(--line);
     }
-
-  </style>
+    @media (max-width: 480px) {
+      .day { padding-left: 16px; }
+      .day li { font-size: 14.5px; }
+    </style>
 </head>
 <body>
   <div class="wrap">
@@ -128,60 +128,62 @@
     </div>
     <h1>Timeline</h1>
     <p class="lede">Release notes from git history, newest first.</p>
-    <div class="day">
+    <div class="day" id="v0.9.22">
       <time datetime="2026-10-05">2026-10-05</time>
       <ul>
-        <li><span class="hash">2fbeb82</span> docs: cut excess space below the hero image</li>
-        <li><span class="hash">d6652fa</span> docs: show faint version on the top line</li>
-        <li><span class="hash">266790e</span> docs: rebalance feature-list vertical spacing</li>
-        <li><span class="hash">35cc18f</span> docs: separate flag and description</li>
-        <li><span class="hash">9b96ffc</span> docs: clarify view lines and what a plate is</li>
-        <li><span class="hash">71b7686</span> feat: ship Agent Skills SKILL.md with the CLI</li>
+        <li>docs: responsive layout for phone tablet desktop</li>
+        <li>docs: add fab, docs, and timeline pages with footer links</li>
+        <li>docs: cut excess space below the hero image</li>
+        <li>docs: show faint version on the top line</li>
+        <li>docs: rebalance feature-list vertical spacing</li>
+        <li>docs: separate flag and description</li>
+        <li>docs: clarify view lines and what a plate is</li>
+        <li>feat: ship Agent Skills SKILL.md with the CLI</li>
       </ul>
     </div>
     <div class="day">
       <time datetime="2026-10-04">2026-10-04</time>
       <ul>
-        <li><span class="hash">9f96730</span> docs: call it a CLI tool</li>
-        <li><span class="hash">8de9f3d</span> docs: keep the chips on one line</li>
-        <li><span class="hash">1a0b39e</span> docs: make the chips separate rectangles</li>
-        <li><span class="hash">3483022</span> docs: say how you use it</li>
-        <li><span class="hash">29af3e9</span> docs: show the command in the pitch</li>
-        <li><span class="hash">cd8c377</span> docs: say what the page draws</li>
-        <li><span class="hash">67d8386</span> docs: shorten the feature lines</li>
-        <li><span class="hash">1170b6b</span> docs: sit the chips against the wordmark</li>
-        <li><span class="hash">06b8365</span> docs: tuck the chips against the name</li>
-        <li><span class="hash">da9e262</span> docs: use the X logo in the headline</li>
-        <li><span class="hash">c6c7e43</span> docs: drop public from the page headline</li>
-        <li><span class="hash">5ac99df</span> docs: mark the page as a CLI</li>
-        <li><span class="hash">ec42a05</span> docs: drop the no-browser line from the page</li>
-        <li><span class="hash">8f5a183</span> docs: draw the X logo in the page header</li>
+        <li>docs: call it a CLI tool</li>
+        <li>docs: keep the chips on one line</li>
+        <li>docs: make the chips separate rectangles</li>
+        <li>docs: say how you use it</li>
+        <li>docs: show the command in the pitch</li>
+        <li>docs: say what the page draws</li>
+        <li>docs: shorten the feature lines</li>
+        <li>docs: sit the chips against the wordmark</li>
+        <li>docs: tuck the chips against the name</li>
+        <li>docs: use the X logo in the headline</li>
+        <li>docs: drop public from the page headline</li>
+        <li>docs: mark the page as a CLI</li>
+        <li>docs: drop the no-browser line from the page</li>
+        <li>docs: draw the X logo in the page header</li>
       </ul>
     </div>
     <div class="day">
       <time datetime="2026-10-03">2026-10-03</time>
       <ul>
-        <li><span class="hash">60d591b</span> docs: add an MIT license</li>
-        <li><span class="hash">a0f5710</span> feat: prepare npm and Homebrew installs</li>
-        <li><span class="hash">44f68cd</span> feat: add a landing page with the plate above the fold</li>
-        <li><span class="hash">ed8c16d</span> docs: orient the architecture diagram vertically</li>
-        <li><span class="hash">d11f808</span> docs: add the FAB and an architecture diagram</li>
-        <li><span class="hash">690c8c4</span> feat: fabricate a post or override its fields</li>
-        <li><span class="hash">e7fd7f8</span> feat: add timeline, detail, and quote views</li>
+        <li>docs: add an MIT license</li>
+        <li>feat: prepare npm and Homebrew installs</li>
+        <li>feat: add a landing page with the plate above the fold</li>
+        <li>docs: orient the architecture diagram vertically</li>
+        <li>docs: add the FAB and an architecture diagram</li>
+        <li>feat: fabricate a post or override its fields</li>
+        <li>feat: add timeline, detail, and quote views</li>
       </ul>
     </div>
     <div class="day">
       <time datetime="2026-10-02">2026-10-02</time>
       <ul>
-        <li><span class="hash">47c92a5</span> feat: draw post photos under the text</li>
-        <li><span class="hash">65e9ed0</span> docs: shorten example status ids</li>
-        <li><span class="hash">f51a2ae</span> docs: use a SpaceX post in the examples</li>
-        <li><span class="hash">0fa8f7b</span> docs: show usage concepts in the examples</li>
-        <li><span class="hash">0d9dfe8</span> feat: render a public post with no bearer token</li>
-        <li><span class="hash">c7269f4</span> fix: inset the X mark so it clears the corner</li>
-        <li><span class="hash">e488e29</span> feat: draw the official X mark in the corner</li>
-        <li><span class="hash">0adf121</span> feat: choose the footer and cap the plate height</li>
-        <li><span class="hash">bbb1372</span> feat: render an X post as a plate</li>
+        <li>feat: draw post photos under the text</li>
+        <li>docs: shorten example status ids</li>
+        <li>docs: use a SpaceX post in the examples</li>
+        <li>docs: show usage concepts in the examples</li>
+        <li>feat: render a public post with no bearer token</li>
+        <li>fix: inset the X mark so it clears the corner</li>
+        <li>feat: draw the official X mark in the corner</li>
+        <li>feat: choose the footer and cap the plate height</li>
+        <li>feat: render an X post as a plate</li>
       </ul>
     </div>
   </div>

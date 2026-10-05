@@ -14,6 +14,8 @@
       --muted: #8b98a5;
       --line: #38444d;
       --accent: #1d9bf0;
+      --page: 1120px;
+      --gutter: clamp(16px, 4vw, 40px);
     }
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; }
@@ -25,13 +27,21 @@
       line-height: 1.45;
     }
     .screen {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      padding: 28px 32px 8px;
+      width: 100%;
+      max-width: calc(var(--page) + 2 * var(--gutter));
+      margin: 0 auto;
+      padding: 20px var(--gutter) 24px;
     }
-    .brand { height: 32px; margin: 0; display: flex; align-items: center; justify-content: flex-start; flex-wrap: nowrap; gap: 6px; }
-    .wordmark { display: block; height: 32px; width: auto; }
+    .brand {
+      min-height: 28px;
+      margin: 0 0 18px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .wordmark { display: block; height: 28px; width: auto; flex: 0 0 auto; margin-right: 2px; }
     .ver {
       color: var(--muted);
       font-size: 11px;
@@ -39,7 +49,9 @@
       opacity: 0.55;
       white-space: nowrap;
       flex: 0 0 auto;
+      text-decoration: none;
     }
+    a.ver:hover, a.ver:focus-visible { opacity: 0.9; text-decoration: underline; text-underline-offset: 2px; }
     .chip {
       display: inline-flex;
       align-items: center;
@@ -55,14 +67,14 @@
       white-space: nowrap;
       text-transform: uppercase;
     }
+    /* Phone first: one column, pitch above the plate. */
     .hero {
-      flex: 0 1 auto;
       display: grid;
-      grid-template-columns: minmax(460px, 0.86fr) minmax(420px, 1.14fr);
-      gap: 32px;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 22px;
       align-items: center;
-      min-height: 0;
     }
+    .pitch { min-width: 0; }
     .pitch h1 .xmark {
       display: inline-block;
       width: 0.78em;
@@ -72,73 +84,81 @@
     }
     .pitch h1 {
       margin: 0;
-      font-size: 40px;
+      font-size: clamp(26px, 1.6vw + 18px, 38px);
       font-weight: 600;
       letter-spacing: -0.03em;
       line-height: 1.12;
       max-width: 12em;
     }
     .why {
-      margin: 14px 0 0;
+      margin: 10px 0 0;
       max-width: 36em;
       color: var(--muted);
-      font-size: 17px;
+      font-size: 16px;
       line-height: 1.4;
     }
     .views {
-      margin: 14px 0 0;
+      margin: 10px 0 0;
       color: var(--text);
       font-size: 14px;
       letter-spacing: 0.01em;
     }
     .cmd {
-      margin: 18px 0 0;
-      display: inline-block;
+      margin: 14px 0 0;
+      display: block;
+      width: fit-content;
       max-width: 100%;
-      padding: 10px 14px;
+      padding: 9px 12px;
       background: var(--plate);
       border: 1px solid var(--line);
       border-radius: 10px;
       color: var(--text);
       font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-      font-size: 13.5px;
-      line-height: 1.35;
-      white-space: nowrap;
-    }
-    .note {
-      margin: 8px 0 0;
-      color: var(--muted);
       font-size: 13px;
+      line-height: 1.4;
+      white-space: normal;
+      overflow-wrap: anywhere;
+    }
+    .cmd .nw, .named code { white-space: nowrap; }
+    .note {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 12.5px;
+      line-height: 1.4;
     }
     .shot {
       position: relative;
-      margin: 0;
-      justify-self: end;
+      margin: 0 auto;
       width: 100%;
       max-width: 720px;
+      min-width: 0;
     }
     .shot img {
       display: block;
       width: 100%;
       height: auto;
-      max-height: calc(100vh - 120px);
-      object-fit: contain;
-      border-radius: 16px;
+      border-radius: 14px;
       border: 1px solid var(--line);
     }
     .corners {
       position: absolute;
-      inset: -10px;
-      width: calc(100% + 20px);
-      height: calc(100% + 20px);
+      inset: -8px;
+      width: calc(100% + 16px);
+      height: calc(100% + 16px);
       pointer-events: none;
     }
-    .more {
-      max-width: 720px;
+    .rule {
+      display: block;
+      width: min(var(--page), calc(100% - 2 * var(--gutter)));
+      height: 8px;
       margin: 0 auto;
-      padding: 16px 32px 48px;
     }
-    .rule { display: block; width: min(1120px, calc(100% - 64px)); height: 8px; margin: 0 auto; }
+    .more {
+      max-width: calc(var(--page) + 2 * var(--gutter));
+      margin: 0 auto;
+      padding: 16px var(--gutter) 32px;
+    }
+    .more > * { max-width: 720px; }
     .more h2 {
       margin: 0 0 12px;
       font-size: 15px;
@@ -157,6 +177,7 @@
       padding: 10px 0;
       border-top: 1px solid var(--line);
       font-size: 16px;
+      overflow-wrap: anywhere;
     }
     .named strong {
       display: inline-block;
@@ -190,29 +211,76 @@
     }
 
     .site-foot {
-      max-width: 720px;
+      max-width: calc(var(--page) + 2 * var(--gutter));
       margin: 0 auto;
-      padding: 8px 32px 40px;
+      padding: 8px var(--gutter) 40px;
       color: var(--muted);
-      font-size: 13px;
+      font-size: 14px;
       letter-spacing: 0.02em;
+      line-height: 2;
     }
     .site-foot a {
       color: var(--muted);
       text-decoration: none;
+      padding: 4px 0;
     }
-    .site-foot a:hover { color: var(--text); }
+    .site-foot a:hover, .site-foot a:focus-visible { color: var(--text); }
     .site-foot .dot {
       margin: 0 0.55em;
       color: var(--line);
     }
-    @media (max-width: 960px) {
-      .screen { min-height: auto; }
-      .hero { grid-template-columns: 1fr; }
-      .shot { justify-self: start; }
-      .shot img { max-height: none; }
-      .cmd { white-space: normal; }
-      .pitch h1 { font-size: 32px; }
+
+    /* Tablet: still one column, plate capped so pitch and plate share the first screen. */
+    @media (min-width: 600px) {
+      .shot {
+        margin: 0;
+        max-width: min(720px, calc((100vh - 300px) * 1.311));
+        max-width: min(720px, calc((100svh - 300px) * 1.311));
+        min-width: min(100%, 440px);
+      }
+    }
+    /* Laptop and up: two-column hero that fills the first screen and no more.
+       The plate (800x610) takes the width the viewport height allows; the pitch
+       keeps a readable minimum and the leftover is split above and below. */
+    @media (min-width: 960px) {
+      :root {
+        --page: 1280px;
+        --pitch: 372px;
+        --shot: min(840px, calc((100vh - 128px) * 1.311));
+        --shot: min(840px, calc((100svh - 128px) * 1.311));
+      }
+      .screen {
+        display: flex;
+        flex-direction: column;
+        /* Fill a laptop screen so the list starts below the fold; cap it on tall monitors. */
+        min-height: min(100vh, 920px);
+        min-height: min(100svh, 920px);
+        padding-top: 24px;
+        padding-bottom: 28px;
+      }
+      .brand { margin-bottom: 20px; }
+      .hero {
+        flex: 1 0 auto;
+        grid-template-columns: minmax(var(--pitch), 1fr) minmax(0, var(--shot));
+        gap: clamp(32px, 3.2vw, 48px);
+        align-content: center;
+      }
+      .shot { margin: 0; justify-self: end; max-width: none; min-width: 0; }
+      .cmd { font-size: 12.5px; }
+    }
+    @media (min-width: 1200px) {
+      :root { --pitch: 420px; }
+      .cmd { font-size: 13px; }
+    }
+    /* Phone tweaks. */
+    @media (max-width: 480px) {
+      .wordmark { height: 26px; }
+      .chip { height: 17px; padding: 0 5px; font-size: 10px; }
+      .why { font-size: 15.5px; }
+      .cmd { font-size: 12.5px; }
+      .named li { font-size: 15px; }
+      .shot img { border-radius: 10px; }
+      .corners { inset: -6px; width: calc(100% + 12px); height: calc(100% + 12px); }
     }
   </style>
 </head>
@@ -228,14 +296,14 @@
       <span class="chip">CLI</span>
       <span class="chip">agentic</span>
       <span class="chip">chainable</span>
-      <span class="ver">v0.9.21</span>
+      <a class="ver" href="timeline.html#v0.9.22" title="Release timeline">v0.9.22</a>
     </div>
     <div class="hero">
       <div class="pitch">
         <h1>Turn an <svg class="xmark" viewBox="0 0 24 24" aria-label="X" role="img"><path fill="currentColor" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> post into a PNG.</h1>
         <p class="why">A CLI tool for turning an X post into a PNG.</p>
         <p class="views">plate · timeline · detail · quote</p>
-        <code class="cmd">xpostplate https://x.com/SpaceX/status/21… &gt; plate.png</code>
+        <code class="cmd">xpostplate https://x.com/SpaceX/status/21… <span class="nw">&gt; plate.png</span></code>
         <p class="note">Example only. The ellipsis is not a status id, so this line does not run.</p>
       </div>
       <figure class="shot">

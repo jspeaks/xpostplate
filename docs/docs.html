@@ -15,6 +15,7 @@
       --muted: #8b98a5;
       --line: #38444d;
       --accent: #1d9bf0;
+      --gutter: clamp(16px, 4vw, 32px);
     }
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; }
@@ -24,25 +25,27 @@
       font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
       font-size: 16px;
       line-height: 1.45;
+      overflow-wrap: break-word;
     }
 
     .wrap {
-      max-width: 720px;
+      max-width: calc(720px + 2 * var(--gutter));
       margin: 0 auto;
-      padding: 28px 32px 8px;
+      padding: 24px var(--gutter) 8px;
     }
     .brand {
-      height: 32px;
-      margin: 0 0 28px;
+      min-height: 28px;
+      margin: 0 0 24px;
       display: flex;
       align-items: center;
+      flex-wrap: wrap;
       gap: 6px;
     }
     .wordmark { display: block; height: 28px; width: auto; }
     .brand a { display: flex; text-decoration: none; }
     h1 {
       margin: 0 0 8px;
-      font-size: 28px;
+      font-size: clamp(24px, 1vw + 20px, 28px);
       font-weight: 600;
       letter-spacing: -0.02em;
     }
@@ -104,25 +107,31 @@
       font-size: 0.92em;
       color: var(--text);
     }
+    p code, li code { white-space: nowrap; }
 
     .site-foot {
-      max-width: 720px;
+      max-width: calc(720px + 2 * var(--gutter));
       margin: 0 auto;
-      padding: 24px 32px 40px;
+      padding: 24px var(--gutter) 40px;
       color: var(--muted);
-      font-size: 13px;
+      font-size: 14px;
       letter-spacing: 0.02em;
+      line-height: 2;
     }
     .site-foot a {
       color: var(--muted);
       text-decoration: none;
+      padding: 4px 0;
     }
-    .site-foot a:hover { color: var(--text); }
+    .site-foot a:hover, .site-foot a:focus-visible { color: var(--text); }
     .site-foot .dot {
       margin: 0 0.55em;
       color: var(--line);
     }
-
+    @media (max-width: 480px) {
+      p, ul.flags li, ul.views li { font-size: 15px; }
+      pre { font-size: 12px; padding: 10px 12px; }
+    }
   </style>
 </head>
 <body>
