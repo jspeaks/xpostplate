@@ -13,11 +13,20 @@ class Xpostplate < Formula
 
   def install
     libexec.install "assets", "bin", "fixtures", "lib", "package.json"
+    pkgshare.install "skills"
     (bin/"xpostplate").write <<~SH
       #!/bin/bash
       export PATH="#{Formula["node"].opt_bin}:#{Formula["imagemagick"].opt_bin}:${PATH}"
       exec "#{Formula["node"].opt_bin}/node" "#{libexec}/bin/xpostplate.js" "$@"
     SH
+  end
+
+  def caveats
+    <<~EOS
+      Agent skill ships at:
+        #{opt_pkgshare}/skills/xpostplate/SKILL.md
+      Symlink that folder into your agent skills directory (e.g. ~/.agents/skills/xpostplate).
+    EOS
   end
 
   test do
