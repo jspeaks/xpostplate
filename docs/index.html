@@ -30,11 +30,12 @@
       flex-direction: column;
       padding: 28px 32px 24px;
     }
-    .brand { height: 32px; margin: 0; display: flex; align-items: center; gap: 6px; }
+    .brand { height: 32px; margin: 0; display: flex; align-items: center; justify-content: flex-start; flex-wrap: nowrap; gap: 6px; }
     .wordmark { display: block; height: 32px; width: auto; }
     .chip {
       display: inline-flex;
       align-items: center;
+      flex: 0 0 auto;
       height: 18px;
       padding: 0 7px;
       border: 1px solid var(--line);
@@ -42,6 +43,8 @@
       color: var(--muted);
       font-size: 11px;
       letter-spacing: 0.04em;
+      line-height: 1;
+      white-space: nowrap;
       text-transform: uppercase;
     }
     .hero {
