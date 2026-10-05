@@ -277,6 +277,276 @@
       .shot img { border-radius: 10px; }
       .corners { inset: -6px; width: calc(100% + 12px); height: calc(100% + 12px); }
     }
+
+    /* --- Built for agents demo (below hero) --- */
+    .agent-demo {
+      margin: 36px 0 8px;
+      padding-top: 28px;
+      border-top: 1px solid var(--line);
+    }
+    .agent-demo h2 {
+      margin: 0 0 16px;
+      font-size: clamp(18px, 1vw + 14px, 22px);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+    .agent-flow {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 14px;
+      align-items: stretch;
+      min-width: 0;
+    }
+    .agent-arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+      font-size: 22px;
+      line-height: 1;
+      user-select: none;
+    }
+    .agent-arrow .arr-right { display: none; }
+    .agent-arrow .arr-down { display: block; }
+
+    /* Generic agent harness frame — switch with data-harness="claude|codex|grok" */
+    .harness {
+      --h-bg: #1c1c1c;
+      --h-chrome: #2a2a2a;
+      --h-border: #3a3a3a;
+      --h-text: #e8e8e8;
+      --h-muted: #9a9a9a;
+      --h-accent: #d4a574;
+      --h-input: #141414;
+      --h-font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+      --h-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      --h-radius: 10px;
+      --h-prompt: "❯";
+      min-width: 0;
+      background: var(--h-bg);
+      border: 1px solid var(--h-border);
+      border-radius: var(--h-radius);
+      overflow: hidden;
+      font-family: var(--h-font);
+      color: var(--h-text);
+      display: flex;
+      flex-direction: column;
+      min-height: 220px;
+    }
+    .harness[data-harness="claude"] {
+      --h-bg: #1a1917;
+      --h-chrome: #262422;
+      --h-border: #3d3a36;
+      --h-text: #f0ebe3;
+      --h-muted: #a89f94;
+      --h-accent: #d4a574;
+      --h-input: #121110;
+      --h-font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+      --h-prompt: "❯";
+    }
+    .harness[data-harness="codex"] {
+      --h-bg: #0d1117;
+      --h-chrome: #161b22;
+      --h-border: #30363d;
+      --h-text: #e6edf3;
+      --h-muted: #8b949e;
+      --h-accent: #58a6ff;
+      --h-input: #010409;
+      --h-font: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      --h-prompt: "›";
+    }
+    .harness[data-harness="grok"] {
+      --h-bg: #0a0a0a;
+      --h-chrome: #141414;
+      --h-border: #2a2a2a;
+      --h-text: #f5f5f5;
+      --h-muted: #8a8a8a;
+      --h-accent: #ffffff;
+      --h-input: #050505;
+      --h-font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+      --h-prompt: "✦";
+    }
+    .harness-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+      background: var(--h-chrome);
+      border-bottom: 1px solid var(--h-border);
+      font-size: 12px;
+      color: var(--h-muted);
+      letter-spacing: 0.02em;
+    }
+    .harness-dots { display: flex; gap: 5px; flex: 0 0 auto; }
+    .harness-dots span {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--h-border);
+    }
+    .harness-dots span:nth-child(1) { background: #ff5f57; opacity: 0.85; }
+    .harness-dots span:nth-child(2) { background: #febc2e; opacity: 0.85; }
+    .harness-dots span:nth-child(3) { background: #28c840; opacity: 0.85; }
+    .harness-title {
+      flex: 1 1 auto;
+      text-align: center;
+      font-weight: 500;
+      color: var(--h-text);
+      opacity: 0.85;
+      font-size: 12px;
+    }
+    .harness[data-harness="claude"] .harness-title::before { content: "Agent"; }
+    .harness[data-harness="codex"] .harness-title::before { content: "Codex"; }
+    .harness[data-harness="grok"] .harness-title::before { content: "Grok Build"; }
+    .harness-body {
+      flex: 1 1 auto;
+      padding: 12px 12px 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-width: 0;
+    }
+    .harness-user {
+      display: grid;
+      grid-template-columns: max-content minmax(0, 1fr);
+      gap: 8px;
+      align-items: start;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+    .harness-user::before {
+      content: var(--h-prompt);
+      color: var(--h-accent);
+      font-family: var(--h-mono);
+      font-weight: 600;
+      line-height: 1.45;
+    }
+    .harness-assist {
+      margin: 0;
+      padding: 8px 10px;
+      background: var(--h-chrome);
+      border-radius: 6px;
+      border: 1px solid var(--h-border);
+      color: var(--h-muted);
+      font-family: var(--h-mono);
+      font-size: 11.5px;
+      line-height: 1.4;
+      overflow-wrap: anywhere;
+    }
+    .harness-assist strong { color: var(--h-text); font-weight: 500; }
+    .harness-input {
+      margin-top: auto;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+      background: var(--h-input);
+      border: 1px solid var(--h-border);
+      border-radius: 8px;
+      color: var(--h-muted);
+      font-size: 12px;
+    }
+    .harness-input::before {
+      content: var(--h-prompt);
+      color: var(--h-accent);
+      font-family: var(--h-mono);
+      opacity: 0.7;
+    }
+    .harness-send {
+      margin-left: auto;
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      background: var(--h-accent);
+      opacity: 0.55;
+      flex: 0 0 auto;
+    }
+
+    /* Generic docs frame (no Google logos) */
+    .docframe {
+      min-width: 0;
+      background: #e8eaed;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 220px;
+    }
+    .docframe-toolbar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 10px;
+      background: #f8f9fa;
+      border-bottom: 1px solid #dadce0;
+    }
+    .docframe-toolbar span {
+      width: 14px; height: 14px;
+      border-radius: 2px;
+      background: #dadce0;
+    }
+    .docframe-toolbar span.wide { width: 36px; }
+    .docframe-page {
+      margin: 10px 10px 12px;
+      background: #fff;
+      border: 1px solid #dadce0;
+      border-radius: 2px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+      padding: 14px 16px 16px;
+      color: #202124;
+      font-family: "Georgia", "Times New Roman", serif;
+      min-width: 0;
+    }
+    .docframe-page h3 {
+      margin: 0 0 10px;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: #202124;
+    }
+    .docframe-page p {
+      margin: 0 0 8px;
+      font-size: 12.5px;
+      line-height: 1.5;
+      color: #3c4043;
+    }
+    .docframe-page p.ghost {
+      height: 8px;
+      background: #e8eaed;
+      border-radius: 2px;
+      margin-bottom: 6px;
+      max-width: 92%;
+    }
+    .docframe-page p.ghost.short { max-width: 64%; }
+    .docframe-plate {
+      display: block;
+      width: 100%;
+      max-width: 280px;
+      height: auto;
+      margin: 10px 0 0;
+      border-radius: 6px;
+      border: 1px solid #dadce0;
+    }
+
+    @media (min-width: 720px) {
+      .agent-flow {
+        grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+        gap: 12px;
+        align-items: stretch;
+      }
+      .agent-arrow .arr-right { display: block; }
+      .agent-arrow .arr-down { display: none; }
+    }
+    @media (min-width: 960px) {
+      /* Keep hero above the fold; don't stretch it once the demo sits below. */
+      .hero { flex: 0 0 auto; }
+      .agent-demo { margin-top: 28px; }
+    }
+    @media (max-width: 480px) {
+      .agent-demo { margin-top: 28px; padding-top: 22px; }
+      .harness, .docframe { min-height: 0; }
+      .docframe-plate { max-width: 100%; }
+    }
   </style>
 </head>
 <body>
@@ -320,6 +590,41 @@
       </ul>
       </section>
     </div>
+
+    <!-- Built for agents: harness is themeable. One-word switch:
+         change data-harness below to "claude" | "codex" | "grok". -->
+    <section class="agent-demo" aria-label="Built for agents">
+      <h2>Built for agents</h2>
+      <div class="agent-flow">
+        <div class="harness" data-harness="claude">
+          <div class="harness-bar">
+            <div class="harness-dots" aria-hidden="true"><span></span><span></span><span></span></div>
+            <div class="harness-title"></div>
+          </div>
+          <div class="harness-body">
+            <div class="harness-user">Include the recent SpaceX x.com post about V3 satellites in the Amazing Innovation report currently stored in my Google Drive.</div>
+            <p class="harness-assist"><strong>ran</strong> xpostplate https://x.com/SpaceX/status/2106090316747207047</p>
+            <div class="harness-input">Ask anything…<span class="harness-send" aria-hidden="true"></span></div>
+          </div>
+        </div>
+        <div class="agent-arrow" aria-hidden="true">
+          <span class="arr-right">→</span>
+          <span class="arr-down">↓</span>
+        </div>
+        <div class="docframe">
+          <div class="docframe-toolbar" aria-hidden="true">
+            <span></span><span></span><span class="wide"></span><span></span><span></span>
+          </div>
+          <div class="docframe-page">
+            <h3>Amazing Innovation</h3>
+            <p>Quarterly notes on breakthroughs worth watching.</p>
+            <p class="ghost" aria-hidden="true"></p>
+            <p class="ghost short" aria-hidden="true"></p>
+            <img class="docframe-plate" src="media/spacex-v3.png" width="800" height="716" alt="SpaceX Starlink V3 satellites post rendered as a plate">
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
   <footer class="site-foot">
     <a href="fab.html">FAB</a>
