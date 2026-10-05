@@ -1,0 +1,75 @@
+---
+name: xpostplate
+description: Render or fabricate an X/Twitter post as a PNG (broadcast plate, timeline row, opened post, or quote). Trigger when the user wants a post image, PNG of a tweet/X post, fabricate a fake post image, or pipe a post card in a shell/agent workflow.
+---
+
+# xpostplate
+
+CLI that draws a public X post, or one you invent, as a PNG.
+
+## Prerequisites
+
+- Node 18+
+- ImageMagick `magick` on PATH
+- Optional `X_BEARER_TOKEN` for API counts the public syndication feed lacks (reposts, quotes, bookmarks, views)
+
+## Install
+
+From a clone:
+
+```bash
+node bin/xpostplate.js --help
+```
+
+When published:
+
+```bash
+npm i -g xpostplate
+```
+
+This skill ships at `skills/xpostplate/` in the repo and in the npm package (`files` includes `skills`). After `npm install` / `npm i -g xpostplate`, harnesses that scan `node_modules/**/skills/*/SKILL.md` (skills-npm, askill, and similar) can activate it. For agents that only watch a skills directory, copy or symlink this folder into `.agents/skills/`, `.claude/skills/`, `.cursor/skills/`, or the equivalent.
+
+## Defaults
+
+- PNG on stdout, logs on stderr
+- Prefer `-o path.png` when a file is needed
+- Prefer `--json` when you only need post data
+- Public URLs work with no token via syndication
+- Do not invent missing counts as zeros; leave them unset so they stay off the image
+
+## Flags you need
+
+| Flag | Notes |
+|------|--------|
+| `--view plate\|timeline\|detail\|quote` | Shape. Default `plate` |
+| `--fabricate` | Offline invent; requires `--text` |
+| `--media` | Draw photos under the text (off by default) |
+| `--theme light\|dark` | Default `light` |
+| `--name`, `--handle`, `--text` | Overrides; `--text` required with `--fabricate` |
+| `--replies`, `--reposts`, `--quotes`, `--likes`, `--bookmarks`, `--views` | Count overrides; a set zero is real |
+| `-o`, `--output <path>` | Write PNG to a file (`-` = stdout) |
+| `--json` | Post JSON on stdout; skip the image |
+| `--fixture [path]` | Local JSON instead of the network |
+
+Full list: `xpostplate --help`.
+
+## Patterns
+
+```bash
+# Pipe PNG
+xpostplate https://x.com/SpaceX/status/21…47 > plate.png
+
+# Write a file
+xpostplate https://x.com/SpaceX/status/21…47 --view timeline --theme dark -o timeline.png
+
+# Data only, then decide
+xpostplate https://x.com/SpaceX/status/21…47 --json
+
+# Offline fabricate
+xpostplate --fabricate --name "SpaceX" --handle SpaceX --text "Starship is stacked." --view timeline -o fake.png
+
+# Local fixture
+xpostplate --fixture
+```
+
+Do not invent real status ids in examples. Use the project's ellipsis style (`21…47`), `--fabricate`, or `--fixture`.

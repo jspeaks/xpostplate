@@ -53,4 +53,8 @@ xpostplate --fabricate --name "SpaceX" --handle SpaceX --text "Starship is stack
 xpostplate https://x.com/SpaceX/status/21…47 --text "A line written for the plate."
 ```
 
+## Agent skill
+
+Open [Agent Skills](https://agentskills.io) skill at `skills/xpostplate/SKILL.md`. It ships with the npm package (`files` includes `skills`), so after `npm install` / `npm i -g xpostplate`, harnesses that scan `node_modules/**/skills/*/SKILL.md` (skills-npm, askill, and similar) can activate it. For agents that only watch a skills directory, copy or symlink that folder into `.agents/skills/`, `.claude/skills/`, `.cursor/skills/`, or the equivalent.
+
 `xpostplate --help` lists every flag.
