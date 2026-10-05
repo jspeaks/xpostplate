@@ -15,16 +15,14 @@ CLI that draws a public X post, or one you invent, as a PNG.
 
 ## Install
 
-From a clone:
+```bash
+npm i -g xpostplate
+```
+
+Or from a clone:
 
 ```bash
 node bin/xpostplate.js --help
-```
-
-When published:
-
-```bash
-npm i -g xpostplate
 ```
 
 This skill ships at `skills/xpostplate/` in the repo and in the npm package (`files` includes `skills`). After `npm install` / `npm i -g xpostplate`, harnesses that scan `node_modules/**/skills/*/SKILL.md` (skills-npm, askill, and similar) can activate it. For agents that only watch a skills directory, copy or symlink this folder into `.agents/skills/`, `.claude/skills/`, `.cursor/skills/`, or the equivalent.

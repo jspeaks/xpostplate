@@ -18,12 +18,14 @@ Photos stay off unless you pass `--media`. `--max-height` drops photos before it
 ## Install
 
 ```bash
-npm i -g xpostplate                     # npm
-brew install jspeaks/tap/xpostplate     # Homebrew
-pnpm add -g xpostplate                  # pnpm
-bun add -g xpostplate                   # Bun
-npx xpostplate --help                   # run once, no install
+npm i -g xpostplate                                          # npm
+brew tap jspeaks/xpostplate && brew install --HEAD xpostplate  # Homebrew (HEAD)
+pnpm add -g xpostplate                                       # pnpm
+bun add -g xpostplate                                        # Bun
+npx xpostplate --help                                        # run once, no install
 ```
+
+Homebrew is HEAD-only from the tap until a GitHub release; stable non-HEAD install needs that release.
 
 From source: `git clone https://github.com/jspeaks/xpostplate && cd xpostplate && npm link`.
 
@@ -51,7 +53,7 @@ xpostplate https://x.com/SpaceX/status/[slug] --text "A line written for the pla
 
 ## Requirements
 
-Homebrew pulls in Node and ImageMagick for you. With npm, pnpm, or Bun you need Node 18 or newer and ImageMagick (`magick`) on `PATH`: `brew install imagemagick` or `apt install imagemagick`. `packaging/homebrew/xpostplate.rb` is the formula the tap serves.
+Homebrew (HEAD tap) pulls in Node and ImageMagick for you. With npm, pnpm, or Bun you need Node 18 or newer and ImageMagick (`magick`) on `PATH`: `brew install imagemagick` or `apt install imagemagick`. `packaging/homebrew/xpostplate.rb` is the HEAD formula the tap serves.
 
 ## Agent skill
 
