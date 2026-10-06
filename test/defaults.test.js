@@ -1,8 +1,11 @@
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
+import path from "node:path";
 import { test } from "node:test";
+import sharp from "sharp";
 import { fileURLToPath } from "node:url";
 import { helpText, parseCli } from "../lib/args.js";
+import { compositePhotos, svgToPng } from "../lib/png.js";
 import { normalizeSyndication } from "../lib/post.js";
 import { bodyText, colorRuns, renderSvg, resolveAccent, resolveMark } from "../lib/svg.js";
 
@@ -92,6 +95,9 @@ test("helpers", () => {
   assert.deepEqual(runs.filter((r) => r.link).map((r) => r.text), ["@a", "#tag", "$TSLA", "x.com/y"]);
   const stripped = bodyText({ text: "a https://t.co/z", entities: {} }, { stripMedia: true, expandLinks: true });
   assert.equal(stripped.text, "a");
+  // Glyphs the measured face lacks keep their advance but are not painted (no .notdef boxes).
+  const emoji = renderSvg({ ...normalizeSyndication(payload), text: "Liftoff \u{1F680} now" }, parseCli(["1", "--no-media"]));
+  assert.ok(emoji.svg.includes('<tspan fill="none">\u{1F680}</tspan>'));
 });
 
 test("--help shows the new defaults and the plate restore", () => {
@@ -103,17 +109,35 @@ test("--help shows the new defaults and the plate restore", () => {
   assert.equal(cli, help);
 });
 
-test("ImageMagick smoke: default opts render the fixture to PNG", async (t) => {
-  try {
-    execFileSync(process.env.MAGICK_BIN || "magick", ["-version"], { stdio: "ignore" });
-  } catch {
-    t.skip("magick not installed");
-    return;
-  }
-  const out = execFileSync(process.execPath, [bin, "--fixture", "-o", "-"], { maxBuffer: 1 << 24 });
+test("renderer smoke: the fixture renders to PNG with no ImageMagick on PATH", () => {
+  // Only node's own directory on PATH, and a MAGICK_BIN that points nowhere: resvg
+  // and sharp ship prebuilt binaries, so the render must not need anything else.
+  const env = { ...process.env, PATH: path.dirname(process.execPath), MAGICK_BIN: "/nonexistent/magick" };
+  const out = execFileSync(process.execPath, [bin, "--fixture", "-o", "-"], { env, maxBuffer: 1 << 24 });
   assert.equal(out.subarray(1, 4).toString("ascii"), "PNG");
+  assert.equal(out.readUInt32BE(16), 800, "default width");
+  assert.ok(out.readUInt32BE(20) > 100, "has a height");
+  assert.equal(out[25], 6, "RGBA");
   // Same defaults with photos present (network path) lay out the media block.
   const post = normalizeSyndication(payload);
   const { photos } = renderSvg(post, parseCli(["1"]));
   assert.equal(photos.length, 4);
+});
+
+test("renderer smoke: photos are cover-cropped, rounded, and composited", async () => {
+  const svg = (w, h, body) => `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}">${body}</svg>`;
+  const plate = await svgToPng(svg(100, 80, '<rect width="100" height="80" fill="#FFFFFF"/>'));
+  // 40x20: red left half, blue right half. Covering a 40x40 slot scales it to 80x40
+  // and keeps the middle, so the slot is half red, half blue.
+  const photo = await svgToPng(svg(40, 20, '<rect width="20" height="20" fill="#FF0000"/><rect x="20" width="20" height="20" fill="#0000FF"/>'));
+  const slot = { x: 10, y: 10, w: 40, h: 40, radius: 8, corners: { tl: 1, tr: 1, bl: 1, br: 1 } };
+  const out = await compositePhotos(plate, [slot], [photo]);
+  const { data, info } = await sharp(out).raw().toBuffer({ resolveWithObject: true });
+  assert.equal(info.width, 100);
+  assert.equal(info.height, 80);
+  const px = (x, y) => Array.from(data.subarray((y * info.width + x) * info.channels, (y * info.width + x) * info.channels + 3));
+  assert.deepEqual(px(15, 30), [255, 0, 0]);
+  assert.deepEqual(px(45, 30), [0, 0, 255]);
+  assert.deepEqual(px(10, 10), [255, 255, 255], "rounded corner shows the plate");
+  assert.deepEqual(px(5, 5), [255, 255, 255], "outside the slot is untouched");
 });

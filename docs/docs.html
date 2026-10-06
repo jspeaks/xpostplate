@@ -220,7 +220,7 @@
       <li><span class="pm">pnpm</span><code><span class="nw">pnpm add -g xpostplate</span></code></li>
       <li><span class="pm">Bun</span><code><span class="nw">bun add -g xpostplate</span></code></li>
       <li><span class="pm">npx</span><code><span class="nw">npx xpostplate --help</span></code></li>
-      <li><span class="pm">Source</span><code><span class="nw">git clone</span> https://github.com/jspeaks/xpostplate <span class="nw">&amp;&amp;</span> <span class="nw">cd xpostplate</span> <span class="nw">&amp;&amp;</span> <span class="nw">npm link</span></code></li>
+      <li><span class="pm">Source</span><code><span class="nw">git clone</span> https://github.com/jspeaks/xpostplate <span class="nw">&amp;&amp;</span> <span class="nw">cd xpostplate</span> <span class="nw">&amp;&amp;</span> <span class="nw">npm install</span> <span class="nw">&amp;&amp;</span> <span class="nw">npm link</span></code></li>
     </ul>
     <p style="margin-top:12px">Then run <code>xpostplate --help</code>. <code>npx</code> runs it once without a global install. Homebrew is HEAD-only from the tap; a stable non-HEAD install needs a GitHub release.</p>
 
@@ -293,7 +293,7 @@
 }</code></pre>
 
     <h2>Requirements</h2>
-    <p class="req">Homebrew (HEAD tap) pulls in Node and ImageMagick for you. With npm, pnpm, or Bun you need Node 18 or newer, and ImageMagick (<code>magick</code>) on <code>PATH</code>: <code>brew install imagemagick</code> or <code>apt install imagemagick</code>.</p>
+    <p class="req">Node 20.9 or newer. Nothing else: no ImageMagick. Rendering uses npm packages that ship prebuilt binaries (<code>@resvg/resvg-js</code> for the SVG, <code>sharp</code> for photos and the avatar), so npm, pnpm, Bun, and Homebrew installs need no system packages. Homebrew (HEAD tap) pulls in Node for you.</p>
   </div>
   <footer class="site-foot">
     <a href="./">xpostplate</a>

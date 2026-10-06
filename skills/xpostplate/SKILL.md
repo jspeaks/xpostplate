@@ -9,8 +9,7 @@ CLI that draws a public X post, or one you invent, as a PNG.
 
 ## Prerequisites
 
-- Node 18+
-- ImageMagick `magick` on PATH
+- Node 20.9+ (no ImageMagick or other system packages; rendering uses npm packages with prebuilt binaries)
 - Optional `X_BEARER_TOKEN` for API counts the public syndication feed lacks (reposts, quotes, bookmarks, views)
 
 ## Install
@@ -19,9 +18,10 @@ CLI that draws a public X post, or one you invent, as a PNG.
 npm i -g xpostplate
 ```
 
-Or from a clone:
+Or from a clone (install the npm dependencies first):
 
 ```bash
+npm install
 node bin/xpostplate.js --help
 ```
 

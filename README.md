@@ -38,7 +38,7 @@ npx xpostplate --help                                        # run once, no inst
 
 Homebrew is HEAD-only from the tap until a GitHub release; stable non-HEAD install needs that release.
 
-From source: `git clone https://github.com/jspeaks/xpostplate && cd xpostplate && npm link`.
+From source: `git clone https://github.com/jspeaks/xpostplate && cd xpostplate && npm install && npm link`.
 
 ## Examples
 
@@ -102,7 +102,7 @@ xpostplate https://x.com/SpaceX/status/[slug] --text "A line written for the ima
 
 ## Requirements
 
-Homebrew (HEAD tap) pulls in Node and ImageMagick for you. With npm, pnpm, or Bun you need Node 18 or newer and ImageMagick (`magick`) on `PATH`: `brew install imagemagick` or `apt install imagemagick`. `packaging/homebrew/xpostplate.rb` is the HEAD formula the tap serves.
+Node 20.9 or newer. Nothing else: no ImageMagick. Rendering uses npm packages that ship prebuilt binaries ([`@resvg/resvg-js`](https://github.com/thx/resvg-js) rasterizes the SVG, [`sharp`](https://sharp.pixelplumbing.com) crops, rounds, and composites photos and the avatar), so `npm i -g xpostplate`, pnpm, Bun, and Homebrew all work with no system packages. Homebrew (HEAD tap) pulls in Node for you. Text uses Arial on macOS, or DejaVu Sans or Liberation Sans on Linux, loaded straight from those TrueType files (system font lookup is off). Since 0.9.26 `MAGICK_BIN` is ignored. `packaging/homebrew/xpostplate.rb` is the HEAD formula the tap serves.
 
 ## Agent skill
 

@@ -8,15 +8,20 @@ class Xpostplate < Formula
   homepage "https://github.com/jspeaks/xpostplate"
   head "https://github.com/jspeaks/xpostplate.git", branch: "main"
 
-  depends_on "imagemagick"
   depends_on "node"
 
   def install
-    libexec.install "assets", "bin", "fixtures", "lib", "package.json"
+    libexec.install "assets", "bin", "fixtures", "lib", "package.json", "package-lock.json"
     pkgshare.install "skills"
+    # Rendering deps (@resvg/resvg-js, sharp) ship prebuilt binaries as optional
+    # per-platform packages; no install scripts or system libraries are needed.
+    cd libexec do
+      system "npm", "ci", "--omit=dev", "--ignore-scripts", "--no-audit", "--no-fund",
+             "--cache=#{HOMEBREW_CACHE}/npm_cache"
+    end
     (bin/"xpostplate").write <<~SH
       #!/bin/bash
-      export PATH="#{Formula["node"].opt_bin}:#{Formula["imagemagick"].opt_bin}:${PATH}"
+      export PATH="#{Formula["node"].opt_bin}:${PATH}"
       exec "#{Formula["node"].opt_bin}/node" "#{libexec}/bin/xpostplate.js" "$@"
     SH
   end
@@ -31,5 +36,7 @@ class Xpostplate < Formula
 
   test do
     assert_match(/^\d+\.\d+\.\d+/, shell_output("#{bin}/xpostplate --version"))
+    system bin/"xpostplate", "--fixture", "-o", testpath/"plate.png"
+    assert_path_exists testpath/"plate.png"
   end
 end

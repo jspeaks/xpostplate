@@ -1,6 +1,6 @@
 # Architecture
 
-Args choose a source, overrides change the post, the view picks a drawing, and ImageMagick writes the PNG.
+Args choose a source, overrides change the post, the view picks a drawing, and resvg plus sharp write the PNG (npm packages with prebuilt binaries; no ImageMagick since 0.9.26).
 
 ```mermaid
 flowchart TD
@@ -14,6 +14,7 @@ flowchart TD
   overrides --> view
   view --> images[Fetch photos and avatar, skip any that fail]
   images --> svg[Render SVG]
-  svg --> magick[ImageMagick to PNG, composite photos and avatar]
-  magick --> out[Stdout, -o file, or TTY auto-file]
+  svg --> resvg[resvg rasterizes the SVG with the measured TTFs, system fonts off]
+  resvg --> sharp[sharp crops, rounds, and composites photos and avatar]
+  sharp --> out[Stdout, -o file, or TTY auto-file]
 ```
