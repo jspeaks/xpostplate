@@ -29,14 +29,14 @@ xpostplate https://x.com/SpaceX/status/[slug] --view plate --no-media --accent '
 ## Install
 
 ```bash
-npm i -g xpostplate                                          # npm
-brew tap jspeaks/xpostplate && brew install --HEAD xpostplate  # Homebrew (HEAD)
-pnpm add -g xpostplate                                       # pnpm
-bun add -g xpostplate                                        # Bun
-npx xpostplate --help                                        # run once, no install
+npm i -g xpostplate                          # npm
+brew install jspeaks/xpostplate/xpostplate   # Homebrew
+pnpm add -g xpostplate                       # pnpm
+bun add -g xpostplate                        # Bun
+npx xpostplate --help                        # run once, no install
 ```
 
-Homebrew is HEAD-only from the tap until a GitHub release; stable non-HEAD install needs that release.
+Homebrew installs the latest tagged release from the `jspeaks/xpostplate` tap. For bleeding edge from `main`, add `--HEAD`: `brew install --HEAD jspeaks/xpostplate/xpostplate`.
 
 From source: `git clone https://github.com/jspeaks/xpostplate && cd xpostplate && npm install && npm link`.
 
@@ -102,7 +102,7 @@ xpostplate https://x.com/SpaceX/status/[slug] --text "A line written for the ima
 
 ## Requirements
 
-Node 20.9 or newer. Nothing else: no ImageMagick. Rendering uses npm packages that ship prebuilt binaries ([`@resvg/resvg-js`](https://github.com/thx/resvg-js) rasterizes the SVG, [`sharp`](https://sharp.pixelplumbing.com) crops, rounds, and composites photos and the avatar), so `npm i -g xpostplate`, pnpm, Bun, and Homebrew all work with no system packages. Homebrew (HEAD tap) pulls in Node for you. Text uses Arial on macOS, or DejaVu Sans or Liberation Sans on Linux, loaded straight from those TrueType files (system font lookup is off). Since 0.9.26 `MAGICK_BIN` is ignored. `packaging/homebrew/xpostplate.rb` is the HEAD formula the tap serves.
+Node 20.9 or newer. Nothing else: no ImageMagick. Rendering uses npm packages that ship prebuilt binaries ([`@resvg/resvg-js`](https://github.com/thx/resvg-js) rasterizes the SVG, [`sharp`](https://sharp.pixelplumbing.com) crops, rounds, and composites photos and the avatar), so `npm i -g xpostplate`, pnpm, Bun, and Homebrew all work with no system packages. Homebrew pulls in Node for you. Text uses Arial on macOS, or DejaVu Sans or Liberation Sans on Linux, loaded straight from those TrueType files (system font lookup is off). Since 0.9.26 `MAGICK_BIN` is ignored. `packaging/homebrew/xpostplate.rb` mirrors the formula the tap serves (stable release, with `--HEAD` for `main`).
 
 ## Agent skill
 

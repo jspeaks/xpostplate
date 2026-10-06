@@ -224,13 +224,13 @@
     <h2>Install</h2>
     <ul class="install">
       <li><span class="pm">npm</span><code><span class="nw">npm i -g xpostplate</span></code></li>
-      <li><span class="pm">Homebrew</span><code><span class="nw">brew tap jspeaks/xpostplate</span> <span class="nw">&amp;&amp;</span> <span class="nw">brew install --HEAD xpostplate</span></code></li>
+      <li><span class="pm">Homebrew</span><code><span class="nw">brew install jspeaks/xpostplate/xpostplate</span></code></li>
       <li><span class="pm">pnpm</span><code><span class="nw">pnpm add -g xpostplate</span></code></li>
       <li><span class="pm">Bun</span><code><span class="nw">bun add -g xpostplate</span></code></li>
       <li><span class="pm">npx</span><code><span class="nw">npx xpostplate --help</span></code></li>
       <li><span class="pm">Source</span><code><span class="nw">git clone</span> https://github.com/jspeaks/xpostplate <span class="nw">&amp;&amp;</span> <span class="nw">cd xpostplate</span> <span class="nw">&amp;&amp;</span> <span class="nw">npm install</span> <span class="nw">&amp;&amp;</span> <span class="nw">npm link</span></code></li>
     </ul>
-    <p style="margin-top:12px">Then run <code>xpostplate --help</code>. <code>npx</code> runs it once without a global install. Homebrew is HEAD-only from the tap; a stable non-HEAD install needs a GitHub release.</p>
+    <p style="margin-top:12px">Then run <code>xpostplate --help</code>. <code>npx</code> runs it once without a global install. Homebrew installs the latest tagged release; add <code>--HEAD</code> for bleeding edge from <code>main</code> (<code>brew install --HEAD jspeaks/xpostplate/xpostplate</code>).</p>
 
     <h2>Views</h2>
     <ul class="views">
@@ -301,7 +301,7 @@
 }</code></pre>
 
     <h2>Requirements</h2>
-    <p class="req">Node 20.9 or newer. Nothing else: no ImageMagick. Rendering uses npm packages that ship prebuilt binaries (<code>@resvg/resvg-js</code> for the SVG, <code>sharp</code> for photos and the avatar), so npm, pnpm, Bun, and Homebrew installs need no system packages. Homebrew (HEAD tap) pulls in Node for you.</p>
+    <p class="req">Node 20.9 or newer. Nothing else: no ImageMagick. Rendering uses npm packages that ship prebuilt binaries (<code>@resvg/resvg-js</code> for the SVG, <code>sharp</code> for photos and the avatar), so npm, pnpm, Bun, and Homebrew installs need no system packages. Homebrew pulls in Node for you.</p>
   </div>
   <footer class="site-foot">
     <a href="./">xpostplate</a>

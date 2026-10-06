@@ -1,11 +1,11 @@
-# Head-only until the first GitHub release. On that release, replace `head`
-# with the GitHub tag archive URL and the real sha256 of that tarball.
-# `brew install xpostplate` stays blocked until this formula lives in a tap.
-# It is not in homebrew-core.
-# Licensed MIT. Still not a homebrew-core formula.
+# Tap formula for xpostplate (not in homebrew-core).
+# Stable installs the tagged GitHub release; `brew install --HEAD` tracks main.
 class Xpostplate < Formula
   desc "Render or fabricate an X post as a PNG"
   homepage "https://github.com/jspeaks/xpostplate"
+  url "https://github.com/jspeaks/xpostplate/archive/refs/tags/v0.9.26.tar.gz"
+  sha256 "b8f1af8b49afdd39189cbd2315d8e4a6ae1c4fe485ee9512b4df7efd82022178"
+  license "MIT"
   head "https://github.com/jspeaks/xpostplate.git", branch: "main"
 
   depends_on "node"
@@ -21,8 +21,8 @@ class Xpostplate < Formula
     end
     (bin/"xpostplate").write <<~SH
       #!/bin/bash
-      export PATH="#{Formula["node"].opt_bin}:${PATH}"
-      exec "#{Formula["node"].opt_bin}/node" "#{libexec}/bin/xpostplate.js" "$@"
+      export PATH="#{formula_opt_bin("node")}:${PATH}"
+      exec "#{formula_opt_bin("node")}/node" "#{libexec}/bin/xpostplate.js" "$@"
     SH
   end
 
@@ -35,6 +35,7 @@ class Xpostplate < Formula
   end
 
   test do
+    assert_match version.to_s, shell_output("#{bin}/xpostplate --version") unless version.head?
     assert_match(/^\d+\.\d+\.\d+/, shell_output("#{bin}/xpostplate --version"))
     system bin/"xpostplate", "--fixture", "-o", testpath/"plate.png"
     assert_path_exists testpath/"plate.png"
