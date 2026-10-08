@@ -2,8 +2,10 @@
 
 ## Open
 - Launch timing: Show HN on a Tue–Thu, 8–10 AM ET. Needs Jaye's go-ahead.
+- SVG output (idea, not built): the CLI builds the post as SVG internally (`lib/svg.js`) but only writes PNG; there is no `--format svg` or `-o post.svg`. An export would need photos and the avatar embedded as data URIs (today sharp composites them after rasterizing), and its text would depend on the viewer having the same font (Arial, DejaVu Sans, or Liberation Sans). Worth asking HN whether anyone wants it before building.
 
 ## Decided
+- 2026-10-08: Positioning adds deterministic and self-contained (encapsulated vector render) to CLI, agentic, and chainable. Homepage gets two more chips (deterministic, self-contained) and the line under the headline becomes "Drawn as SVG and rasterized in-process: no browser, no screenshots. Same input, same PNG, byte for byte." FAB adds deterministic, vector pipeline, and `--json` rows; /docs gains "How it renders" (#rendering); README gains a Why section; the skill tells agents it is deterministic and cheaper than generating an image. `--help` unchanged, so no release. Claims checked: same-machine renders are byte-identical; fonts are system fonts, not bundled (only emoji are), so Mac and Linux bytes differ.
 - 2026-10-07: Emoji = bundled Twemoji SVGs inlined per grapheme (not an emoji font): works with resvg-js as-is, no network, ~0.95 MB. Graphics are CC-BY 4.0; attribution in README, assets/emoji/LICENSE-GRAPHICS + SOURCE.txt, /docs, and the release notes. Released as 0.10.0 (a minor: new feature).
 - 2026-10-07: Homepage hero is one before-and-after: the SpaceX V3 post URL and `xpostplate <url> > post.png` beside the PNG it writes. The view list, the plate variant, and the blurb "A plate is the bordered broadcast card." moved to a views gallery on /docs. The Built for agents demo stays on the homepage below the hero (so harness_switch tracking stays where it is). Chips (CLI, agentic, chainable) and the headline with the X logo are unchanged.
 - 2026-10-05: Final name is X Post Plate / `xpostplate` (not "X Post Path").
