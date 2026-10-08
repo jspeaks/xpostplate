@@ -95,9 +95,10 @@ test("helpers", () => {
   assert.deepEqual(runs.filter((r) => r.link).map((r) => r.text), ["@a", "#tag", "$TSLA", "x.com/y"]);
   const stripped = bodyText({ text: "a https://t.co/z", entities: {} }, { stripMedia: true, expandLinks: true });
   assert.equal(stripped.text, "a");
-  // Glyphs the measured face lacks keep their advance but are not painted (no .notdef boxes).
-  const emoji = renderSvg({ ...normalizeSyndication(payload), text: "Liftoff \u{1F680} now" }, parseCli(["1", "--no-media"]));
-  assert.ok(emoji.svg.includes('<tspan fill="none">\u{1F680}</tspan>'));
+  // Non-emoji glyphs the measured face lacks (CJK) keep their advance but are not
+  // painted (no .notdef boxes). Emoji are drawn in color (see emoji.test.js).
+  const cjk = renderSvg({ ...normalizeSyndication(payload), text: "Liftoff \u6F22 now" }, parseCli(["1", "--no-media"]));
+  assert.ok(cjk.svg.includes('<tspan fill="none">\u6F22</tspan>'));
 });
 
 test("--help shows the new defaults and the plate restore", () => {
