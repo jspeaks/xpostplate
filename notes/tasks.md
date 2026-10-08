@@ -1,11 +1,16 @@
 # Tasks
 
 ## Open
-- [ ] Refresh the docs hero and sample PNGs so they show the faithful default `detail` view
+- [ ] Publish 0.10.0 to npm (Jaye): `cd ~/dev/xpostplate && git pull && npm whoami && npm publish`
 - [ ] Draft launch posts (Show HN, dev.to/Hashnode article, r/commandline, X) for Jaye's approval
-- [ ] Render emoji in posts (currently missing since the SVG renderer)
+- [ ] Decide whether package.json `license` should become `MIT AND CC-BY-4.0` now that Twemoji graphics ship in the package (the Homebrew formula already says `all_of: ["MIT", "CC-BY-4.0"]`)
+- [ ] The local `package-lock.json` on diana.local still has an uncommitted version-field drift (0.9.25 → 0.9.26, engines >=18 → >=20.9); it now lags package.json 0.10.0. Refresh with `npm install --package-lock-only` when convenient
 
 ## Done
+- [x] 0.10.0: color emoji in every view and theme via bundled Twemoji v17.0.3 (2026-10-07)
+- [x] Docs hero, view samples, and og.png regenerated with the faithful detail view (2026-10-07)
+- [x] Homepage simplified to one before-and-after (URL + `xpostplate <url> > post.png` → PNG); views, plate, and emoji moved to /docs (2026-10-07)
+- [x] Tap formula 0.10.0 (url + sha256, license MIT and CC-BY-4.0, emoji fixture in `brew test`); packaging/homebrew synced (2026-10-07)
 - [x] 0.9.26: drop ImageMagick, render SVG via @resvg/resvg-js + sharp (2026-10-06)
 - [x] GA4 + event tracking on the site (G-YTNXQ6PRPH)
 - [x] Clean URLs across the site (no index.html or .html)
