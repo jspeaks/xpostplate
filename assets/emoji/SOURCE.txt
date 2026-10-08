@@ -1,0 +1,12 @@
+Twemoji v17.0.3 (https://github.com/jdecked/twemoji, commit b6b55fef1e8636b540a6d016a4729ca8cdf2e60b)
+Built 2026-10-07 with scripts/build-emoji.mjs from assets/svg (4,009 SVGs).
+
+Emoji graphics: Copyright (c) 2014–2021 Twitter, Inc and other contributors;
+Copyright (c) 2022–present Jason Sofonia & Justine De Caires and other contributors.
+Licensed under CC-BY 4.0 (see LICENSE-GRAPHICS in this folder,
+https://creativecommons.org/licenses/by/4.0/).
+
+Changes: each SVG's inner markup was kept as drawn; whitespace between tags was
+removed, U+FE0F was dropped from the lookup keys, and the set was packed into one
+brotli-compressed JSON file (twemoji.json.br). xpostplate inlines one graphic per
+emoji grapheme into the SVG it rasterizes. Nothing is fetched at render time.

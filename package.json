@@ -10,14 +10,16 @@
     "bin",
     "lib",
     "assets/x-logo.svg",
+    "assets/emoji",
     "fixtures/sample-post.json",
+    "fixtures/emoji-post.json",
     "skills"
   ],
   "engines": {
     "node": ">=20.9"
   },
   "scripts": {
-    "prepublishOnly": "node --check bin/xpostplate.js && node --input-type=module -e \"import {accessSync} from 'node:fs'; for (const f of ['bin/xpostplate.js','lib/args.js','lib/fonts.js','lib/png.js','lib/post.js','lib/svg.js','assets/x-logo.svg','fixtures/sample-post.json','skills/xpostplate/SKILL.md']) accessSync(f)\"",
+    "prepublishOnly": "node --check bin/xpostplate.js && node --input-type=module -e \"import {accessSync} from 'node:fs'; for (const f of ['bin/xpostplate.js','lib/args.js','lib/emoji.js','lib/fonts.js','lib/png.js','lib/post.js','lib/svg.js','assets/x-logo.svg','assets/emoji/twemoji.json.br','assets/emoji/LICENSE-GRAPHICS','fixtures/sample-post.json','skills/xpostplate/SKILL.md']) accessSync(f)\"",
     "test": "node --test test/"
   },
   "repository": {
