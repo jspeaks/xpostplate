@@ -6,6 +6,8 @@ A public X post, or one you fabricate and override, drawn as a PNG that looks li
 
 Bare `xpostplate <url>` aims to match the opened post on x.com: light theme, no border, no X mark, the real avatar (initials only when there is no avatar URL or it fails to load), the verified check when the post data says verified (blue, gold for organizations, gray for government), blue @mentions, #hashtags, $cashtags, and links (t.co links show their display URL), the photos under the text, a `time · date · views` line, and an action bar with the counts the source has. The media `t.co` link leaves the body when its photo is drawn.
 
+Emoji draw in color in every view and both themes, including `--fabricate --text`: ZWJ families (👨‍👩‍👧‍👦), skin tones (👋🏽), flags (🇺🇬), keycaps (1️⃣), and plain emoji. Each one is a [Twemoji](https://github.com/jdecked/twemoji) graphic bundled in the package and inlined into the SVG, so a render needs no emoji font and no network. Wrapping counts each emoji at the width x.com draws it (1.2em plus a small margin). Symbols your text font already has, like © and ™, stay text.
+
 `--view` picks the shape:
 
 - `detail`, the default, is the opened post: avatar, name and check over handle, body, photos, `10:52 AM · Aug 27, 2026 · 1.2K Views` (views only when that count is known), and the action bar. `--metrics none` hides the bar.
@@ -61,6 +63,9 @@ xpostplate https://x.com/SpaceX/status/[slug] --view quote -o quote.png
 # Invent a post. No URL and no network.
 xpostplate --fabricate --name "SpaceX" --handle SpaceX --text "Starship is stacked." --view timeline
 
+# Emoji in color, offline: family, skin tone, flag, keycap.
+xpostplate --fabricate --name "Jaye" --handle jspeaks --text "Shipped 🚀 👨‍👩‍👧‍👦 👋🏽 🇺🇸 1️⃣"
+
 # Start from a public post and replace the words.
 xpostplate https://x.com/SpaceX/status/[slug] --text "A line written for the image."
 ```
@@ -102,10 +107,16 @@ xpostplate https://x.com/SpaceX/status/[slug] --text "A line written for the ima
 
 ## Requirements
 
-Node 20.9 or newer. Nothing else: no ImageMagick. Rendering uses npm packages that ship prebuilt binaries ([`@resvg/resvg-js`](https://github.com/thx/resvg-js) rasterizes the SVG, [`sharp`](https://sharp.pixelplumbing.com) crops, rounds, and composites photos and the avatar), so `npm i -g xpostplate`, pnpm, Bun, and Homebrew all work with no system packages. Homebrew pulls in Node for you. Text uses Arial on macOS, or DejaVu Sans or Liberation Sans on Linux, loaded straight from those TrueType files (system font lookup is off). Since 0.9.26 `MAGICK_BIN` is ignored. `packaging/homebrew/xpostplate.rb` mirrors the formula the tap serves (stable release, with `--HEAD` for `main`).
+Node 20.9 or newer. Nothing else: no ImageMagick. Rendering uses npm packages that ship prebuilt binaries ([`@resvg/resvg-js`](https://github.com/thx/resvg-js) rasterizes the SVG, [`sharp`](https://sharp.pixelplumbing.com) crops, rounds, and composites photos and the avatar), so `npm i -g xpostplate`, pnpm, Bun, and Homebrew all work with no system packages. Homebrew pulls in Node for you. Text uses Arial on macOS, or DejaVu Sans or Liberation Sans on Linux, loaded straight from those TrueType files (system font lookup is off). Emoji come from the bundled Twemoji set in `assets/emoji/` (4,009 graphics, one brotli file of about 0.95 MB, loaded only when a post has emoji), not from a system font. Since 0.9.26 `MAGICK_BIN` is ignored. `packaging/homebrew/xpostplate.rb` mirrors the formula the tap serves (stable release, with `--HEAD` for `main`).
 
 ## Agent skill
 
 Open [Agent Skills](https://agentskills.io) skill at `skills/xpostplate/SKILL.md`. It ships with the npm package (`files` includes `skills`), so after `npm install` / `npm i -g xpostplate`, harnesses that scan `node_modules/**/skills/*/SKILL.md` (skills-npm, askill, and similar) can activate it. Homebrew installs the same skill at `$(brew --prefix)/opt/xpostplate/share/xpostplate/skills/xpostplate/SKILL.md`. For agents that only watch a skills directory, copy or symlink that folder into `.agents/skills/`, `.claude/skills/`, `.cursor/skills/`, or the equivalent.
 
 `xpostplate --help` lists every flag.
+
+## License
+
+Code: MIT, see [LICENSE](LICENSE).
+
+Emoji graphics: [Twemoji](https://github.com/jdecked/twemoji) v17.0.3, Copyright 2014–2021 Twitter, Inc and other contributors, and 2022–present Jason Sofonia & Justine De Caires and other contributors, licensed under [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/). The license text and the build notes ship in [`assets/emoji/`](assets/emoji) (`LICENSE-GRAPHICS`, `SOURCE.txt`); `scripts/build-emoji.mjs` rebuilds the bundle from the official SVGs.

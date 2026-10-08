@@ -31,6 +31,7 @@ This skill ships at `skills/xpostplate/` in the repo and in the npm package (`fi
 
 - Bare `xpostplate <url>` = the opened post as x.com shows it (`--view detail`, photos on, light theme, no border, no X mark): real avatar (initials fallback), verified check from post data, blue @mentions/links, `time · date · views`, action bar with known counts
 - The media `t.co` link is dropped from the body when its photo is drawn
+- Emoji render in color in every view and theme (bundled Twemoji, CC-BY 4.0; no emoji font, no network), including `--fabricate --text`; ZWJ families, skin tones, flags, and keycaps stay whole. Symbols the text font has (© ™) stay text
 - Old primitive plate: `--view plate --no-media` (near-black border + X mark + initials); add `--accent '#1D9BF0'` for the old blue border
 - PNG on stdout when piped/redirected; on a TTY with no `-o`, writes `{handle}-{YYYYMMDD-HHMMSS}.png` in cwd (`x-…` if fabricate/missing handle)
 - Prefer `-o path.png` when you need a specific path
@@ -73,6 +74,9 @@ xpostplate https://x.com/SpaceX/status/[slug] --json
 
 # Offline fabricate
 xpostplate --fabricate --name "SpaceX" --handle SpaceX --text "Starship is stacked." --view timeline -o fake.png
+
+# Offline fabricate with color emoji
+xpostplate --fabricate --name "Jaye" --handle jspeaks --text "Shipped 🚀 👨‍👩‍👧‍👦 👋🏽 🇺🇸" -o emoji.png
 
 # Local fixture
 xpostplate --fixture
