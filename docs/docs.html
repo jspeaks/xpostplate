@@ -175,6 +175,32 @@
     p code, li code { white-space: nowrap; }
     .cmd code, pre code { white-space: inherit; font-size: inherit; }
 
+    /* Views gallery: one real post, each view. Two columns from tablet up. */
+    .gallery {
+      margin: 16px 0 0;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 20px;
+    }
+    .gallery figure { margin: 0; min-width: 0; }
+    .gallery img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+    }
+    .gallery figcaption {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+    .gallery figcaption code { color: var(--text); white-space: normal; }
+    .solo { margin: 12px 0 12px; max-width: 640px; }
+    @media (min-width: 720px) {
+      .gallery { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; }
+    }
     .site-foot {
       max-width: calc(960px + 2 * var(--gutter));
       margin: 0 auto;
@@ -240,6 +266,30 @@
       <li><span class="flag"><code>--view plate</code></span><span class="desc">bordered broadcast card (near-black border, X mark, initials)</span></li>
     </ul>
     <p style="margin-top:12px">No flags means the faithful opened post: light theme, no border, no X mark, real avatar (initials as fallback), verified check from the post data, blue @mentions and links, photos drawn, and counts only when the source has them. The old primitive plate is <code class="nw">--view plate --no-media</code>; add <code class="nw">--accent '#1D9BF0'</code> for its old blue border.</p>
+    <p>One real post (<a href="https://x.com/SpaceX/status/2106090316747207047" style="color:var(--text)">SpaceX, Starlink V3</a>) in each view, rendered by the CLI:</p>
+    <div class="gallery">
+      <figure>
+        <img src="media/spacex-v3.png" width="800" height="684" loading="lazy" alt="Detail view: the SpaceX post as x.com shows it when opened, light theme, four photos, time and date, and the action bar">
+        <figcaption><code>--view detail</code> (default): the opened post.</figcaption>
+      </figure>
+      <figure>
+        <img src="media/timeline.png" width="800" height="561" loading="lazy" alt="Timeline view in the dark theme: the SpaceX post as a home-feed row with relative time and icon counts">
+        <figcaption><code>--view timeline --theme dark</code>: the home-feed row, x.com Lights out.</figcaption>
+      </figure>
+      <figure>
+        <img src="media/quote.png" width="800" height="546" loading="lazy" alt="Quote view: the SpaceX post inset in a rounded gray hairline, smaller type, no action bar">
+        <figcaption><code>--view quote</code>: the nested post, no action bar.</figcaption>
+      </figure>
+      <figure>
+        <img src="media/plate.png" width="800" height="238" loading="lazy" alt="Plate view: the SpaceX post as a bordered near-black broadcast card with initials and the X mark, text only">
+        <figcaption><code>--view plate --no-media</code>: a plate is the bordered broadcast card. Border, initials, X mark, text only.</figcaption>
+      </figure>
+    </div>
+
+    <h2>Emoji</h2>
+    <p>Emoji draw in color in every view and theme, including <code>--fabricate --text</code>: ZWJ families, skin tones, flags, keycaps, and plain emoji. The graphics are the <a href="https://github.com/jdecked/twemoji" style="color:var(--text)">Twemoji</a> set (v17.0.3, CC-BY 4.0), bundled in the package, so a render needs no emoji font and no network. Line wrapping counts each emoji at the width x.com draws it. Symbols your text font already has, like © and ™, stay text.</p>
+    <img class="solo" src="media/emoji.png" width="800" height="277" loading="lazy" alt="A Starlink post rendered with color emoji: a satellite, the Uganda flag, and a red heart after the text" style="display:block;width:100%;height:auto;border-radius:10px;border:1px solid var(--line)">
+    <p><code class="cmd"><span class="nw">xpostplate https://x.com/Starlink/status/2094882783915295062</span> <span class="nw">--max-height 300</span></code></p>
 
     <h2>Flags</h2>
     <ul class="flags">
@@ -271,6 +321,8 @@
       <dd><code class="cmd"><span class="nw">xpostplate https://x.com/SpaceX/status/[slug]</span> <span class="nw">--view quote</span> <span class="nw">-o quote.png</span></code></dd>
       <dt>Invent a post. No URL and no network.</dt>
       <dd><code class="cmd"><span class="nw">xpostplate --fabricate</span> <span class="nw">--name "SpaceX"</span> <span class="nw">--handle SpaceX</span> <span class="nw">--text "Starship is stacked."</span> <span class="nw">--view timeline</span></code></dd>
+      <dt>Emoji in color, offline: a family, a skin tone, a flag, a keycap.</dt>
+      <dd><code class="cmd"><span class="nw">xpostplate --fabricate</span> <span class="nw">--name "Jaye"</span> <span class="nw">--handle jspeaks</span> <span class="nw">--text "Shipped 🚀 👨‍👩‍👧‍👦 👋🏽 🇺🇸 1️⃣"</span></code></dd>
       <dt>Start from a public post and replace the words.</dt>
       <dd><code class="cmd"><span class="nw">xpostplate https://x.com/SpaceX/status/[slug]</span> <span class="nw">--text "A line written for the image."</span></code></dd>
     </dl>
@@ -301,7 +353,8 @@
 }</code></pre>
 
     <h2>Requirements</h2>
-    <p class="req">Node 20.9 or newer. Nothing else: no ImageMagick. Rendering uses npm packages that ship prebuilt binaries (<code>@resvg/resvg-js</code> for the SVG, <code>sharp</code> for photos and the avatar), so npm, pnpm, Bun, and Homebrew installs need no system packages. Homebrew pulls in Node for you.</p>
+    <p class="req">Node 20.9 or newer. Nothing else: no ImageMagick. Rendering uses npm packages that ship prebuilt binaries (<code>@resvg/resvg-js</code> for the SVG, <code>sharp</code> for photos and the avatar), so npm, pnpm, Bun, and Homebrew installs need no system packages. Homebrew pulls in Node for you. Color emoji come from the bundled Twemoji graphics (about 0.95 MB, compressed), not from a system font.</p>
+    <p>Emoji graphics: <a href="https://github.com/jdecked/twemoji" style="color:var(--text)">Twemoji</a>, Copyright 2014–2021 Twitter, Inc and other contributors, and 2022–present Jason Sofonia &amp; Justine De Caires and other contributors, licensed under <a href="https://creativecommons.org/licenses/by/4.0/" style="color:var(--text)">CC-BY 4.0</a>. The code is MIT.</p>
   </div>
   <footer class="site-foot">
     <a href="./">xpostplate</a>

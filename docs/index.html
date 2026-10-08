@@ -45,6 +45,7 @@
       --accent: #1d9bf0;
       --page: 1120px;
       --gutter: clamp(16px, 3.5vw, 56px);
+      --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
     }
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; }
@@ -96,17 +97,16 @@
       white-space: nowrap;
       text-transform: uppercase;
     }
-    /* Phone first: one column. Pitch, then the plate, then the flag list. */
+
+    /* Hero: one before-and-after. Phone first, one column: pitch (URL + command),
+       a down arrow, then the PNG the command writes. */
     .hero {
       display: grid;
       grid-template-columns: minmax(0, 1fr);
-      grid-template-areas: "pitch" "shot" "feats";
-      gap: 22px;
+      gap: 14px;
       align-items: center;
     }
-    .pitch { grid-area: pitch; min-width: 0; }
-    .shot { grid-area: shot; }
-    .feats { grid-area: feats; min-width: 0; }
+    .pitch { min-width: 0; }
     .pitch h1 .xmark {
       display: inline-block;
       width: 0.78em;
@@ -116,10 +116,10 @@
     }
     .pitch h1 {
       margin: 0;
-      font-size: clamp(26px, 1.4vw + 18px, 46px);
+      font-size: clamp(28px, 2.6vw + 12px, 58px);
       font-weight: 600;
       letter-spacing: -0.03em;
-      line-height: 1.12;
+      line-height: 1.1;
       max-width: 12em;
     }
     .why {
@@ -129,44 +129,85 @@
       font-size: 16px;
       line-height: 1.4;
     }
-    /* The command wraps between its two halves only when it has to; it never scrolls sideways. */
+    .steps {
+      margin: 20px 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 12px;
+      max-width: 34em;
+    }
+    .step-label {
+      display: block;
+      margin: 0 0 5px;
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    /* The "before": a post URL as it sits in the address bar. */
+    .url {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      width: fit-content;
+      max-width: 100%;
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #0f1720;
+      color: var(--text);
+      font-size: 14px;
+      text-decoration: none;
+      overflow-wrap: anywhere;
+    }
+    .url:hover, .url:focus-visible { border-color: var(--muted); }
+    .url svg { width: 14px; height: 14px; flex: 0 0 auto; }
+    .url .host { color: var(--muted); }
+    /* The command wraps between its halves only when it has to; never scrolls sideways. */
     .cmd {
-      margin: 14px 0 0;
       display: block;
       width: fit-content;
       max-width: 100%;
-      padding: 9px 12px;
+      margin: 0;
+      padding: 10px 14px;
       background: var(--plate);
       border: 1px solid var(--line);
       border-radius: 10px;
       color: var(--text);
-      font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-      font-size: 13px;
+      font-family: var(--mono);
+      font-size: 15px;
       line-height: 1.4;
       white-space: normal;
       overflow-wrap: anywhere;
-      overflow: visible;
     }
     .cmd .nw { white-space: nowrap; }
-    .cmd + .cmd { margin-top: 8px; }
-    .plate-blurb a { color: var(--muted); }
-    .plate-blurb a:hover, .plate-blurb a:focus-visible { color: var(--text); }
-    .plate-blurb code {
-      font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-      font-size: 12px;
-    }
-    .plate-blurb {
-      margin: 8px 0 0;
+    .cmd .ph { color: var(--muted); }
+    .install {
+      margin: 16px 0 0;
       color: var(--muted);
       font-size: 14px;
-      line-height: 1.4;
+      line-height: 1.5;
       max-width: 40em;
     }
+    .install a { color: var(--muted); }
+    .install a:hover, .install a:focus-visible { color: var(--text); }
+    .install code { font-family: var(--mono); font-size: 12.5px; color: var(--text); overflow-wrap: anywhere; }
+    .turn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+      font-size: 26px;
+      line-height: 1;
+      user-select: none;
+    }
+    .turn .arr-right { display: none; }
     .shot {
       position: relative;
-      margin: 0 auto;
+      margin: 8px auto 0;
       width: 100%;
-      max-width: 720px;
+      max-width: 560px;
       min-width: 0;
     }
     .shot img {
@@ -174,8 +215,16 @@
       width: 100%;
       height: auto;
       border-radius: 14px;
-      border: 1px solid var(--line);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
     }
+    .shot figcaption {
+      margin: 14px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      text-align: center;
+    }
+    .shot figcaption code { font-family: var(--mono); color: var(--text); }
+    .frame { position: relative; }
     .corners {
       position: absolute;
       inset: -8px;
@@ -183,42 +232,12 @@
       height: calc(100% + 16px);
       pointer-events: none;
     }
-    /* Flag | description, two clean columns sharing one track width. */
-    .named {
-      margin: 0;
-      padding: 0;
-      list-style: none;
-      display: grid;
-      grid-template-columns: max-content minmax(0, 1fr);
-      column-gap: 1.5em;
-      border-bottom: 1px solid var(--line);
+    .more {
+      margin: 22px 0 0;
+      color: var(--muted);
+      font-size: 14px;
     }
-    .named li {
-      grid-column: 1 / -1;
-      display: grid;
-      grid-template-columns: 9.5em minmax(0, 1fr);
-      grid-template-columns: subgrid;
-      align-items: baseline;
-      margin: 0;
-      padding: 9px 0;
-      border-top: 1px solid var(--line);
-      font-size: 15.5px;
-    }
-    .named code {
-      font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-      font-size: 0.92em;
-      color: var(--text);
-      white-space: nowrap;
-    }
-    .named .desc { color: var(--muted); min-width: 0; overflow-wrap: anywhere; }
-    .named .xmark {
-      display: inline-block;
-      width: 0.85em;
-      height: 0.85em;
-      margin: 0 0.12em -0.05em 0;
-      vertical-align: baseline;
-      color: var(--text);
-    }
+    .more a { color: var(--text); text-underline-offset: 2px; }
 
     .site-foot {
       width: 100%;
@@ -241,81 +260,45 @@
       color: var(--line);
     }
 
-    /* Tablet: one column, plate capped so pitch and plate share the first screen. */
+    /* Tablet: still one column; the PNG is capped so pitch and PNG share the first screen. */
     @media (min-width: 600px) {
       .shot {
-        margin: 0;
-        max-width: min(720px, calc((100vh - 340px) * 1.311));
-        max-width: min(720px, calc((100svh - 340px) * 1.311));
-        min-width: min(100%, 440px);
+        max-width: min(600px, calc((100vh - 460px) * 1.17));
+        max-width: min(600px, calc((100svh - 460px) * 1.17));
+        min-width: min(100%, 360px);
       }
     }
-    /* Laptop and up: copy and flags left, plate right. Cap the plate to ~52vh so
-       the hero plus a chunk of "Built for agents" share the first viewport. Page
-       cap stays wide so a big monitor does not leave huge empty gutters. */
+    /* Laptop and up: before on the left, an arrow, the PNG on the right, all above the fold. */
     @media (min-width: 960px) {
       :root {
-        --page: 1680px;
-        --pitch: 460px;
-        /* 800/561 plate aspect; width follows max-height so corners stay tight. */
-        --shot: min(1000px, calc(52vh * 800 / 561));
-        --shot: min(1000px, calc(52svh * 800 / 561));
+        --page: 1400px;
+        /* 800x684 PNG; its width follows ~68vh of height so the hero fits the first screen. */
+        --shot: min(760px, calc(68vh * 800 / 684));
+        --shot: min(760px, calc(68svh * 800 / 684));
       }
-      body {
-        display: flex;
-        flex-direction: column;
-        min-height: 100vh;
-        min-height: 100svh;
-      }
-      .screen {
-        flex: 1 0 auto;
-        display: flex;
-        flex-direction: column;
-        padding-top: 14px;
-        padding-bottom: 8px;
-      }
-      .brand { margin-bottom: 12px; }
+      .screen { padding-top: 14px; }
+      .brand { margin-bottom: 8px; }
       .hero {
-        flex: 1 0 auto;
-        grid-template-columns: minmax(var(--pitch), 1fr) minmax(0, var(--shot));
-        grid-template-rows: 1fr auto auto 1fr;
-        grid-template-areas: ". shot" "pitch shot" "feats shot" ". shot";
-        column-gap: clamp(32px, 3vw, 64px);
-        row-gap: 0;
-        align-items: start;
+        min-height: calc(100vh - 110px);
+        min-height: calc(100svh - 110px);
+        grid-template-columns: minmax(380px, 1fr) auto minmax(0, var(--shot));
+        column-gap: clamp(20px, 2.5vw, 48px);
       }
-      .feats { margin-top: 16px; max-width: 40em; }
-      .shot {
-        margin: 4px 0;
-        align-self: center;
-        justify-self: end;
-        max-width: none;
-        min-width: 0;
-        width: 100%;
-      }
-      /* Width fills the --shot column (~52vh × plate aspect); height follows. */
-      .shot img {
-        width: 100%;
-        height: auto;
-      }
-      .cmd { font-size: 12px; }
-      .named li { padding: 7px 0; font-size: 15px; }
-      .site-foot { padding-bottom: 20px; }
+      .turn .arr-right { display: block; }
+      .turn .arr-down { display: none; }
+      .shot { margin: 0; max-width: none; width: 100%; justify-self: end; }
     }
     @media (min-width: 1200px) {
-      :root { --pitch: 480px; }
-      .cmd { font-size: 13px; }
-      .feats { margin-top: 18px; }
-      .named li { padding: 8px 0; }
+      .cmd { font-size: 16px; }
     }
     /* Phone tweaks. */
     @media (max-width: 480px) {
       .wordmark { height: 26px; }
       .chip { height: 17px; padding: 0 5px; font-size: 10px; }
       .why { font-size: 15.5px; }
-      .cmd { font-size: 12.5px; }
-      .named li { font-size: 15px; }
-      .named { column-gap: 1em; }
+      .steps { margin-top: 16px; gap: 10px; }
+      .url { font-size: 13px; }
+      .cmd { font-size: 14px; }
       .shot img { border-radius: 10px; }
       .corners { inset: -6px; width: calc(100% + 12px); height: calc(100% + 12px); }
     }
@@ -603,34 +586,37 @@
       <span class="chip">CLI</span>
       <span class="chip">agentic</span>
       <span class="chip">chainable</span>
-      <a class="ver" href="timeline#v0.9.26" title="Release timeline">v0.9.26</a>
+      <a class="ver" href="timeline#v0.10.0" title="Release timeline">v0.10.0</a>
     </div>
     <div class="hero">
       <div class="pitch">
         <h1>Turn an <svg class="xmark" viewBox="0 0 24 24" aria-label="X" role="img"><path fill="currentColor" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> post into a PNG.</h1>
         <p class="why">A CLI tool for turning an X post into a PNG.</p>
-        <code class="cmd"><span class="nw">xpostplate https://x.com/SpaceX/status/[slug]</span> <span class="nw">&gt; post.png</span></code>
-        <p class="plate-blurb">A plate is the bordered broadcast card. <a href="docs">Install docs</a> · Homebrew: <code>brew install jspeaks/xpostplate/xpostplate</code></p>
+        <ol class="steps">
+          <li>
+            <span class="step-label">Before: an X post URL</span>
+            <a class="url" href="https://x.com/SpaceX/status/2106090316747207047"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg><span><span class="host">x.com/</span>SpaceX/status/2106090316747207047</span></a>
+          </li>
+          <li>
+            <span class="step-label">Run</span>
+            <code class="cmd"><span class="nw">xpostplate <span class="ph">&lt;url&gt;</span></span> <span class="nw">&gt; post.png</span></code>
+          </li>
+        </ol>
+        <p class="install"><a href="docs">Install docs</a> · Homebrew: <code>brew install jspeaks/xpostplate/xpostplate</code></p>
       </div>
+      <div class="turn" aria-hidden="true"><span class="arr-right">→</span><span class="arr-down">↓</span></div>
       <figure class="shot">
+        <div class="frame">
         <svg class="corners" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
           <path d="M1 14 V1 H14" fill="none" stroke="#1D9BF0" stroke-width="1.5" vector-effect="non-scaling-stroke"/>
           <path d="M86 1 H99 V14" fill="none" stroke="#1D9BF0" stroke-width="1.5" vector-effect="non-scaling-stroke"/>
           <path d="M1 86 V99 H14" fill="none" stroke="#1D9BF0" stroke-width="1.5" vector-effect="non-scaling-stroke"/>
           <path d="M86 99 H99 V86" fill="none" stroke="#1D9BF0" stroke-width="1.5" vector-effect="non-scaling-stroke"/>
         </svg>
-        <img src="media/timeline.png" width="800" height="561" alt="Dark timeline row of a SpaceX Starship post, four photos">
+        <img src="media/spacex-v3.png" width="800" height="684" alt="After: post.png, the SpaceX Starlink V3 post as x.com shows it: avatar, gold check, text, four photos, time and date, and the action bar with reply and like counts">
+        </div>
+        <figcaption>After: <code>post.png</code>, exactly what the command writes</figcaption>
       </figure>
-      <section class="feats" aria-label="Views and flags">
-      <ul class="named">
-        <li><code>--view plate</code><span class="desc">broadcast card</span></li>
-        <li><code>--view timeline</code><span class="desc"><svg class="xmark" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> timeline row format</span></li>
-        <li><code>--view detail</code><span class="desc"><svg class="xmark" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> detail post format (default)</span></li>
-        <li><code>--view quote</code><span class="desc"><svg class="xmark" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> quote only format</span></li>
-        <li><code>--fabricate</code><span class="desc">invents a post</span></li>
-        <li><code>--no-media</code><span class="desc">text only</span></li>
-      </ul>
-      </section>
     </div>
 
     <!-- Built for agents: harness is themeable. One-word switch:
@@ -662,11 +648,12 @@
             <p>Quarterly notes on breakthroughs worth watching.</p>
             <p class="ghost" aria-hidden="true"></p>
             <p class="ghost short" aria-hidden="true"></p>
-            <img class="docframe-plate" src="media/spacex-v3.png" width="800" height="716" alt="SpaceX Starlink V3 satellites post rendered as a plate">
+            <img class="docframe-plate" src="media/spacex-v3.png" width="800" height="684" alt="The SpaceX Starlink V3 post as a PNG from xpostplate, placed in the report">
           </div>
         </div>
       </div>
     </section>
+    <p class="more">Timeline, quote, and plate views, dark theme, color emoji, and every flag: <a href="docs">docs</a>.</p>
   </main>
   <footer class="site-foot">
     <a href="fab">FAB</a>
