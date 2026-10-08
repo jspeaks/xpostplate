@@ -2,6 +2,21 @@
 
 A public X post, or one you fabricate and override, drawn as a PNG that looks like x.com: the opened post by default, or a timeline row, a quote, or a bordered broadcast plate.
 
+## Why
+
+Tweet-to-image tools have mostly been web apps: paste a link, click, download. xpostplate is a command.
+
+- **CLI and chainable.** `xpostplate <url> > post.png`. PNG on stdout when piped, logs on stderr.
+- **Deterministic.** The same input renders the same PNG, byte for byte. An agent shells out instead of spending tokens generating, describing, or screenshotting an image, and reruns are stable enough to cache or diff.
+- **Self-contained vector render.** The post is built as SVG in-process (`lib/svg.js`) and rasterized by resvg; sharp composites photos and the avatar. No headless browser, no screenshot, no ImageMagick. Emoji are bundled, and text is drawn from the system's Arial, DejaVu Sans, or Liberation Sans file. The only network calls fetch the post, its photos, and its avatar.
+- **Agentic.** Ships an Agent Skills `SKILL.md`, and `--json` returns the post data without an image.
+- **Offline when you want it.** `--fabricate` and `--fixture` render with no URL and no network.
+- **Faithful.** The default view matches the opened post on x.com, not a generic card.
+
+Deterministic means the same post data, flags, fonts, and package versions give the same bytes. A live post renders identically until its data changes (a new like count or avatar). Timeline and quote views show relative time (`13h`) until a post is a week old, `--fabricate` without `--posted` stamps the current time, and macOS (Arial) and Linux (DejaVu or Liberation) draw text with different fonts.
+
+## How it works
+
 `xpostplate` takes a post URL or status id and writes a picture. Leave `X_BEARER_TOKEN` unset and a public post still loads, from X's syndication feed, with no key and no keychain. Counts that feed does not carry stay off the image instead of turning into fake zeros. PNG bytes go to stdout when you pipe or redirect; on a TTY with no `-o`, the file is `{handle}-{YYYYMMDD-HHMMSS}.png` in the cwd (local time; `x-…` if fabricate or the handle is missing). Logs go to stderr. Pass `-o` for an explicit path.
 
 Bare `xpostplate <url>` aims to match the opened post on x.com: light theme, no border, no X mark, the real avatar (initials only when there is no avatar URL or it fails to load), the verified check when the post data says verified (blue, gold for organizations, gray for government), blue @mentions, #hashtags, $cashtags, and links (t.co links show their display URL), the photos under the text, a `time · date · views` line, and an action bar with the counts the source has. The media `t.co` link leaves the body when its photo is drawn.

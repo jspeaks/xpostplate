@@ -1,11 +1,18 @@
 ---
 name: xpostplate
-description: Render or fabricate an X/Twitter post as a PNG that looks like x.com (opened post by default; also timeline row, quote, or bordered broadcast plate). Trigger when the user wants a post image, PNG of a tweet/X post, fabricate a fake post image, or pipe a post card in a shell/agent workflow.
+description: Render or fabricate an X/Twitter post as a PNG that looks like x.com (opened post by default; also timeline row, quote, or bordered broadcast plate). Deterministic and self-contained, so one shell command is cheaper than generating, describing, or screenshotting an image. Trigger when the user wants a post image, PNG of a tweet/X post, fabricate a fake post image, or pipe a post card in a shell/agent workflow.
 ---
 
 # xpostplate
 
 CLI that draws a public X post, or one you invent, as a PNG.
+
+## Why use it instead of making the image yourself
+
+- Deterministic: the same input (post data, flags, machine) gives the same PNG, byte for byte. Rerun it freely; the output can be cached or compared.
+- Cheaper: one shell command. Do not generate an image, describe the post as a picture, open a browser, or screenshot x.com. Check the `wrote <path> (WxH)` line on stderr instead of viewing the image unless you need to look.
+- Self-contained: the post is built as SVG in-process and rasterized by resvg (sharp for photos and the avatar). No headless browser, no ImageMagick. The only network calls fetch the post, its photos, and its avatar; `--fixture` and `--fabricate` are offline.
+- For a stable image from `--fabricate`, pass `--posted <iso>`; otherwise it stamps the current time. `--view timeline` and `--view quote` show relative time (`13h`) until a post is a week old, and live counts change when the post's counts change.
 
 ## Prerequisites
 
