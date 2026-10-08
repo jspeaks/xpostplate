@@ -1,6 +1,6 @@
 # Launch
 
-Status: planning. Nothing posted. Every post needs Jaye's explicit yes.
+Status: Show HN posted 2026-10-08: https://news.ycombinator.com/item?id=50006685 (see below). Everything else still needs Jaye's explicit yes.
 
 ## Plan
 1. Problem-first Show HN, Tue–Thu 8–10 AM ET. Lead with the pain, stay in the comments for 24–48 hours.
@@ -34,7 +34,8 @@ What we can and can't claim (verified 2026-10-08 on 0.10.0):
 Reference posts: https://news.ycombinator.com/item?id=25983352, https://news.ycombinator.com/item?id=19336803, https://news.ycombinator.com/item?id=24322734
 
 ## Show HN draft
-Not posted. Needs Jaye's yes.
+Posted 2026-10-08 11:02 AM ET by jspeaks: https://news.ycombinator.com/item?id=50006685
+Text went in as the post body, shown under the title, with code blocks intact. Right after submission HN showed it as [flagged] and the API reports it dead, so it doesn't appear for logged-out readers. Not resubmitted.
 
 Title: Show HN: X Post Plate – deterministic X post to PNG from the command line
 URL: https://github.com/jspeaks/xpostplate
