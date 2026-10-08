@@ -15,3 +15,10 @@ Status: planning. Nothing posted. Every post needs Jaye's explicit yes.
 ## X angle (from Jaye)
 "I'd been dormant on creating tools, but agentic opportunities give me a chance to publish my creativity and my ideas again."
 Notepad & Megaphone drafts X posts in Jaye's voice.
+
+## Positioning (2026-10-08)
+Past "tweet to image" Show HNs (2019–2021 web apps) got 2–6 points. Lead with what's different:
+- CLI and chainable: `xpostplate <url> > post.png`, stdout when piped.
+- Agentic: ships an Agent Skills SKILL.md, so any coding agent can use it.
+- Deterministic: same input, same PNG, every time. An agent shells out instead of spending tokens generating or screenshotting an image.
+Reference posts: https://news.ycombinator.com/item?id=25983352, https://news.ycombinator.com/item?id=19336803, https://news.ycombinator.com/item?id=24322734
