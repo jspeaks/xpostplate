@@ -12,13 +12,13 @@
   </script>
   <script src="ga.js" defer></script>
   <title>Docs · xpostplate</title>
-  <meta name="description" content="Install, views, flags, and examples for xpostplate, the CLI that turns an X post into a PNG.">
+  <meta name="description" content="Install, views, flags, examples, and rendering for xpostplate, the CLI that turns an X post into a PNG.">
   <link rel="canonical" href="https://code.jspeaks.com/xpostplate/docs">
   <meta name="theme-color" content="#0b1118">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="xpostplate">
   <meta property="og:title" content="Docs · xpostplate">
-  <meta property="og:description" content="Install, views, flags, and examples for xpostplate, the CLI that turns an X post into a PNG.">
+  <meta property="og:description" content="Install, views, flags, examples, and rendering for xpostplate, the CLI that turns an X post into a PNG.">
   <meta property="og:url" content="https://code.jspeaks.com/xpostplate/docs">
   <meta property="og:image" content="https://code.jspeaks.com/xpostplate/media/og.png">
   <meta property="og:image:secure_url" content="https://code.jspeaks.com/xpostplate/media/og.png">
@@ -29,7 +29,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:creator" content="@jspeaks">
   <meta name="twitter:title" content="Docs · xpostplate">
-  <meta name="twitter:description" content="Install, views, flags, and examples for xpostplate, the CLI that turns an X post into a PNG.">
+  <meta name="twitter:description" content="Install, views, flags, examples, and rendering for xpostplate, the CLI that turns an X post into a PNG.">
   <meta name="twitter:image" content="https://code.jspeaks.com/xpostplate/media/og.png">
   <meta name="twitter:image:alt" content="xpostplate share card: the headline “Turn an X post into a PNG” beside a SpaceX Starlink V3 post rendered as a PNG by the CLI.">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23F7F9F9' d='M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z'/%3E%3C/svg%3E">
@@ -351,6 +351,11 @@
   },
   "photos": ["https://example.invalid/photo.jpg"]
 }</code></pre>
+
+    <h2 id="rendering">How it renders</h2>
+    <p>Each post is built as an SVG in-process (<code>lib/svg.js</code>). Text is measured with the same TrueType files that draw it, emoji are inlined from the bundled Twemoji set, and the X mark comes from a bundled SVG. <code>@resvg/resvg-js</code> rasterizes the SVG to PNG with system font lookup off; <code>sharp</code> crops, rounds, and composites photos and the avatar. No headless browser, no screenshot, no ImageMagick. The only network calls fetch the post, its photos, and its avatar; <code>--fixture</code> and <code>--fabricate</code> make none. The CLI writes PNG; the SVG stays internal.</p>
+    <p><strong>Deterministic.</strong> The same input renders the same PNG, byte for byte: the same fixture, flags, and machine give identical files every run, and a live post renders identically until its data changes (a new like count, a new avatar). Times print in New York time whatever the machine's time zone. For an agent, a post image is one shell command, not tokens spent generating, describing, or screenshotting a picture.</p>
+    <p>What can change the bytes: <code>--view timeline</code> and <code>--view quote</code> show relative time (<code>13h</code>) until a post is a week old; <code>--fabricate</code> without <code>--posted</code> stamps the current time; and text uses Arial on macOS or DejaVu Sans or Liberation Sans on Linux, so the same input can differ across systems.</p>
 
     <h2>Requirements</h2>
     <p class="req">Node 20.9 or newer. Nothing else: no ImageMagick. Rendering uses npm packages that ship prebuilt binaries (<code>@resvg/resvg-js</code> for the SVG, <code>sharp</code> for photos and the avatar), so npm, pnpm, Bun, and Homebrew installs need no system packages. Homebrew pulls in Node for you. Color emoji come from the bundled Twemoji graphics (about 0.95 MB, compressed), not from a system font.</p>
