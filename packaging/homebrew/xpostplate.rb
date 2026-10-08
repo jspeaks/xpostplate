@@ -3,9 +3,10 @@
 class Xpostplate < Formula
   desc "Render or fabricate an X post as a PNG"
   homepage "https://github.com/jspeaks/xpostplate"
-  url "https://github.com/jspeaks/xpostplate/archive/refs/tags/v0.9.26.tar.gz"
-  sha256 "b8f1af8b49afdd39189cbd2315d8e4a6ae1c4fe485ee9512b4df7efd82022178"
-  license "MIT"
+  url "https://github.com/jspeaks/xpostplate/archive/refs/tags/v0.10.0.tar.gz"
+  sha256 "4bd845c30a457fdb01607a2d07d594921045774f2ff92254dd194f895be80c12"
+  # Code is MIT; the bundled Twemoji emoji graphics (assets/emoji) are CC-BY-4.0.
+  license all_of: ["MIT", "CC-BY-4.0"]
   head "https://github.com/jspeaks/xpostplate.git", branch: "main"
 
   depends_on "node"
@@ -39,5 +40,8 @@ class Xpostplate < Formula
     assert_match(/^\d+\.\d+\.\d+/, shell_output("#{bin}/xpostplate --version"))
     system bin/"xpostplate", "--fixture", "-o", testpath/"plate.png"
     assert_path_exists testpath/"plate.png"
+    # Color emoji come from the bundled Twemoji set: no font or network needed.
+    system bin/"xpostplate", "--fixture", libexec/"fixtures/emoji-post.json", "-o", testpath/"emoji.png"
+    assert_path_exists testpath/"emoji.png"
   end
 end
