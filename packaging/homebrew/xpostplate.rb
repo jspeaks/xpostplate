@@ -12,7 +12,9 @@ class Xpostplate < Formula
   depends_on "node"
 
   def install
-    libexec.install "assets", "bin", "fixtures", "lib", "package.json", "package-lock.json"
+    libexec.install "bin", "fixtures", "lib", "package.json", "package-lock.json"
+    # Runtime assets only: the README demo (assets/demo.*) stays out of the keg.
+    (libexec/"assets").install "assets/x-logo.svg", "assets/emoji"
     pkgshare.install "skills"
     # Rendering deps (@resvg/resvg-js, sharp) ship prebuilt binaries as optional
     # per-platform packages; no install scripts or system libraries are needed.
