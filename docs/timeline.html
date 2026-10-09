@@ -210,6 +210,19 @@
     </div>
     <h1>Timeline</h1>
     <p class="lede">Release notes from git history, newest first.</p>
+    <div class="day" id="v0.11.0">
+      <time datetime="2026-10-09">2026-10-09</time>
+      <ul>
+        <li class="cc cc-feat"><span class="cc-type">feat:</span> <a class="cc-msg" href="https://github.com/jspeaks/xpostplate/commit/5341cd2d77074e8dd731c9a132a1c24f9765d896">--scale &lt;n&gt; sets pixel density without changing the layout: --width 600 --scale 3 is the 600px layout as an 1800px PNG, vector-rasterized, not upscaled (0.5–8, decimals ok, default 1; width = layout, scale = pixel density)<span class="cc-go" aria-hidden="true">↗</span></a></li>
+        <li class="cc cc-feat"><span class="cc-type">feat:</span> <a class="cc-msg" href="https://github.com/jspeaks/xpostplate/commit/5341cd2d77074e8dd731c9a132a1c24f9765d896">photos and the avatar composite at the scaled size and position, and photos load from the largest size X serves that covers the output (up to 4096px)<span class="cc-go" aria-hidden="true">↗</span></a></li>
+        <li class="cc cc-feat"><span class="cc-type">feat:</span> <a class="cc-msg" href="https://github.com/jspeaks/xpostplate/commit/5341cd2d77074e8dd731c9a132a1c24f9765d896">output is capped at 16384px per side with a clear error; --max-height counts layout pixels, before scale; default renders are byte-identical to 0.10.0<span class="cc-go" aria-hidden="true">↗</span></a></li>
+        <li class="cc cc-feat"><span class="cc-type">feat:</span> <a class="cc-msg" href="https://github.com/jspeaks/xpostplate/commit/3ca5fd3c34f354c68b7585e42e7f4a3a5f9f26ce">homepage chips explain themselves on hover, focus, or tap<span class="cc-go" aria-hidden="true">↗</span></a></li>
+        <li class="cc cc-docs"><span class="cc-type">docs:</span> <a class="cc-msg" href="https://github.com/jspeaks/xpostplate/commit/7a3f075d9211b6912a9e2063d60edb6cd6291eb5">deterministic and self-contained chips, FAB rows, and How it renders on /docs<span class="cc-go" aria-hidden="true">↗</span></a></li>
+        <li class="cc cc-docs"><span class="cc-type">docs:</span> <a class="cc-msg" href="https://github.com/jspeaks/xpostplate/commit/4fc7bda9872d5000e68ad11b9e8f9f0bedd41cf4">why xpostplate (deterministic, self-contained vector render) in README and skill<span class="cc-go" aria-hidden="true">↗</span></a></li>
+        <li class="cc cc-test"><span class="cc-type">test:</span> <a class="cc-msg" href="https://github.com/jspeaks/xpostplate/commit/b0df1887f9e3f7c7dbe5acdca89c7633127cef0d">--scale doubles dimensions exactly, --scale 1 is byte-identical, invalid values and oversize output fail, width and scale combine, scale 3 is deterministic<span class="cc-go" aria-hidden="true">↗</span></a></li>
+        <li class="cc cc-docs"><span class="cc-type">docs:</span> <a class="cc-msg" href="https://github.com/jspeaks/xpostplate/commit/ded42085274c5857f3b9dbfc8f122eb77f300e09">width vs scale in --help, README, /docs, FAB (a resolution row), skill, and architecture<span class="cc-go" aria-hidden="true">↗</span></a></li>
+      </ul>
+    </div>
     <div class="day" id="v0.10.0">
       <time datetime="2026-10-07">2026-10-07</time>
       <ul>
