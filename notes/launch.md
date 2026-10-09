@@ -64,3 +64,7 @@ Posted 2026-10-08 11:20 AM ET by @jspeaks: https://x.com/jspeaks/status/21082160
 Text went in exactly as below. X turned the trailing link into a link card ("xpostplate · Turn an X post into a PNG", from code.jspeaks.com), so the URL doesn't show in the post text. One post, not a thread.
 
 I'd been dormant on creating tools, but agentic opportunities give me a chance to publish my creativity and my ideas again. Here's one: xpostplate, a CLI that turns an X post into a PNG. Same input, same image, no browser, built for agents. https://code.jspeaks.com/xpostplate/
+
+## dev.to article
+Published 2026-10-09 11:51 AM ET by @jspeaks: https://dev.to/jspeaks/give-your-ai-agent-a-deterministic-way-to-turn-x-posts-into-images-20o6
+Published from notes/devto-article.md exactly as written, with published: true. Tags: ai, cli, productivity, opensource. Cover: https://code.jspeaks.com/xpostplate/media/og.png
