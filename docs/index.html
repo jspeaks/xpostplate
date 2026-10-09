@@ -97,6 +97,45 @@
       white-space: nowrap;
       text-transform: uppercase;
     }
+    /* Chip tooltips: CSS-only on hover and focus (tap focuses on touch). Absolutely
+       positioned, so no layout shift; a tiny script nudges them inside the viewport. */
+    .chip[data-tip] { position: relative; cursor: help; outline: none; --tip-shift: 0px; }
+    .chip[data-tip]::after {
+      content: attr(data-tip);
+      box-sizing: border-box;
+      position: absolute;
+      top: calc(100% + 7px);
+      left: 0;
+      z-index: 20;
+      width: max-content;
+      max-width: min(300px, calc(100vw - 24px));
+      padding: 7px 10px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: var(--plate);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
+      color: var(--text);
+      font-size: 12.5px;
+      letter-spacing: 0;
+      line-height: 1.4;
+      text-transform: none;
+      white-space: normal;
+      pointer-events: none;
+      opacity: 0;
+      visibility: hidden;
+      transform: translate(var(--tip-shift), -3px);
+      transition: opacity 0.12s ease, transform 0.12s ease, visibility 0s linear 0.12s;
+    }
+    .chip[data-tip]:hover, .chip[data-tip]:focus-visible { color: var(--text); border-color: var(--muted); }
+    .chip[data-tip]:focus-visible { box-shadow: 0 0 0 2px var(--accent); }
+    .chip[data-tip]:hover::after, .chip[data-tip]:focus::after {
+      opacity: 1;
+      visibility: visible;
+      transform: translate(var(--tip-shift), 0);
+      transition: opacity 0.12s ease, transform 0.12s ease, visibility 0s;
+    }
+    .chip[data-tip].tip-off::after { opacity: 0; visibility: hidden; }
+    @media (prefers-reduced-motion: reduce) { .chip[data-tip]::after { transition: none; } }
 
     /* Hero: one before-and-after. Phone first, one column: pitch (URL + command),
        a down arrow, then the PNG the command writes. */
@@ -583,13 +622,18 @@
         </g>
         <text x="34" y="22.5" fill="#F7F9F9" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="18" font-weight="600">xpostplate</text>
       </svg>
-      <span class="chip">CLI</span>
-      <span class="chip">agentic</span>
-      <span class="chip">chainable</span>
-      <span class="chip">deterministic</span>
-      <span class="chip">self-contained</span>
+      <span class="chip" tabindex="0" data-tip="Runs from your terminal: xpostplate &lt;url&gt; &gt; post.png" aria-describedby="tip-cli">CLI</span>
+      <span class="chip" tabindex="0" data-tip="Ships an Agent Skills SKILL.md so coding agents can use it on their own." aria-describedby="tip-agentic">agentic</span>
+      <span class="chip" tabindex="0" data-tip="Writes the PNG to stdout when piped, so it slots into other commands." aria-describedby="tip-chainable">chainable</span>
+      <span class="chip" tabindex="0" data-tip="Same input, same PNG, byte for byte on the same machine, so agents can skip re-checking and save tokens." aria-describedby="tip-deterministic">deterministic</span>
+      <span class="chip" tabindex="0" data-tip="Drawn as SVG and rasterized in-process. No browser, no screenshots, no ImageMagick." aria-describedby="tip-self-contained">self-contained</span>
       <a class="ver" href="timeline#v0.10.0" title="Release timeline">v0.10.0</a>
     </div>
+    <span id="tip-cli" hidden>Runs from your terminal: xpostplate &lt;url&gt; &gt; post.png</span>
+    <span id="tip-agentic" hidden>Ships an Agent Skills SKILL.md so coding agents can use it on their own.</span>
+    <span id="tip-chainable" hidden>Writes the PNG to stdout when piped, so it slots into other commands.</span>
+    <span id="tip-deterministic" hidden>Same input, same PNG, byte for byte on the same machine, so agents can skip re-checking and save tokens.</span>
+    <span id="tip-self-contained" hidden>Drawn as SVG and rasterized in-process. No browser, no screenshots, no ImageMagick.</span>
     <div class="hero">
       <div class="pitch">
         <h1>Turn an <svg class="xmark" viewBox="0 0 24 24" aria-label="X" role="img"><path fill="currentColor" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> post into a PNG.</h1>
@@ -664,5 +708,31 @@
     <span class="dot" aria-hidden="true">·</span>
     <a href="timeline">timeline</a>
   </footer>
+  <script>
+    /* Chip tooltips: keep each tip inside the viewport (align right near the edge),
+       tap toggles on touch, Escape dismisses. */
+    (function () {
+      var chips = document.querySelectorAll('.chip[data-tip]');
+      function place(c) {
+        var vw = document.documentElement.clientWidth, m = 12;
+        var w = Math.min(300, vw - 24), r = c.getBoundingClientRect();
+        var shift = Math.min(0, vw - m - w - r.left);
+        c.style.setProperty('--tip-shift', Math.round(Math.max(shift, m - r.left)) + 'px');
+      }
+      Array.prototype.forEach.call(chips, function (c) {
+        c.addEventListener('pointerenter', function () { c.classList.remove('tip-off'); place(c); });
+        c.addEventListener('focus', function () { c.classList.remove('tip-off'); place(c); });
+        c.addEventListener('blur', function () { c.classList.remove('tip-off'); });
+        c.addEventListener('click', function () { if (document.activeElement !== c) c.focus(); });
+        c.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape') { c.classList.add('tip-off'); }
+        });
+      });
+      window.addEventListener('resize', function () {
+        var a = document.activeElement;
+        if (a && a.matches && a.matches('.chip[data-tip]')) place(a);
+      });
+    })();
+  </script>
 </body>
 </html>

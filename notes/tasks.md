@@ -7,6 +7,7 @@
 - [ ] The local `package-lock.json` on diana.local still has an uncommitted version-field drift (0.9.25 → 0.9.26, engines >=18 → >=20.9); it now lags package.json 0.10.0. Refresh with `npm install --package-lock-only` when convenient
 
 ## Done
+- [x] Homepage chips (CLI, agentic, chainable, deterministic, self-contained) get hover/focus/tap tooltips with one-line explanations; edge-aware at 390px, no layout shift (2026-10-09)
 - [x] 0.10.0: color emoji in every view and theme via bundled Twemoji v17.0.3 (2026-10-07)
 - [x] Docs hero, view samples, and og.png regenerated with the faithful detail view (2026-10-07)
 - [x] Homepage simplified to one before-and-after (URL + `xpostplate <url> > post.png` → PNG); views, plate, and emoji moved to /docs (2026-10-07)
