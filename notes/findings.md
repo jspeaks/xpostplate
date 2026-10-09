@@ -2,6 +2,11 @@
 
 - 2026-10-06: The resvg + sharp renderer matched the old ImageMagick output on 59 renders (same dimensions and line breaks) and runs about 40% faster. Requires Node >= 20.9.
 - 2026-10-06: Emoji don't render with the SVG pipeline yet. (Fixed in 0.10.0, see below.)
+- 2026-10-09: `--scale` (0.11.0). Default renders are byte-identical to 0.10.0: 28 renders compared (fixture, emoji fixture, and the live SpaceX V3 post in all four views x both themes, plus `--width 600`, `--max-height 420`, `--no-media --width 1200`, and a fabricate with fixed `--posted`). `--scale 1` keeps resvg's `original` fit, so it is the same code path as before.
+- 2026-10-09: resvg zoom rounds each side up: `--width 601 --scale 1.5` gives 902x464 from a 601x309 layout. Integer scales are exact (2x: 800x684 → 1600x1368).
+- 2026-10-09: SpaceX V3 post (https://x.com/SpaceX/status/2106090316747207047, 4-photo grid) on the Mac, network included: `--scale 1` 800x684, ~0.5 s, 507 KB; `--scale 3` 2400x2052, ~2.2 s, 3.66 MB. Two live scale-3 renders were byte-identical. Offline emoji fixture: 0.09 s at 1x, 0.11 s at 3x, 0.23 s at 8x (6400x2472).
+- 2026-10-09: pbs.twimg.com photo sizes: bare `.jpg` = 1200px long side (medium), `?name=large` = 2048, `?name=4096x4096` = original up to 4096 (3840x2160 for the V3 photos, 376 KB vs 69 KB). The CLI asks for `large` when width x scale is over 1200 and `4096x4096` over 2048, falling back to the bare URL. Avatars: `_400x400` is the largest size; SpaceX's original is 287px, so its 56px avatar is upscaled past about `--scale 5`. In a 2x2 grid at 3x each cell is 1113px, so the hi-res fetch barely changes sharpness there (sharp `stats().sharpness` 1.046 → 1.066); it matters for single photos and cover-cropped tall cells.
+- 2026-10-09: Emoji and all icons are vectors inside the SVG, so they scale with resvg's zoom with no extra work. sharp's default 268 MP input limit is lifted for the plate canvas; the CLI's 16384px-per-side cap is the guard.
 - Public posts load from X's syndication feed with no token; `X_BEARER_TOKEN` is only needed for views, reposts, and bookmarks.
 - `brew reinstall --HEAD` is invalid; uninstall, then `brew install --HEAD`.
 - A stale checkout once caused npm's "cannot publish over" error; always `git pull` before bumping.

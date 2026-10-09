@@ -45,6 +45,7 @@ This skill ships at `skills/xpostplate/` in the repo and in the npm package (`fi
 - Prefer `--json` when you only need post data
 - Public URLs work with no token via syndication
 - Do not invent missing counts as zeros; leave them unset so they stay off the image
+- Width = layout, scale = pixel density. Use `--scale` (0.5–8, default 1) when the image needs more pixels but the same look: print, 4K/1080p video, slides on retina or projectors, or any "make it sharper / higher resolution / 2x / 3x" request. `--width 600 --scale 3` = the 600px layout as an 1800px PNG, drawn from vectors (crisp, not upscaled). Change `--width` only when the post should be laid out wider or narrower (line length). Don't upscale a scale-1 PNG with another tool; rerender with `--scale`. `--max-height` is in layout px; output is capped at 16384px per side
 
 ## Flags you need
 
@@ -56,6 +57,8 @@ This skill ships at `skills/xpostplate/` in the repo and in the npm package (`fi
 | `--mark` / `--no-mark` | X mark; on for plate, off for other views |
 | `--border`, `--accent`, `--radius`, `--mark-corner` | Plate frame; accent defaults to near-black |
 | `--theme light\|dark` | Default `light` |
+| `--width <px>` | Layout width (default 800); text keeps its size and reflows |
+| `--scale <n>` | Pixel density, 0.5–8 (default 1); same layout, n× pixels. Use for print, video, retina |
 | `--name`, `--handle`, `--text` | Overrides; `--text` required with `--fabricate` |
 | `--replies`, `--reposts`, `--quotes`, `--likes`, `--bookmarks`, `--views` | Count overrides; a set zero is real |
 | `-o`, `--output <path>` | Write PNG to a file (`-` = stdout; skips TTY auto-file) |
@@ -75,6 +78,9 @@ xpostplate https://x.com/SpaceX/status/[slug] --view plate --no-media -o plate.p
 
 # Write a file
 xpostplate https://x.com/SpaceX/status/[slug] --view timeline --theme dark -o timeline.png
+
+# Hi-res for print, 4K video, or retina: same layout as --width 600, PNG 1800px wide
+xpostplate https://x.com/SpaceX/status/[slug] --width 600 --scale 3 -o post@3x.png
 
 # Data only, then decide
 xpostplate https://x.com/SpaceX/status/[slug] --json

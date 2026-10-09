@@ -291,6 +291,11 @@
     <img class="solo" src="media/emoji.png" width="800" height="277" loading="lazy" alt="A Starlink post rendered with color emoji: a satellite, the Uganda flag, and a red heart after the text" style="display:block;width:100%;height:auto;border-radius:10px;border:1px solid var(--line)">
     <p><code class="cmd"><span class="nw">xpostplate https://x.com/Starlink/status/2094882783915295062</span> <span class="nw">--max-height 300</span></code></p>
 
+    <h2 id="scale">Width and scale</h2>
+    <p><strong>Width = layout, scale = pixel density.</strong> <code>--width</code> sets how wide the post is laid out (200&#8211;4096 px, default 800). Text keeps its size, so a wider layout means longer lines and a shorter card. <code>--scale</code> keeps that layout and multiplies the pixels (0.5&#8211;8, decimals allowed, default 1): <code>--width 600 --scale 3</code> looks exactly like <code>--width 600</code>, as a PNG 1800 px wide. <code>--width 1800</code> would instead lay out longer lines of the same-size text.</p>
+    <p>Scale is not an upscaled bitmap. The post is a vector render, so text, icons, the check, and emoji are rasterized at the final size and stay crisp for print, 4K video, and retina screens. Photos are resampled once, from the largest size X serves that covers the output (up to 4096 px); the avatar comes from X&#8217;s largest profile size (400&#215;400, smaller for some accounts), so at high scales it is the one element that can be upscaled. <code>--max-height</code> counts layout pixels, before scale. Each side is capped at 16384 px, with a clear error past that, and <code>--scale 1</code> gives the same bytes as leaving it off.</p>
+    <p><code class="cmd"><span class="nw">xpostplate https://x.com/SpaceX/status/[slug]</span> <span class="nw">--width 600</span> <span class="nw">--scale 3</span> <span class="nw">-o post@3x.png</span></code></p>
+
     <h2>Flags</h2>
     <ul class="flags">
       <li><span class="flag"><code>--fabricate</code></span><span class="desc">invent a post from <code>--text</code>; no URL, no network</span></li>
@@ -302,7 +307,9 @@
       <li><span class="flag"><code>--theme light|dark</code></span><span class="desc">default light; dark is x.com Lights out (true black)</span></li>
       <li><span class="flag"><code>--mark</code><code>--no-mark</code></span><span class="desc">X mark; on for plate, off for the other views</span></li>
       <li><span class="flag"><code>--border</code><code>--accent</code><code>--radius</code></span><span class="desc">plate frame; accent defaults to near-black</span></li>
-      <li><span class="flag"><code>--max-height</code></span><span class="desc">drop photos before body lines</span></li>
+      <li><span class="flag"><code>--width</code></span><span class="desc">layout width in px (default 800); text keeps its size and reflows</span></li>
+      <li><span class="flag"><code>--scale</code></span><span class="desc">pixel density (default 1): same layout, n&#215; the pixels, drawn from vectors (<a href="#scale" style="color:var(--text)">width vs scale</a>)</span></li>
+      <li><span class="flag"><code>--max-height</code></span><span class="desc">drop photos before body lines; layout px, before scale</span></li>
       <li><span class="flag"><code>-o</code></span><span class="desc">write PNG to a file; omit on a TTY for <code>{handle}-{YYYYMMDD-HHMMSS}.png</code> (<code>x-…</code> if fabricate/missing handle); <code>-</code> = stdout</span></li>
       <li><span class="flag"><code>--json</code></span><span class="desc">print the post JSON, skip the image</span></li>
       <li><span class="flag"><code>--fixture</code></span><span class="desc">render local JSON instead of fetching</span></li>
@@ -319,6 +326,8 @@
       <dd><code class="cmd"><span class="nw">xpostplate https://x.com/SpaceX/status/[slug]</span> <span class="nw">--view plate</span> <span class="nw">--no-media</span> <span class="nw">-o plate.png</span></code></dd>
       <dt>Quote only.</dt>
       <dd><code class="cmd"><span class="nw">xpostplate https://x.com/SpaceX/status/[slug]</span> <span class="nw">--view quote</span> <span class="nw">-o quote.png</span></code></dd>
+      <dt>Same layout as <code>--width 600</code>, three times the pixels: print, 4K video, retina.</dt>
+      <dd><code class="cmd"><span class="nw">xpostplate https://x.com/SpaceX/status/[slug]</span> <span class="nw">--width 600</span> <span class="nw">--scale 3</span> <span class="nw">-o post@3x.png</span></code></dd>
       <dt>Invent a post. No URL and no network.</dt>
       <dd><code class="cmd"><span class="nw">xpostplate --fabricate</span> <span class="nw">--name "SpaceX"</span> <span class="nw">--handle SpaceX</span> <span class="nw">--text "Starship is stacked."</span> <span class="nw">--view timeline</span></code></dd>
       <dt>Emoji in color, offline: a family, a skin tone, a flag, a keycap.</dt>
@@ -353,7 +362,7 @@
 }</code></pre>
 
     <h2 id="rendering">How it renders</h2>
-    <p>Each post is built as an SVG in-process (<code>lib/svg.js</code>). Text is measured with the same TrueType files that draw it, emoji are inlined from the bundled Twemoji set, and the X mark comes from a bundled SVG. <code>@resvg/resvg-js</code> rasterizes the SVG to PNG with system font lookup off; <code>sharp</code> crops, rounds, and composites photos and the avatar. No headless browser, no screenshot, no ImageMagick. The only network calls fetch the post, its photos, and its avatar; <code>--fixture</code> and <code>--fabricate</code> make none. The CLI writes PNG; the SVG stays internal.</p>
+    <p>Each post is built as an SVG in-process (<code>lib/svg.js</code>). Text is measured with the same TrueType files that draw it, emoji are inlined from the bundled Twemoji set, and the X mark comes from a bundled SVG. <code>@resvg/resvg-js</code> rasterizes the SVG to PNG with system font lookup off; <code>sharp</code> crops, rounds, and composites photos and the avatar. No headless browser, no screenshot, no ImageMagick. The only network calls fetch the post, its photos, and its avatar; <code>--fixture</code> and <code>--fabricate</code> make none. The CLI writes PNG; the SVG stays internal. <code>--scale</code> zooms that same SVG at rasterization, so more pixels never means a blurrier image.</p>
     <p><strong>Deterministic.</strong> The same input renders the same PNG, byte for byte: the same fixture, flags, and machine give identical files every run, and a live post renders identically until its data changes (a new like count, a new avatar). Times print in New York time whatever the machine's time zone. For an agent, a post image is one shell command, not tokens spent generating, describing, or screenshotting a picture.</p>
     <p>What can change the bytes: <code>--view timeline</code> and <code>--view quote</code> show relative time (<code>13h</code>) until a post is a week old; <code>--fabricate</code> without <code>--posted</code> stamps the current time; and text uses Arial on macOS or DejaVu Sans or Liberation Sans on Linux, so the same input can differ across systems.</p>
 

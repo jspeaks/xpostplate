@@ -43,6 +43,12 @@ xpostplate https://x.com/SpaceX/status/[slug] --view plate --no-media --accent '
 
 `--fabricate` invents a post from `--text` with no URL and no network. `--name`, `--handle`, `--text`, `--verified`, `--posted`, and the count flags override that post or a real one. A count you set is real, even when it is zero. A count you leave unset stays hidden when the source never had it.
 
+### Width vs scale
+
+`--width` is layout: how wide the post is laid out, in pixels (200–4096, default 800). Text keeps its size, so a wider layout means longer lines and a shorter card. `--scale` is pixel density: the same layout drawn with more (or fewer) pixels, 0.5–8, decimals allowed, default 1. `--width 600 --scale 3` looks exactly like `--width 600` but writes an 1800px-wide PNG; `--width 1800` would instead lay out longer lines of the same-size text.
+
+Width = layout, scale = pixel density. Because the post is a vector render, scale is not an upscaled bitmap: text, icons, the check, and emoji are rasterized at the target size and stay crisp for print, 4K video, and retina screens. Photos are resampled once, from the largest size X serves that covers the output (1200, 2048, or up to 4096px); the avatar comes from X's largest profile size (400x400, smaller for some accounts), so at high scales it is the one element that can be upscaled. `--max-height` is in layout pixels, before scale. Each output side is capped at 16384px, with a clear error past that. `--scale 1` is byte-identical to leaving it off.
+
 ## Install
 
 ```bash
@@ -74,6 +80,9 @@ xpostplate https://x.com/SpaceX/status/[slug] --view plate --no-media -o plate.p
 
 # The same post as a quote.
 xpostplate https://x.com/SpaceX/status/[slug] --view quote -o quote.png
+
+# Same layout as --width 600, three times the pixels (1800px wide): print, 4K video, retina.
+xpostplate https://x.com/SpaceX/status/[slug] --width 600 --scale 3 -o post@3x.png
 
 # Invent a post. No URL and no network.
 xpostplate --fabricate --name "SpaceX" --handle SpaceX --text "Starship is stacked." --view timeline

@@ -1,12 +1,13 @@
 # Tasks
 
 ## Open
-- [ ] Publish 0.10.0 to npm (Jaye): `cd ~/dev/xpostplate && git pull && npm whoami && npm publish`
+- [ ] Publish 0.11.0 to npm (Jaye): `cd ~/dev/xpostplate && git pull && npm whoami && npm publish` (0.10.0 is on npm)
 - [ ] Draft launch posts (Show HN, dev.to/Hashnode article, r/commandline, X) for Jaye's approval
 - [ ] Decide whether package.json `license` should become `MIT AND CC-BY-4.0` now that Twemoji graphics ship in the package (the Homebrew formula already says `all_of: ["MIT", "CC-BY-4.0"]`)
-- [ ] The local `package-lock.json` on diana.local still has an uncommitted version-field drift (0.9.25 → 0.9.26, engines >=18 → >=20.9); it now lags package.json 0.10.0. Refresh with `npm install --package-lock-only` when convenient
+- [ ] The local `package-lock.json` on diana.local still has an uncommitted version-field drift (0.9.25 → 0.9.26, engines >=18 → >=20.9); it now lags package.json 0.11.0. Refresh with `npm install --package-lock-only` when convenient
 
 ## Done
+- [x] 0.11.0: `--scale <n>` (0.5–8) for pixel density independent of `--width` layout; vector-rasterized via resvg zoom, photos and avatar composited at the scaled size, larger photo sizes fetched when needed, 16384px-per-side cap; --help, README, /docs (#scale), FAB, timeline, skill, architecture updated; tests added (2026-10-09)
 - [x] Homepage chips (CLI, agentic, chainable, deterministic, self-contained) get hover/focus/tap tooltips with one-line explanations; edge-aware at 390px, no layout shift (2026-10-09)
 - [x] 0.10.0: color emoji in every view and theme via bundled Twemoji v17.0.3 (2026-10-07)
 - [x] Docs hero, view samples, and og.png regenerated with the faithful detail view (2026-10-07)
