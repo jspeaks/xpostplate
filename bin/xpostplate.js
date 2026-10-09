@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
-import { helpText, parseCli } from "../lib/args.js";
+import { checkOutputSize, helpText, parseCli } from "../lib/args.js";
 import { compositePhotos, svgToPng } from "../lib/png.js";
 import {
   avatarUrl,
@@ -14,6 +14,7 @@ import {
   fabricatePost,
   loadFixture,
   parseStatusId,
+  photoUrlForPixels,
 } from "../lib/post.js";
 import { renderSvg } from "../lib/svg.js";
 
@@ -69,7 +70,9 @@ async function main() {
   let drawPost = post;
   if (network && opts.showMedia && Array.isArray(post.photos) && post.photos.length) {
     const wanted = post.photos.slice(0, 4);
-    const settled = await Promise.allSettled(wanted.map((url) => fetchPhotoBuffer(url)));
+    // At --scale above 1, ask for a photo size that covers the output width.
+    const pixels = opts.scale === 1 ? 0 : Math.ceil(opts.width * opts.scale);
+    const settled = await Promise.allSettled(wanted.map((url) => fetchScaledPhoto(url, pixels)));
     settled.forEach((result, i) => {
       if (result.status === "fulfilled") photoBuffers.set(wanted[i], result.value);
       else process.stderr.write(`skipping a photo: ${result.reason?.message || result.reason}\n`);
@@ -87,14 +90,18 @@ async function main() {
   }
 
   const plate = renderSvg(drawPost, opts, { avatar: Boolean(avatarBuffer) });
-  let png = await svgToPng(plate.svg);
+  // Layout is in --width pixels; --scale multiplies the output. Refuse before
+  // rendering anything that would pass the per-side cap.
+  checkOutputSize(plate.width, plate.height, opts.scale);
+  let png = await svgToPng(plate.svg, { scale: opts.scale });
   const slots = plate.photos.filter((slot) => photoBuffers.has(slot.url));
   const buffers = slots.map((slot) => photoBuffers.get(slot.url));
   if (plate.avatar && avatarBuffer) {
     slots.push(plate.avatar);
     buffers.push(avatarBuffer);
   }
-  if (slots.length) png = await compositePhotos(png, slots, buffers);
+  if (slots.length) png = await compositePhotos(png, slots, buffers, { scale: opts.scale });
+  const size = `${png.readUInt32BE(16)}x${png.readUInt32BE(20)}`;
   const destination = opts.output;
 
   // No -o: on a TTY, write {handle}-{YYYYMMDD-HHMMSS}.png in cwd instead of binary to the terminal.
@@ -106,7 +113,7 @@ async function main() {
   }
 
   if (!destination || destination === "-") {
-    process.stderr.write(`PNG ${png.length} bytes (${plate.width}x${plate.height})\n`);
+    process.stderr.write(`PNG ${png.length} bytes (${size})\n`);
     await writeStdout(png);
     return;
   }
@@ -114,7 +121,18 @@ async function main() {
   const file = path.resolve(destination);
   await mkdir(path.dirname(file), { recursive: true });
   await writeFile(file, png);
-  process.stderr.write(`wrote ${file} (${plate.width}x${plate.height})\n`);
+  process.stderr.write(`wrote ${file} (${size})\n`);
+}
+
+// The larger photo size when the URL has one, else the default size.
+async function fetchScaledPhoto(url, pixels) {
+  const big = photoUrlForPixels(url, pixels);
+  if (big === url) return fetchPhotoBuffer(url);
+  try {
+    return await fetchPhotoBuffer(big);
+  } catch {
+    return fetchPhotoBuffer(url);
+  }
 }
 
 function autoPngFilename(post, opts) {
