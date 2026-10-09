@@ -1,6 +1,6 @@
 {
   "name": "xpostplate",
-  "version": "0.11.0",
+  "version": "1.0.0",
   "description": "Render or fabricate an X post as a PNG that looks like x.com: the opened post by default, or a timeline row, a quote, or a bordered broadcast plate.",
   "type": "module",
   "bin": {
