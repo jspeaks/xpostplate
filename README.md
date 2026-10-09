@@ -1,19 +1,45 @@
 # xpostplate
 
-A public X post, or one you fabricate and override, drawn as a PNG that looks like x.com: the opened post by default, or a timeline row, a quote, or a bordered broadcast plate.
+Turn an X post into a PNG from the command line.
+
+[![npm version](https://img.shields.io/npm/v/xpostplate)](https://www.npmjs.com/package/xpostplate)
+[![npm downloads](https://img.shields.io/npm/dw/xpostplate)](https://www.npmjs.com/package/xpostplate)
+[![license](https://img.shields.io/github/license/jspeaks/xpostplate)](LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/jspeaks/xpostplate?style=flat)](https://github.com/jspeaks/xpostplate/stargazers)
+[![CLI](https://img.shields.io/badge/interface-CLI-000000)](#quick-start)
+
+<p align="center">
+  <img src="assets/demo.gif" width="800" alt="Terminal demo: xpostplate https://x.com/SpaceX/status/2106090316747207047 > post.png prints PNG 506868 bytes (800x684) to stderr, chafa previews post.png in the terminal, then the real PNG fades in">
+</p>
+
+<p align="center">
+  <img src="docs/media/readme-hero.png" width="600" alt="The PNG xpostplate wrote for the SpaceX Starlink V3 post: avatar, gold check, text, four photos, time and date, and the action bar, as on x.com">
+</p>
+
+## Quick start
+
+```bash
+brew install jspeaks/xpostplate/xpostplate        # or: npm i -g xpostplate
+xpostplate https://x.com/SpaceX/status/2106090316747207047 > post.png
+npx skills add jspeaks/xpostplate                 # optional: the agent skill
+```
+
+No API key needed for public posts. `xpostplate --help` lists every flag.
 
 ## Why
 
 Tweet-to-image tools have mostly been web apps: paste a link, click, download. xpostplate is a command.
 
-- **CLI and chainable.** `xpostplate <url> > post.png`. PNG on stdout when piped, logs on stderr.
-- **Deterministic.** The same input renders the same PNG, byte for byte. An agent shells out instead of spending tokens generating, describing, or screenshotting an image, and reruns are stable enough to cache or diff.
-- **Self-contained vector render.** The post is built as SVG in-process (`lib/svg.js`) and rasterized by resvg; sharp composites photos and the avatar. No headless browser, no screenshot, no ImageMagick. Emoji are bundled, and text is drawn from the system's Arial, DejaVu Sans, or Liberation Sans file. The only network calls fetch the post, its photos, and its avatar.
-- **Agentic.** Ships an Agent Skills `SKILL.md`, and `--json` returns the post data without an image.
-- **Offline when you want it.** `--fabricate` and `--fixture` render with no URL and no network.
+- **CLI and chainable.** PNG on stdout when piped, logs on stderr. `--fabricate` and `--fixture` render offline, with no URL.
+- **Deterministic.** The same input renders the same PNG, byte for byte, so an agent can shell out instead of spending tokens generating, describing, or screenshotting an image, and cache or diff the result.
+- **Self-contained vector render.** Built as SVG in-process and rasterized by resvg; sharp composites photos and the avatar. No headless browser, no screenshot, no ImageMagick.
+- **Crisp at any size.** `--scale 3` draws the same layout with three times the pixels, vector-sharp, for print, 4K video, and retina.
+- **Agent skill.** Ships an Agent Skills `SKILL.md`; `--json` returns the post data without an image.
 - **Faithful.** The default view matches the opened post on x.com, not a generic card.
 
 Deterministic means the same post data, flags, fonts, and package versions give the same bytes. A live post renders identically until its data changes (a new like count or avatar). Timeline and quote views show relative time (`13h`) until a post is a week old, `--fabricate` without `--posted` stamps the current time, and macOS (Arial) and Linux (DejaVu or Liberation) draw text with different fonts.
+
+Since 1.0.0 the command-line interface (flags, defaults, stdout and stderr behavior) is stable and follows semver: a breaking change means a new major version.
 
 ## How it works
 
@@ -24,6 +50,8 @@ Bare `xpostplate <url>` aims to match the opened post on x.com: light theme, no 
 Emoji draw in color in every view and both themes, including `--fabricate --text`: ZWJ families (👨‍👩‍👧‍👦), skin tones (👋🏽), flags (🇺🇬), keycaps (1️⃣), and plain emoji. Each one is a [Twemoji](https://github.com/jdecked/twemoji) graphic bundled in the package and inlined into the SVG, so a render needs no emoji font and no network. Wrapping counts each emoji at the width x.com draws it (1.2em plus a small margin). Symbols your text font already has, like © and ™, stay text.
 
 `--view` picks the shape:
+
+<p align="center"><img src="docs/media/readme-views.png" width="800" alt="The same SpaceX post in three views: detail (light), timeline (dark), and the bordered plate"></p>
 
 - `detail`, the default, is the opened post: avatar, name and check over handle, body, photos, `10:52 AM · Aug 27, 2026 · 1.2K Views` (views only when that count is known), and the action bar. `--metrics none` hides the bar.
 - `timeline` is the home-feed row: name, check, handle, a relative time like `13h`, and icon counts.
@@ -57,6 +85,7 @@ brew install jspeaks/xpostplate/xpostplate   # Homebrew
 pnpm add -g xpostplate                       # pnpm
 bun add -g xpostplate                        # Bun
 npx xpostplate --help                        # run once, no install
+npx skills add jspeaks/xpostplate            # just the agent skill, into your agent's skills folder
 ```
 
 Homebrew installs the latest tagged release from the `jspeaks/xpostplate` tap. For bleeding edge from `main`, add `--HEAD`: `brew install --HEAD jspeaks/xpostplate/xpostplate`.
@@ -135,9 +164,7 @@ Node 20.9 or newer. Nothing else: no ImageMagick. Rendering uses npm packages th
 
 ## Agent skill
 
-Open [Agent Skills](https://agentskills.io) skill at `skills/xpostplate/SKILL.md`. It ships with the npm package (`files` includes `skills`), so after `npm install` / `npm i -g xpostplate`, harnesses that scan `node_modules/**/skills/*/SKILL.md` (skills-npm, askill, and similar) can activate it. Homebrew installs the same skill at `$(brew --prefix)/opt/xpostplate/share/xpostplate/skills/xpostplate/SKILL.md`. For agents that only watch a skills directory, copy or symlink that folder into `.agents/skills/`, `.claude/skills/`, `.cursor/skills/`, or the equivalent.
-
-`xpostplate --help` lists every flag.
+Open [Agent Skills](https://agentskills.io) skill at `skills/xpostplate/SKILL.md`. It ships with the npm package (`files` includes `skills`), so after `npm install` / `npm i -g xpostplate`, harnesses that scan `node_modules/**/skills/*/SKILL.md` (skills-npm, askill, and similar) can activate it. Homebrew installs the same skill at `$(brew --prefix)/opt/xpostplate/share/xpostplate/skills/xpostplate/SKILL.md`. For agents that only watch a skills directory, copy or symlink that folder into `.agents/skills/`, `.claude/skills/`, `.cursor/skills/`, or the equivalent, or let `npx skills add jspeaks/xpostplate` copy it there for the agents it detects.
 
 ## License
 
