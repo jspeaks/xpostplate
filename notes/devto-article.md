@@ -60,11 +60,10 @@ Use `--scale 2` for retina slides, `--scale 3` or higher for print, and `--scale
 - UX prototypes and test fixtures for apps that display posts. `--fixture` renders a local JSON file with no network, so tests stay stable.
 
 **Pipelines**
-- CI jobs that regenerate a post image only when the post changes. Because output is deterministic, a byte comparison tells you whether anything changed:
+- Batch jobs: a list of post links in, a folder of images out.
 
 ```bash
-xpostplate "$URL" > new.png
-cmp -s new.png post.png || mv new.png post.png
+while read url; do xpostplate "$url" -o "plates/${url##*/}.png"; done < posts.txt
 ```
 
 - Snapshots of a post's text and counts at a moment in time, with `--json` for the data alongside the image.
