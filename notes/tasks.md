@@ -8,6 +8,7 @@
 
 ## Done
 - [x] 0.11.0: `--scale <n>` (0.5–8) for pixel density independent of `--width` layout; vector-rasterized via resvg zoom, photos and avatar composited at the scaled size, larger photo sizes fetched when needed, 16384px-per-side cap; --help, README, /docs (#scale), FAB, timeline, skill, architecture updated; tests added (2026-10-09)
+- [x] Tap formula 0.11.0 (url + sha256 8b01b825…8837, `--scale 2` check in `brew test`); packaging/homebrew synced; `brew upgrade` on diana.local verified (2026-10-09)
 - [x] Homepage chips (CLI, agentic, chainable, deterministic, self-contained) get hover/focus/tap tooltips with one-line explanations; edge-aware at 390px, no layout shift (2026-10-09)
 - [x] 0.10.0: color emoji in every view and theme via bundled Twemoji v17.0.3 (2026-10-07)
 - [x] Docs hero, view samples, and og.png regenerated with the faithful detail view (2026-10-07)
