@@ -1,5 +1,8 @@
 # Findings
 
+- 2026-10-09: Homebrew 1.0.0 (tag tarball sha256 11668df957df334eb89163b8d8c6ecba7e931a56a7430eeb9e4db8c255cf7ef3): `brew upgrade` and `brew test` pass on diana.local; the keg is 24 MB with only x-logo.svg and emoji under assets, and its render of the SpaceX V3 post is byte-identical to the dev checkout. `npm pack --dry-run`: 17 files, 996 kB, no demo assets.
+- 2026-10-09: `npx skills add jspeaks/xpostplate` works (skills CLI 1.7.1): `--list` finds the one skill from skills/xpostplate/SKILL.md, and `-y -a claude-code` copies it to .claude/skills/xpostplate in a temp project. The skills CLI wants Node >=22.20 but ran on Node 20 with a warning.
+- 2026-10-09: README demo recorded with VHS 0.12.1 + chafa 1.18.3 on diana.local: chafa's symbol preview is too coarse to read, so scripts/demo.sh crossfades to the real PNG for the last 3 s. GIF 1000px wide, 15 fps, 160-color palette with stats_mode=full (stats_mode=diff turned the gold check gray): 1.7 MB; MP4 1200x820 H.264: 0.37 MB, about 11 s.
 - 2026-10-06: The resvg + sharp renderer matched the old ImageMagick output on 59 renders (same dimensions and line breaks) and runs about 40% faster. Requires Node >= 20.9.
 - 2026-10-06: Emoji don't render with the SVG pipeline yet. (Fixed in 0.10.0, see below.)
 - 2026-10-09: `--scale` (0.11.0). Default renders are byte-identical to 0.10.0: 28 renders compared (fixture, emoji fixture, and the live SpaceX V3 post in all four views x both themes, plus `--width 600`, `--max-height 420`, `--no-media --width 1200`, and a fabricate with fixed `--posted`). `--scale 1` keeps resvg's `original` fit, so it is the same code path as before.

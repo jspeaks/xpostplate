@@ -3,8 +3,8 @@
 class Xpostplate < Formula
   desc "Render or fabricate an X post as a PNG"
   homepage "https://github.com/jspeaks/xpostplate"
-  url "https://github.com/jspeaks/xpostplate/archive/refs/tags/v0.11.0.tar.gz"
-  sha256 "8b01b8259ac2e383fb04e0c733309dc1663da9c3c68efffee093f60626468837"
+  url "https://github.com/jspeaks/xpostplate/archive/refs/tags/v1.0.0.tar.gz"
+  sha256 "11668df957df334eb89163b8d8c6ecba7e931a56a7430eeb9e4db8c255cf7ef3"
   # Code is MIT; the bundled Twemoji emoji graphics (assets/emoji) are CC-BY-4.0.
   license all_of: ["MIT", "CC-BY-4.0"]
   head "https://github.com/jspeaks/xpostplate.git", branch: "main"

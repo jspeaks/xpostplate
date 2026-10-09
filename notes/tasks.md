@@ -9,6 +9,7 @@
 - [ ] The local `package-lock.json` on diana.local still has an uncommitted version-field drift (0.9.25 → 0.9.26, engines >=18 → >=20.9); it now lags package.json 1.0.0. Refresh with `npm install --package-lock-only` when convenient
 
 ## Done
+- [x] Tap formula 1.0.0 (url + sha256 11668df9…7ef3, installs only runtime assets: x-logo.svg and emoji); packaging/homebrew synced; `brew upgrade` and `brew test` on diana.local verified (2026-10-09)
 - [x] 1.0.0: stable CLI interface under semver; package.json, homepage version label, timeline, README; GitHub release v1.0.0 (2026-10-09)
 - [x] README opens with the output: VHS terminal demo (assets/demo.tape → demo.gif/demo.mp4 via scripts/demo.sh, ending on the real PNG), 2x hero render (docs/media/readme-hero.png), three-view strip (docs/media/readme-views.png), badges, three-line quick start, `npx skills add jspeaks/xpostplate` (verified), tighter Why (2026-10-09)
 - [x] GitHub repo topics, description, and homepage (https://code.jspeaks.com/xpostplate/) set (2026-10-09)
